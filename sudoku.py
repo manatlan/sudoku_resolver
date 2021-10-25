@@ -16,14 +16,14 @@ def resolv(g):
 
 import datetime
 getTime=lambda: datetime.datetime.now()
-echo=lambda *a: print(*a)
+def echo(*a): print(" ".join([str(i) for i in a]))
 
 gg = [i.strip() for i in open("g_simples.txt")][:100]
 
 t=getTime()
 for g in gg:
     rg=resolv(g)
-    assert rg and rg.find(".")<0, "not resolved ?!"
+    assert rg and rg.rfind(".")<0, "not resolved ?!"
     echo(rg)
 
 echo( "Took: ", getTime() - t )
