@@ -1,9 +1,8 @@
 import java.nio.file.Files;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.nio.file.Paths;
-import java.io.IOException;
 
 class Sudoku {
 
@@ -15,17 +14,17 @@ class Sudoku {
     }
 
     public static Set<Character> freeset(String g) {
-        Set<Character> s = g.chars().mapToObj(e->(char)e).collect(Collectors.toSet());
+        final Set<Character> s = g.chars().mapToObj(e->(char)e).collect(Collectors.toSet());
         Set<Character> sf = "123456789.".chars().mapToObj(e->(char)e).collect(Collectors.toSet());
         sf.removeAll(s);
         return sf;
     }
 
     public static String resolv(String g) {
-        int i=g.indexOf(".");
+        final int i=g.indexOf(".");
         if(i>=0) {
             for(Character elem : interset(g,i%9,(int)i/9)) {
-                String ng=resolv( g.substring(0,i) + elem + g.substring(i+1,g.length()) );
+                final String ng=resolv( g.substring(0,i) + elem + g.substring(i+1,g.length()) );
                 if(ng!=null)
                     return ng;
             }
@@ -41,19 +40,19 @@ class Sudoku {
     }
 
     public static String horiz(String g, int y) {
-        int ligne=y*9;
+        final int ligne=y*9;
         return g.substring(ligne, ligne+9);
     }
     public static String vertiz(String g, int x) {
         String result = "";
         for(int y=0;y<9;y++){
-            int ligne=y*9;
-            result+= g.substring(x+ligne,x+ligne+1);
+            final int ligne=y*9;
+            result += g.substring(x+ligne,x+ligne+1);
         }
         return result;
     }
 
-    public static void main (String[] args) throws IOException{
+    public static void main (String[] args) throws Exception{
         // String g="2.48........7.5....13.....9..7.......26....3.3...26.4...9..845.87.....16....6.2..";
 
         // System.out.println(horiz(g,0));
@@ -64,11 +63,15 @@ class Sudoku {
         // System.out.println(g);
         // System.out.println(resolv(g));
 
-        int c=0;
-        for(String g: Files.readAllLines(Paths.get("g_simples.txt"))) {
-            System.out.println(resolv(g));
-            c+=1;
-            if(c>100) break;
+
+        final List<String> gg=Files.readAllLines(Paths.get("g_simples.txt")).subList(0, 100);
+
+        long t=System.currentTimeMillis();
+        for(String g: gg) {
+            final String rg=resolv(g);
+            if( !(rg!=null && rg.indexOf(".")<0)) throw new Exception("not resolved ?!");
+            System.out.println(rg);
         }
+        System.out.println("Took: "+( System.currentTimeMillis() - t)+"ms");
     }
 }
