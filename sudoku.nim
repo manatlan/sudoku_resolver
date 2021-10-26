@@ -7,13 +7,13 @@ proc square(g: string,x:int,y:int): string =
     g[y*9+x .. y*9+x+2] & g[y*9+x+9 .. y*9+x+11] & g[y*9+x+18 .. y*9+x+20]
 
 proc horiz(g: string, y:int): string =
-    var ligne: int = y * 9
+    let ligne: int = y * 9
     g[0+ligne .. 8+ligne]
 
 proc vertiz(g: string, x:int): string =
     result = ""
     for y in 0 .. 8:
-        var ligne: int = y * 9
+        let ligne: int = y * 9
         result.add g[x+ligne]
 
 proc freeset(sg: string): set[char] =
@@ -44,12 +44,12 @@ import times
 proc aff(g: string): void =
     echo ""
     for y in 0 .. 8:
-        var t=join( horiz(g, y) ," ")
+        let t=join( horiz(g, y) ," ")
         echo t[0..5],"|",t[5..11],"|",t[11..16]
         if y<8 and (y+1) mod 3 == 0:
             echo "------+-------+------"
 
-var gg= readFile("g_simples.txt").splitLines()[0..100]
+let gg = readFile("g_simples.txt").splitLines()[0..100]
 
 let t = getTime()
 for g in gg:
