@@ -37,17 +37,8 @@ proc resolv(g:string): string =
     else:
         return g
 ###############################################
-
 import strutils
 import times
-
-proc aff(g: string): void =
-    echo ""
-    for y in 0 .. 8:
-        let t=join( horiz(g, y) ," ")
-        echo t[0..5],"|",t[5..11],"|",t[11..16]
-        if y<8 and (y+1) mod 3 == 0:
-            echo "------+-------+------"
 
 let gg = readFile("g_simples.txt").splitLines()[0..100]
 
