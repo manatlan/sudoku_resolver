@@ -1,37 +1,34 @@
 #! nim c -d:danger -r
 
 ############################################### my resolver ;-) (backtracking)
-proc square(g: string,x:int,y:int): string =
-    let x=int(x/3)*3
-    let y=int(y/3)*3
+proc square( g:string, x:int, y:int ): string =
+    let x = (x div 3)*3
+    let y = (y div 3)*3
     g[y*9+x .. y*9+x+2] & g[y*9+x+9 .. y*9+x+11] & g[y*9+x+18 .. y*9+x+20]
 
-proc horiz(g: string, y:int): string =
-    let ligne: int = y * 9
-    g[0+ligne .. 8+ligne]
-
-proc vertiz(g: string, x:int): string =
+proc vertiz( g:string, x:int ): string =
     result = ""
     for y in 0 .. 8:
-        let ligne: int = y * 9
-        result.add g[x+ligne]
+        result.add g[ y*9 + x]
 
-proc freeset(sg: string): set[char] =
-  var s: set[char] = {}
-  for c in sg: s.incl c
-  {'1'..'9', '.'} - s
+proc horiz( g:string, y:int ): string =
+    g[y*9 .. y*9 + 8]
 
+proc freeset( sg:string) : set[char] =
+    result = {'1'..'9'}
+    for c in sg: result.excl c
 
-proc interset(g:string,x:int,y:int): set[char] =
+proc interset( g:string, x:int, y:int ): set[char] =
     freeset(horiz(g,y)) * freeset(vertiz(g,x)) * freeset(square(g,x,y))
 
-proc replace(g:string, pos:int, car: char): string = g[0..pos-1] & car & g[pos+1..80]
+proc replace( g:string, pos:int, car:char ): string =
+    g[0..pos-1] & car & g[pos+1..80]
 
-proc resolv(g:string): string =
+proc resolv( g:string ): string =
     let i = g.find('.')
     if i>=0:
-        for elem in interset(g,i mod 9,int(i/9)):
-            let ng= resolv( replace(g,i,elem) )
+        for elem in interset(g, i mod 9, i div 9):
+            let ng = resolv( replace(g,i,elem) )
             if ng != "": return ng
         return ""
     else:

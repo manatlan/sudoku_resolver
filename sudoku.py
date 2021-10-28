@@ -1,9 +1,9 @@
 #! python3 -uOO
 ############################################### my resolver ;-) (backtracking)
-freeset  = lambda n:     set("123456789.") ^ set(n)
 square   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
 vertiz   = lambda g,x:   g[x::9]
 horiz    = lambda g,y:   g[y*9:y*9+9]
+freeset  = lambda n:     set("123456789") - set(n)
 interset = lambda g,x,y: freeset(vertiz(g,x)) & freeset(horiz(g,y)) & freeset(square(g,(x//3)*3,(y//3)*3))
 
 def resolv(g):
@@ -25,7 +25,7 @@ gg = [i.strip() for i in open("g_simples.txt")][:100]
 t=getTime()
 for g in gg:
     rg=resolv(g)
-    assert rg and rg.rfind(".")<0, "not resolved ?!"
+    assert rg and rg.find(".")<0, "not resolved ?!"
     echo(rg)
 
 echo( "Took: ", getTime() - t )
