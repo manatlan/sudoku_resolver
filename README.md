@@ -12,11 +12,12 @@ Nim version is really quick compared to py one ...
 On my old computer (Intel® Core™ i3 CPU 530 @ 2.93GHz × 4), for the first 100 grids :
 
 ```
-py3:     2m 45s
-nuitka3: 3m 26s
-pypy:    1m 07s
-java:    0m 55s
-Nim:     3m 05s (normal mode (debug))
+py3:     2m 05s
+pypy:    0m 58s
+
+java:    0m 50s
+
+Nim:     2m 53s (normal mode (debug)) !?!?
 Nim:     0m 19s (release mode)
 Nim:     0m 16s (danger mode)
 ```
