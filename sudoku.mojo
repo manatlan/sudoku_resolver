@@ -6,7 +6,7 @@ fn vertiz(g:String,x:Int) -> String:
 fn horiz(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
 
-fn freeset(n:String) -> String:
+fn freeset_old(n:String) -> String:
     # Set("123456789") - Set(n)
     var lx:String="123456789"
     for i in range(len(n)):
@@ -24,6 +24,18 @@ fn freeset(n:String) -> String:
         if lx[i]!=" ":
             ll=ll + lx[i]
     return ll
+
+fn freeset(n:String) -> String:
+    # Set("123456789") - Set(n)
+    var lx:String="123456789"
+    var ll:String=""
+    for i in range(len(lx)):
+        if indexOf(n,lx[i])==-1:
+            ll=ll+lx[i]
+
+    return ll
+
+
 
 fn indexOf(g:String,c:String) -> Int:
     for i in range(len(g)):
