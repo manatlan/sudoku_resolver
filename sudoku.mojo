@@ -1,3 +1,4 @@
+from time import now
 
 fn square(g:String,x:Int,y:Int) -> String:
     return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
@@ -6,9 +7,10 @@ fn vertiz(g:String,x:Int) -> String:
 fn horiz(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
 
+
 fn freeset(n:String) -> String:
     # Set("123456789") - Set(n)
-    let lx:String="123456789"
+    let lx:StringRef=StringRef("123456789")
     var ll:String=""
     for i in range(len(lx)):
         if indexOf(n,lx[i])==-1:
@@ -45,21 +47,14 @@ fn resolv(g: String) -> String:
         return g
     return ""
 
-from time import now
-
-fn main():
-    try:
-        var  f = open("g_simples.txt", "r")
-        let buf=f.read()
-        let t=now()
-        for i in range(100):
-            var g=buf[i*82:i*82+81]
-            g=resolv(g)
-            if indexOf(g,".")>=0:
-                print("error")
-            else:
-                print(g)
-        print("Took:",(now() - t)/1_000_000_000)
-        f.close()
-    except:
-        pass
+fn main() raises:
+    let buf = open("g_simples.txt", "r").read()
+    let t=now()
+    for i in range(100):
+        var g=buf[i*82:i*82+81]
+        g=resolv(g)
+        if indexOf(g,".")>=0:
+            print("error")
+        else:
+            print(g)
+    print("Took:",(now() - t)/1_000_000_000)

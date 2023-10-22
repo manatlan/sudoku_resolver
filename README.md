@@ -33,7 +33,7 @@ pypy3.10:   0m 30s
 
 java:       0m 37s (openjdk 22)
 
-mojo0.4.0:  0m 17s
+mojo0.4.0:  0m 16s
 
 Nim1.6.14:  1m 35s (normal)
 Nim1.6.14:  0m 11s (release mode)
