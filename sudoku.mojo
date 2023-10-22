@@ -6,36 +6,15 @@ fn vertiz(g:String,x:Int) -> String:
 fn horiz(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
 
-fn freeset_old(n:String) -> String:
-    # Set("123456789") - Set(n)
-    var lx:String="123456789"
-    for i in range(len(n)):
-        if n[i]!=".":
-            try:
-                # replace digit by a space
-                let pos=atol( n[i] )
-                lx= lx[:pos-1]+" "+lx[pos:]
-            except:
-                pass
-
-    # remove empty spaces in string
-    var ll:String=""
-    for i in range(len(lx)):
-        if lx[i]!=" ":
-            ll=ll + lx[i]
-    return ll
-
 fn freeset(n:String) -> String:
     # Set("123456789") - Set(n)
-    var lx:String="123456789"
+    let lx:String="123456789"
     var ll:String=""
     for i in range(len(lx)):
         if indexOf(n,lx[i])==-1:
             ll=ll+lx[i]
 
     return ll
-
-
 
 fn indexOf(g:String,c:String) -> Int:
     for i in range(len(g)):
@@ -51,9 +30,8 @@ fn interset(g:String,x:Int,y:Int) -> String:
 
     var r:String=""
     for i in range(len(v)):
-        let c=v[i]
-        if indexOf(h,c)>=0 and indexOf(s,c)>=0:
-            r=r+c
+        if indexOf(h,v[i])>=0 and indexOf(s,v[i])>=0:
+            r=r+v[i]
     return r
 
 fn resolv(g: String) -> String:
