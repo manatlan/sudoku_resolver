@@ -10,8 +10,8 @@ fn horiz(g:String,y:Int) -> String:
 
 fn freeset(n:String) -> String:
     # Set("123456789") - Set(n)
-    let lx:StringRef=StringRef("123456789")
-    var ll:String=""
+    let lx = StringRef("123456789")
+    var ll:String = ""
     for i in range(len(lx)):
         if indexOf(n,lx[i])==-1:
             ll=ll+lx[i]
@@ -51,8 +51,7 @@ fn main() raises:
     let buf = open("g_simples.txt", "r").read()
     let t=now()
     for i in range(100):
-        var g=buf[i*82:i*82+81]
-        g=resolv(g)
+        var g=resolv(buf[i*82:i*82+81])
         if indexOf(g,".")>=0:
             print("error")
         else:
