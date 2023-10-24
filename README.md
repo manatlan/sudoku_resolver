@@ -25,17 +25,20 @@ Nim:     0m 16s (danger mode)
 ```
 
 On my new computer (Intel® N100 × 4), for the first 100 grids :
+(freeset method was optimized for all versions)
 
 ```
-py3.7:      1m 07s
-py3.11:     0m 52s
-pypy3.10:   0m 30s
+node18.13:  0m 44s
 
-java:       0m 37s (openjdk 22)
+py3.7:      0m 45s
+py3.11:     0m 35s
+pypy3.10:   0m 15s
 
-mojo0.4.0:  0m 16.5s
+java:       0m 21s (openjdk 22)
 
-Nim1.6.14:  1m 35s (normal)
 Nim1.6.14:  0m 11s (release mode)
 Nim1.6.14:  0m 8s (danger mode)
+
+mojo0.4.0:  0m 7s
+
 ```

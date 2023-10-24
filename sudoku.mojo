@@ -13,28 +13,20 @@ fn freeset(n:String) -> String:
     let lx = StringRef("123456789")
     var ll:String = ""
     for i in range(len(lx)):
-        if indexOf(n,lx[i])==-1:
+        if indexOf(n,lx[i])<0:
             ll=ll+lx[i]
 
     return ll
 
-fn indexOf(g:String,c:String) -> Int:
-    for i in range(len(g)):
-        if g[i]==c:
+fn indexOf(s:String,c:String) -> Int:
+    for i in range(len(s)):
+        if s[i]==c:
             return i
     return -1
 
 fn interset(g:String,x:Int,y:Int) -> String:
     # interset = lambda g,x,y: freeset(vertiz(g,x)) & freeset(horiz(g,y)) & freeset(square(g,(x//3)*3,(y//3)*3))
-    let v=freeset(vertiz(g,x))
-    let h=freeset(horiz(g,y))
-    let s=freeset(square(g,(x//3)*3,(y//3)*3))
-
-    var r:String=""
-    for i in range(len(v)):
-        if indexOf(h,v[i])>=0 and indexOf(s,v[i])>=0:
-            r=r+v[i]
-    return r
+    return freeset(vertiz(g,x) + horiz(g,y) + square(g,(x//3)*3,(y//3)*3))
 
 fn resolv(g: String) -> String:
     let i=indexOf(g,".")
@@ -51,7 +43,7 @@ fn main() raises:
     let buf = open("g_simples.txt", "r").read()
     let t=now()
     for i in range(100):
-        var g=resolv(buf[i*82:i*82+81])
+        let g=resolv(buf[i*82:i*82+81])
         if indexOf(g,".")>=0:
             print("error")
         else:

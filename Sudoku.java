@@ -35,10 +35,7 @@ class Sudoku {
     }
 
     public static Set<Character> interset(String g, int x, int y) {
-        Set<Character> result = freeset(horiz(g,y));
-        result.retainAll( freeset(vertiz(g,x)) );
-        result.retainAll( freeset(square(g,x,y)) );
-        return result;
+        return freeset(horiz(g,y) + vertiz(g,x) + square(g,x,y));
     }
 
     public static String resolv(String g) {

@@ -19,7 +19,7 @@ proc freeset( sg:string) : set[char] =
     for c in sg: result.excl c
 
 proc interset( g:string, x:int, y:int ): set[char] =
-    freeset(horiz(g,y)) * freeset(vertiz(g,x)) * freeset(square(g,x,y))
+    freeset(horiz(g,y) & vertiz(g,x) & square(g,x,y))
 
 proc replace( g:string, pos:int, car:char ): string =
     g[0..pos-1] & car & g[pos+1..80]
