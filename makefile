@@ -22,4 +22,3 @@ py37:
 py311:
 	python3.11 -uOO sudoku.py
 
-

@@ -14,7 +14,7 @@ class Sudoku {
 
     //############################################### my resolver ;-) (backtracking)
     // Convert the `square()` method to JavaScript
-    static square(g, x, y) {
+    static sqr(g, x, y) {
         x = Math.floor(x / 3) * 3;
         y = Math.floor(y / 3) * 3;
         return g.substring(y * 9 + x, y * 9 + x + 3)
@@ -23,7 +23,7 @@ class Sudoku {
     }
 
     // Convert the `vertiz()` method to JavaScript
-    static vertiz(g, x) {
+    static col(g, x) {
         let result = '';
         for (let y = 0; y < 9; y++) {
             const ligne = y * 9;
@@ -33,7 +33,7 @@ class Sudoku {
     }
 
     // Convert the `horiz()` method to JavaScript
-    static horiz(g, y) {
+    static row(g, y) {
         const ligne = y * 9;
         return g.substring(ligne, ligne + 9);
     }
@@ -46,25 +46,23 @@ class Sudoku {
     }
 
     // Convert the `interset()` method to JavaScript
-    static interset(g, x, y) {
-        return this.freeset( this.horiz(g, y) + this.vertiz(g, x) + this.square(g, x, y))
+    static free(g, x, y) {
+        return this.freeset( this.row(g, y) + this.col(g, x) + this.sqr(g, x, y))
     }
 
     // Convert the `resolv()` method to JavaScript
     static resolv(g) {
         const i = g.indexOf('.');
         if (i >= 0) {
-            for (const elem of this.interset(g, i % 9, Math.floor(i / 9))) {
+            for (const elem of this.free(g, i % 9, Math.floor(i / 9))) {
                 const ng = this.resolv(g.substring(0, i) + elem + g.substring(i + 1, g.length));
-                if (ng !== null) {
+                if (ng !== null)
                     return ng;
-                }
             }
             return null;
-        } else {
+        } else
             return g;
-        }
-    }
+   }
     //###############################################
 
     // Define the main method

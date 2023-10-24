@@ -7,13 +7,13 @@ import java.nio.file.Paths;
 class Sudoku {
 
     //############################################### my resolver ;-) (backtracking)
-    public static String square(String g, int x, int y) {
+    public static String sqr(String g, int x, int y) {
         x=(int)(x/3)*3;
         y=(int)(y/3)*3;
         return g.substring(y*9+x,y*9+x+3) + g.substring(y*9+x+9,y*9+x+12) + g.substring(y*9+x+18,y*9+x+21);
     }
 
-    public static String vertiz(String g, int x) {
+    public static String col(String g, int x) {
         String result = "";
         for(int y=0;y<9;y++){
             final int ligne=y*9;
@@ -22,7 +22,7 @@ class Sudoku {
         return result;
     }
 
-    public static String horiz(String g, int y) {
+    public static String row(String g, int y) {
         final int ligne=y*9;
         return g.substring(ligne, ligne+9);
     }
@@ -34,14 +34,14 @@ class Sudoku {
         return result;
     }
 
-    public static Set<Character> interset(String g, int x, int y) {
-        return freeset(horiz(g,y) + vertiz(g,x) + square(g,x,y));
+    public static Set<Character> free(String g, int x, int y) {
+        return freeset(row(g,y) + col(g,x) + sqr(g,x,y));
     }
 
     public static String resolv(String g) {
         final int i=g.indexOf(".");
         if(i>=0) {
-            for(Character elem : interset(g,i%9,(int)i/9)) {
+            for(Character elem : free(g,i%9,(int)i/9)) {
                 final String ng=resolv( g.substring(0,i) + elem + g.substring(i+1,g.length()) );
                 if(ng!=null)
                     return ng;

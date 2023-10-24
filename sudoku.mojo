@@ -1,12 +1,11 @@
 from time import now
 
-fn square(g:String,x:Int,y:Int) -> String:
+fn sqr(g:String,x:Int,y:Int) -> String:
     return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
-fn vertiz(g:String,x:Int) -> String:
+fn col(g:String,x:Int) -> String:
     return g[x::9]
-fn horiz(g:String,y:Int) -> String:
+fn row(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
-
 
 fn freeset(n:String) -> String:
     # Set("123456789") - Set(n)
@@ -24,20 +23,20 @@ fn indexOf(s:String,c:String) -> Int:
             return i
     return -1
 
-fn interset(g:String,x:Int,y:Int) -> String:
+fn free(g:String,x:Int,y:Int) -> String:
     # interset = lambda g,x,y: freeset(vertiz(g,x)) & freeset(horiz(g,y)) & freeset(square(g,(x//3)*3,(y//3)*3))
-    return freeset(vertiz(g,x) + horiz(g,y) + square(g,(x//3)*3,(y//3)*3))
+    return freeset(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
 
 fn resolv(g: String) -> String:
     let i=indexOf(g,".")
     if i>=0:
-        let x=interset(g,i%9,i//9)
+        let x=free(g,i%9,i//9)
         for idx in range(len(x)):
             let ng=resolv( g[:i] + x[idx] + g[i+1:] )
             if ng: return ng
+        return ""
     else:
         return g
-    return ""
 
 fn main() raises:
     let buf = open("g_simples.txt", "r").read()
