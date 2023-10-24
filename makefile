@@ -5,7 +5,7 @@ nim:	# 1.6.14
 	nim r -d:danger sudoku.nim
 
 java:	# openjdk 22-ea 
-	java Sudoku.java
+	java sudoku.java
 
 node:	# v18.13.0
 	node sudoku.js
