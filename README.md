@@ -30,8 +30,8 @@ On my new computer (Intel® N100 × 4), for the first 100 grids :
 ```
 node18.13:  0m 44s
 
-py3.7:      0m 45s
-py3.11:     0m 35s
+py3.7:      0m 40s
+py3.11:     0m 34s
 pypy3.10:   0m 15s
 
 java:       0m 21s (openjdk 22)
