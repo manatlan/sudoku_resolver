@@ -11,10 +11,10 @@ fn horiz(g:String,y:Int) -> String:
 fn freeset(n:String) -> String:
     # Set("123456789") - Set(n)
     let lx = StringRef("123456789")
-    var ll:String = ""
+    var ll = String("")
     for i in range(len(lx)):
         if indexOf(n,lx[i])<0:
-            ll=ll+lx[i]
+            ll += lx[i]
 
     return ll
 
