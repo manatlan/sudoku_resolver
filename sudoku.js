@@ -1,16 +1,6 @@
 // Import the necessary modules
 const fs = require('fs');
 
-function intersection(setA, setB) {
-  let _intersection = new Set();
-  for (let elem of setB) {
-    if (setA.has(elem)) {
-      _intersection.add(elem);
-    }
-  }
-  return _intersection;
-}
-
 function difference(setA, setB) {
   let _difference = new Set(setA);
   for (let elem of setB) {
@@ -18,7 +8,6 @@ function difference(setA, setB) {
   }
   return _difference;
 }
-
 
 // Define the Sudoku class
 class Sudoku {
