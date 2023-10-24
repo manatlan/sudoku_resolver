@@ -33,6 +33,7 @@ node18.13:  0m 44s
 py3.7:      0m 40s
 py3.11:     0m 34s
 pypy3.10:   0m 15s
+codon0.16:  0m 23s
 
 java:       0m 21s (openjdk 22)
 
