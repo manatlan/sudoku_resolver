@@ -1,6 +1,6 @@
 Just a repo to hold the code ...
 
-`sudoku.py` is my sudoku resolver in python (13 lines)
+`sudoku.py` is my sudoku resolver in python (12 lines)
 
 `sudoku.nim` is my [nim](https://nim-lang.org/) version
 
