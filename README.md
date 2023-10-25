@@ -42,4 +42,5 @@ Nim1.6.14:  0m 8s (danger mode)
 
 mojo0.4.0:  0m 7s
 
+c/gcc    :  0m 2.7s
 ```
