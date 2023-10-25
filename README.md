@@ -1,31 +1,26 @@
-Just a repo to hold the code ...
+Here is the **simplest|minimal|readable** python3 resolver (naive backtracing, recursive):
 
-`sudoku.py` is my sudoku resolver in python (12 lines)
+```python
+sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
+col   = lambda g,x:   g[x::9]
+row   = lambda g,y:   g[y*9:y*9+9]
+free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
 
-`sudoku.nim` is my [nim](https://nim-lang.org/) version
-
-`sudoku.mojo` is my [mojo](https://www.modular.com/mojo) version
-
-Some grids are available in `g_simples.txt`
-
-Nim version is really quick compared to py one ...
-(just test the first 100 over the 1011)
-
-On my old computer (Intel® Core™ i3 CPU 530 @ 2.93GHz × 4), for the first 100 grids :
-
-```
-py3.8:   2m 05s
-pypy:    0m 58s
-
-java:    0m 50s (openjdk)
-
-Nim:     2m 53s (normal mode (debug)) !?!?
-Nim:     0m 19s (release mode)
-Nim:     0m 16s (danger mode)
+def resolv(g):
+    i=g.find(".")
+    if i>=0:
+        for elem in free(g,i%9,i//9):
+            ng=resolv( g[:i] + elem + g[i+1:] )
+            if ng: return ng
+    else:
+        return g
 ```
 
-On my new computer (Intel® N100 × 4), for the first 100 grids :
-(freeset method was optimized for all versions)
+Some grids are available in `g_simples.txt` (a grid by line of 81 chars, empty cases are `.`)
+
+The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js versions. So every version implements the same algorithm, without using specials optimisations provided by the language itself (I known that the mojo version with SIMD could outperform the C version)... and try to resolve the **first 100 grids**  !
+
+On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
 node18.13:  0m 44s
