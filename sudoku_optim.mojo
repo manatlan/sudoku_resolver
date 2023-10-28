@@ -6,9 +6,22 @@ this is a optimized/mojo version of the original one
 """
 
 fn sqr(g:String,x:Int,y:Int) -> String:
-    return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
+    let off=y*9+x
+    let gg=String(".........")
+    memcpy(gg._as_ptr()  ,g._as_ptr()+off,3)
+    memcpy(gg._as_ptr()+3,g._as_ptr()+off+9,3)
+    memcpy(gg._as_ptr()+6,g._as_ptr()+off+18,3)
+    # return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
+    return gg
+
 fn col(g:String,x:Int) -> String:
     return g[x::9]
+    # let gg=String(".........")
+    # @unroll
+    # for i in range(9):
+    #     memcpy(gg._as_ptr()+i  ,g._as_ptr()+x+(i*9),1)
+    # return gg    
+
 fn row(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
 
@@ -41,6 +54,7 @@ fn free(g:String,x:Int,y:Int) -> String:
 
     return avails
 
+@always_inline
 fn _mutate(g:String,idx:Int,c:String) -> String:
     "Mutate the grid, by replacing char at index 'idx' by the 'c' one."
     # var tampon=String(".................................................................................")
