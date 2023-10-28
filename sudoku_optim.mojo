@@ -41,12 +41,21 @@ fn free(g:String,x:Int,y:Int) -> String:
 
     return avails
 
+fn _mutate(g:String,idx:Int,c:String) -> String:
+    "Mutate the grid, by replacing char at index 'idx' by the 'c' one."
+    # var tampon=String(".................................................................................")
+    # memcpy(tampon._as_ptr(),g._as_ptr(),81)
+    # memcpy(tampon._as_ptr()+idx,c._as_ptr(),1)
+    # return tampon
+    return g[:idx] + c[0] + g[idx+1:]
+
+
 fn resolv(g: String) -> String:
     let i=indexOf(g,".")
     if i>=0:
         let x=free(g,i%9,i//9)
         for idx in range(len(x)):
-            let ng=resolv( g[:i] + x[idx] + g[i+1:] )
+            let ng=resolv( _mutate(g,i,x[idx]) )
             if ng: return ng
         return ""
     else:
