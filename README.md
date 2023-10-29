@@ -39,7 +39,7 @@ mojo0.4.0:  0m 6.5s
 
 c/gcc13.2:  0m 2.7s
 
-rust1.71:   0m 36s (?!??!?)
+rust1.71:   0m 36s ( [?!??!?](https://users.rust-lang.org/t/is-rust-slow/101796) )
 ```
 
 BTW, Other mojo results :
