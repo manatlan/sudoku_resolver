@@ -47,4 +47,4 @@ fn main() raises:
             print("error")
         else:
             print(g)
-    print("Took:",(now() - t)/1_000_000_000)
+    print("Took:",(now() - t)/1_000_000_000,"sec")

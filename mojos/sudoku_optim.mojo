@@ -3,7 +3,7 @@ from time import now
 """
 this is a optimized/mojo version of the original one (--> 3.6s)
 (the goal is to reach the speed of the C version, with mojo (without changing the algo!))
-(but "dojo.mojo" has easily reached this goal (but not the same algo/structures!) !!!!)
+(but "mojodojodev.mojo" has easily reached this goal (but not the same algo/structures!) !!!!)
 """
 alias D16 = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
