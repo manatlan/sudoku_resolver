@@ -39,13 +39,15 @@ mojo0.4.0:  0m 6.5s
 
 c/gcc13.2:  0m 2.7s
 
-rust1.71:   0m 36s ( chatgpt generated from java one)
-rust1.71:   0m 0.270s ( sudoku_optim.rs )
+rust1.71:   0m 16s 
 ```
 
-BTW, Other mojo results :
+BTW, Other experiments results :
 
 ```
-mojo0.4.0:  0m 3.6s (mojos/sudoku_optim.mojo) (same algo)
-mojo0.4.0:  0m 2s   (mojos/mojodojodev.mojo)  (different algo)
+mojo0.4.0:  0m 3.6s (experiments/sudoku_optim.mojo) (same algo)
+mojo0.4.0:  0m 2s   (experiments/mojodojodev.mojo)  (different algo)
+
+rust1.71:   0m 0.270s (experiments/sudoku_optim.rs ) (different algo)
+
 ```
