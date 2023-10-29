@@ -39,7 +39,8 @@ mojo0.4.0:  0m 6.5s
 
 c/gcc13.2:  0m 2.7s
 
-rust1.71:   0m 36s ( [?!??!?](https://users.rust-lang.org/t/is-rust-slow/101796) )
+rust1.71:   0m 36s ( chatgpt generated from java one)
+rust1.71:   0m 0.270s ( sudoku_optim.rs )
 ```
 
 BTW, Other mojo results :
