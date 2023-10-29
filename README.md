@@ -45,9 +45,10 @@ rust1.71:   0m 16s
 BTW, Other experiments results :
 
 ```
-mojo0.4.0:  0m 3.6s (experiments/sudoku_optim.mojo) (same algo + mojo basic tricks)
+mojo0.4.0:  0m 3.6s (experiments/sudoku_faster.mojo) (same algo + mojo basic tricks)
 mojo0.4.0:  0m 2s   (experiments/mojodojodev.mojo)  (different algo)
 
 rust1.71:   0m 0.270s (experiments/sudoku_optim.rs ) (different algo (algo optimized!))
+py3.11:     0m 0.4s (experiments/sudoku_optim.py ) (different algo (algo optimized!))
 
 ```
