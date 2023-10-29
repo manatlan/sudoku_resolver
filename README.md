@@ -30,14 +30,14 @@ py3.11:     0m 34s
 pypy3.10:   0m 15s
 codon0.16:  0m 23s
 
-java:       0m 21s (openjdk 22)
+java22:     0m 21s (openjdk)
 
 Nim1.6.14:  0m 11s (release mode)
 Nim1.6.14:  0m 8s (danger mode)
 
-mojo0.4.0:  0m 6.5s (sudoku.mojo)
+mojo0.4.0:  0m 6.5s
 
-c/gcc:      0m 2.7s
+c/gcc13.2:  0m 2.7s
 
 rust1.71:   0m 36s (?!??!?)
 ```
@@ -46,5 +46,5 @@ BTW, Other mojo results :
 
 ```
 mojo0.4.0:  0m 3.6s (mojos/sudoku_optim.mojo) (same algo)
-mojo0.4.0:  0m 2s (mojos/mojodojodev.mojo) (different algo)
+mojo0.4.0:  0m 2s   (mojos/mojodojodev.mojo)  (different algo)
 ```
