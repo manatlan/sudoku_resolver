@@ -35,7 +35,14 @@ java:       0m 21s (openjdk 22)
 Nim1.6.14:  0m 11s (release mode)
 Nim1.6.14:  0m 8s (danger mode)
 
-mojo0.4.0:  0m 6.5s
+mojo0.4.0:  0m 6.5s (sudoku.mojo)
 
 c/gcc    :  0m 2.7s
+```
+
+BTW, Other mojo results :
+
+```
+mojo0.4.0:  0m 3.6s (mojos/sudoku_optim.mojo) (same algo)
+mojo0.4.0:  0m 2s (mojos/dojo.mojo) (different algo)
 ```
