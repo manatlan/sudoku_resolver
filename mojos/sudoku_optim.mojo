@@ -5,26 +5,32 @@ this is a optimized/mojo version of the original one
 (the goal is to reach the speed of the C version, with mojo (without changing the algo!))
 (but "dojo.mojo" has easily reached this goal (but not the same algo/structures!) !!!!)
 """
+alias D16 = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
-fn sqr(g:String,x:Int,y:Int) -> String:
+fn sqr(g:String,x:Int,y:Int) -> D16:
     let off=y*9+x
-    let gg=String(".........")
-    memcpy(gg._as_ptr()  ,g._as_ptr()+off,3)
-    memcpy(gg._as_ptr()+3,g._as_ptr()+off+9,3)
-    memcpy(gg._as_ptr()+6,g._as_ptr()+off+18,3)
-    # return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
-    return gg
+    var xx=D16()
+    @unroll
+    for i in range(3):
+        xx[i]=ord(g[off+i])
+        xx[i+3]=ord(g[off+i+9])
+        xx[i+6]=ord(g[off+i+18])
+    return xx
 
-fn col(g:String,x:Int) -> String:
-    return g[x::9]
-    # let gg=String(".........")
-    # @unroll
-    # for i in range(9):
-    #     memcpy(gg._as_ptr()+i  ,g._as_ptr()+x+(i*9),1)
-    # return gg    
+fn col(g:String,x:Int) -> D16:
+    var xx=D16()
+    @unroll
+    for i in range(9):
+        xx[i]=ord(g[i*9+x])
+    return xx
 
-fn row(g:String,y:Int) -> String:
-    return g[y*9:y*9+9]
+fn row(g:String,y:Int) -> D16:
+    let off=y*9
+    var xx=D16()
+    @unroll
+    for i in range(9):
+        xx[i]=ord(g[off+i])
+    return xx
 
 fn indexOf(s:String,c:String) -> Int:
     for i in range(len(s)):
@@ -34,17 +40,9 @@ fn indexOf(s:String,c:String) -> Int:
 
 fn free(g:String,x:Int,y:Int) -> String:
     "Returns a string of numbers that can be fit at (x,y)."
-
-    fn trans2simd(x:String) -> SIMD[DType.uint8, 16]:
-        var xx=SIMD[DType.uint8, 16]()
-        @unroll
-        for i in range(9):
-            xx[i]=ord(x[i])
-        return xx
-
-    let _s= trans2simd(sqr(g,(x//3)*3,(y//3)*3))
-    let _c= trans2simd(col(g,x))
-    let _r= trans2simd(row(g,y))
+    let _s = sqr(g,(x//3)*3,(y//3)*3)
+    let _c = col(g,x)
+    let _r = row(g,y)
 
     var avails=String()
     @unroll
@@ -58,11 +56,11 @@ fn free(g:String,x:Int,y:Int) -> String:
 @always_inline
 fn _mutate(g:String,idx:Int,c:String) -> String:
     "Mutate the grid, by replacing char at index 'idx' by the 'c' one."
-    # var tampon=String(".................................................................................")
-    # memcpy(tampon._as_ptr(),g._as_ptr(),81)
-    # memcpy(tampon._as_ptr()+idx,c._as_ptr(),1)
-    # return tampon
-    return g[:idx] + c[0] + g[idx+1:]
+    var tampon=String(".................................................................................")
+    memcpy(tampon._as_ptr(),g._as_ptr(),81)
+    memcpy(tampon._as_ptr()+idx,c._as_ptr(),1)
+    return tampon
+    # return g[:idx] + c[0] + g[idx+1:]
 
 
 fn resolv(g: String) -> String:
@@ -83,8 +81,5 @@ fn main() raises:
         # let ptr=StringRef( buf._as_ptr()+i*82,81)
         # let g=resolv(ptr)
         let g=resolv(buf[i*82:i*82+81])
-        if indexOf(g,".")>=0:
-            print("error")
-        else:
-            print(g)
+        print(g)
     print("Took:",(now() - t)/1_000_000_000)
