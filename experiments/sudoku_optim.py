@@ -47,19 +47,17 @@ def resolv(g):
 ###############################################
 # def resolv(x):
 #     # find the hole where there is a minimal permutation
-#     print(x)
-#     holes={i:free(x,i % 9, i // 9) for i in range(81)}
-#     if not holes: 
-#         return x
-#     else:
+#     holes={i:free(x,i % 9, i // 9) for i in range(81) if x[i]=="."}
+#     if holes: 
 #         d=sorted( holes.items() , key=lambda x: len(x[1]))
-#         while d:
-#             i,avails = d.pop(0)
-#             i=i-1
-#             for c in avails:
-#                 ng = resolv( x[:i] + c + x[i+1:] )
-#                 if ng: return ng
-#             return None
+#         i,avails = d.pop(0)
+#         for c in avails:
+#             ng = resolv( x[:i] + c + x[i+1:] )
+#             if ng: return ng
+#         return None
+#     else:
+#         return x
+
 import time
 
 gg = [i.strip() for i in open("g_simples.txt")][:100]
