@@ -2,7 +2,8 @@ from time import now
 
 """
 this is a optimized/mojo version of the original one
-(the goal is to reach the speed of the C version, with mojo)
+(the goal is to reach the speed of the C version, with mojo (without changing the algo!))
+(but "dojo.mojo" has easily reached this goal (but not the same algo/structures!) !!!!)
 """
 
 fn sqr(g:String,x:Int,y:Int) -> String:
@@ -79,6 +80,8 @@ fn main() raises:
     let buf = open("g_simples.txt", "r").read()
     let t=now()
     for i in range(100):
+        # let ptr=StringRef( buf._as_ptr()+i*82,81)
+        # let g=resolv(ptr)
         let g=resolv(buf[i*82:i*82+81])
         if indexOf(g,".")>=0:
             print("error")
