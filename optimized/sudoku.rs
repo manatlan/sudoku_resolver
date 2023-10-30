@@ -158,8 +158,8 @@ impl Display for Grid {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    let content = fs::read_to_string("../g_simples.txt")?;
-    let gg: Vec<&str> = content.lines().take(100).collect();
+    let content = fs::read_to_string("g_simples.txt")?;
+    let gg: Vec<&str> = content.lines().take(1011).collect();
 
     let t = std::time::Instant::now();
     for line in gg {

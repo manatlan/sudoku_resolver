@@ -16,9 +16,10 @@ def resolv(g):
         return g
 ```
 
+
 Some grids are available in `g_simples.txt` (a grid by line of 81 chars, empty cases are `.`)
 
-The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js versions. So every version implements the same algorithm, without using specials optimisations provided by the language itself (I known that the mojo version with SIMD could outperform the C version)... and try to resolve the **first 100 grids**  !
+The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specials optimisations provided by the language itself ... and try to resolve the **first 100 grids** !!!
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
@@ -39,7 +40,7 @@ mojo0.4.0:  0m 6.5s
 
 c/gcc13.2:  0m 2.7s
 
-rust1.71:   0m 16s 
+rust1.71:   0m 1.2s 
 ```
 
 BTW, Other experiments results :
@@ -47,8 +48,6 @@ BTW, Other experiments results :
 ```
 mojo0.4.0:  0m 3.6s (experiments/sudoku_faster.mojo) (same algo + mojo basic tricks)
 mojo0.4.0:  0m 2s   (experiments/mojodojodev.mojo)  (different algo)
-
-rust1.71:   0m 0.270s (experiments/sudoku_optim.rs ) (different algo (algo optimized!))
-py3.11:     0m 0.4s (experiments/sudoku_optim.py ) (different algo (algo optimized!))
-
 ```
+
+BTW2, tests with [an optimized algo](optimized) are availables too.

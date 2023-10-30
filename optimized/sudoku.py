@@ -18,7 +18,7 @@ free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*
 #         return g
 
 ###############################################
-# the original algo + optim (+13lines)
+# the original algo + optim (+6lines)
 ###############################################
 def resolv(x):
     # find the hole where there is a minimal choices
@@ -40,7 +40,7 @@ def resolv(x):
 
 import time
 
-gg = [i.strip() for i in open("g_simples.txt")][:100]
+gg = [i.strip() for i in open("g_simples.txt")]
 
 t=time.monotonic()
 for g in gg:
