@@ -41,10 +41,10 @@ mojo0.4.0:  0m 6.5s
 c/gcc13.2:  0m 2.7s
 
 
-SPECIALIZED versions (with optimal types/structures by languages)
+SPECIALIZED versions (with specialized types/structures by languages)
 =====================
-mojo0.4.0:  0m 3.1s (sudoku_specialized.mojo : with optimized types)
-rust1.71:   0m 1.2s (sudoku_specialized.rs : with ultra-optimized rust types/apis)
+mojo0.4.0:  0m 3.1s (sudoku_specialized.mojo : with specialized types)
+rust1.71:   0m 1.2s (sudoku_specialized.rs : with ultra-specialized rust types/apis)
 ```
 
 BTW, Other experiments results :
