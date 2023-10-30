@@ -39,7 +39,8 @@ codon0.16:  soon
 
 mojo:       soon
 
-rust1.71:   0m 0.5s 
+rust1.71:   0m 6.5s 
+rust1.71:   0m 0.5s (-C opt-level=3 -C target-cpu=native)
 ```
 
 
