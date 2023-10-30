@@ -18,45 +18,25 @@ free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*
 #         return g
 
 ###############################################
-# the original algo + the 2e71828 optim (+20lines)
+# the original algo + optim (+13lines)
 ###############################################
-def resolv(g):
-    best = [None,set("123456789")]
-
-    # find the hole where there is a minimal permutation
+def resolv(x):
+    # find the hole where there is a minimal choices
+    holes={}
     for i in range(81):
-        if g[i]==".":
-            avails=free(g,i % 9, i // 9)
-            if not avails:
-                return None # not solvable
-            else:
-                if len(avails) < len(best[1]):
-                    best = [i,avails]
+        if x[i]==".":
+            holes[i]=free(x,i % 9, i // 9)
+            if len(holes[i])==1:
+                break
 
-                    if len(avails) == 1:
-                        # Only one candidate here; we can't do better...
-                        break
-
-    if best[0] != None: 
-        i,avails = best
+    if not holes: 
+        return x
+    else:
+        i,avails = sorted( holes.items() , key=lambda x: len(x[1])).pop(0)
         for c in avails:
-            ng = resolv( g[:i] + c + g[i+1:] )
+            ng = resolv( x[:i] + c + x[i+1:] )
             if ng: return ng
-    else: # no hole !
-        return g  # Solved
 ###############################################
-# def resolv(x):
-#     # find the hole where there is a minimal permutation
-#     holes={i:free(x,i % 9, i // 9) for i in range(81) if x[i]=="."}
-#     if holes: 
-#         d=sorted( holes.items() , key=lambda x: len(x[1]))
-#         i,avails = d.pop(0)
-#         for c in avails:
-#             ng = resolv( x[:i] + c + x[i+1:] )
-#             if ng: return ng
-#         return None
-#     else:
-#         return x
 
 import time
 
