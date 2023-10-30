@@ -18,24 +18,21 @@ free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*
 #         return g
 
 ###############################################
-# the original algo + optim (+6lines)
+# the original algo + optim (+5lines)
 ###############################################
-def resolv(x):
-    # find the hole where there is a minimal choices
+def resolv(g):
     holes={}
     for i in range(81):
-        if x[i]==".":
-            holes[i]=free(x,i % 9, i // 9)
-            if len(holes[i])==1:
-                break
-
-    if not holes: 
-        return x
-    else:
+        if g[i]==".":
+            holes[i]=free(g,i % 9, i // 9)
+            if len(holes[i])==1: break
+    if holes: 
         i,avails = sorted( holes.items() , key=lambda x: len(x[1])).pop(0)
         for c in avails:
-            ng = resolv( x[:i] + c + x[i+1:] )
+            ng = resolv( g[:i] + c + g[i+1:] )
             if ng: return ng
+    else:
+        return g
 ###############################################
 
 import time

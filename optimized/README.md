@@ -10,21 +10,19 @@ col   = lambda g,x:   g[x::9]
 row   = lambda g,y:   g[y*9:y*9+9]
 free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
 
-def resolv(x):
+def resolv(g):
     holes={}
-    for i in range(81): # find holes where there is a minimal choices
-        if x[i]==".":
-            holes[i]=free(x,i % 9, i // 9)
-            if len(holes[i])==1:
-                break
-
-    if not holes: 
-        return x
-    else:
+    for i in range(81):
+        if g[i]==".":
+            holes[i]=free(g,i % 9, i // 9)
+            if len(holes[i])==1: break
+    if holes: 
         i,avails = sorted( holes.items() , key=lambda x: len(x[1])).pop(0)
         for c in avails:
-            ng = resolv( x[:i] + c + x[i+1:] )
+            ng = resolv( g[:i] + c + g[i+1:] )
             if ng: return ng
+    else:
+        return g
 ```
 
 And now, they are resolving all the grids in `g_simples.txt` : **1011 grids**
@@ -37,7 +35,7 @@ py3.11:     0m 16s
 pypy3.10:   0m 12s
 codon0.16:  soon
 
-mojo:       soon
+mojo:       0m 4.7s
 
 rust1.71:   0m 6.5s 
 rust1.71:   0m 0.5s (-C opt-level=3 -C target-cpu=native)

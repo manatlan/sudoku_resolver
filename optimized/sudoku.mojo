@@ -67,7 +67,7 @@ fn resolv(g: String) -> String:
 fn main() raises:
     let buf = open("g_simples.txt", "r").read()
     let t=now()
-    for i in range(100):
+    for i in range(1011):
         let g=resolv(buf[i*82:i*82+81])
         if indexOf(g,".")>=0:
             print("error")
