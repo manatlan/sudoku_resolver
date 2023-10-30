@@ -33,12 +33,13 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 py3.7:      0m 25s
 py3.11:     0m 16s
 pypy3.10:   0m 12s
-codon0.16:  soon
+codon0.16:  0m 14s
 
-mojo:       0m 2.4s
+mojo0.4.0:  0m 2.4s (sudoku_strings.mojo, with simple strings)
+mojo0.4.0:  0m 0.8s (sudoku.mojo, with optimized types)
 
-rust1.71:   0m 6.5s 
-rust1.71:   0m 0.5s (-C opt-level=3 -C target-cpu=native)
+rust1.71:   0m 6.5s (with ultra-optimized rust types/apis)
+rust1.71:   0m 0.6s (same^ with rustc options : -C opt-level=3 -C target-cpu=native)
 ```
 
 

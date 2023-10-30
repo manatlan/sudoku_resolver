@@ -26,7 +26,7 @@ def resolv(g):
         if g[i]==".":
             holes[i]=free(g,i % 9, i // 9)
             if len(holes[i])==1: break
-    if holes: 
+    if len(holes)>0: 
         i,avails = sorted( holes.items() , key=lambda x: len(x[1])).pop(0)
         for c in avails:
             ng = resolv( g[:i] + c + g[i+1:] )

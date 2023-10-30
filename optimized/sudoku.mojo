@@ -1,99 +1,118 @@
 from time import now
-alias D16 = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
-fn sqr(g:String,x:Int,y:Int) -> D16:
-    let off=y*9+x
-    var xx=D16()
-    xx=xx.splat(0)
-    @unroll
-    for i in range(3):
-        xx[i]=ord(g[off+i])
-        xx[i+3]=ord(g[off+i+9])
-        xx[i+6]=ord(g[off+i+18])
-    return xx
 
-fn col(g:String,x:Int) -> D16:
-    var xx=D16()
-    xx=xx.splat(0)
-    @unroll
-    for i in range(9):
-        xx[i]=ord(g[i*9+x])
-    return xx
+alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
-fn row(g:String,y:Int) -> D16:
-    let off=y*9
-    var xx=D16()
-    xx=xx.splat(0)
-    @unroll
-    for i in range(9):
-        xx[i]=ord(g[off+i])
-    return xx
+@value
+struct Grid:
+    var data: Buffer[81, DType.uint8]
 
-fn free(g:String,x:Int,y:Int) -> String:
-    "Returns a string of numbers that can be fit at (x,y)."
-    let _s = sqr(g,(x//3)*3,(y//3)*3)
-    let _c = col(g,x)
-    let _r = row(g,y)
-
-    var avails=String()
-    @unroll
-    for c in range(49,49+9):
-        if (not (_s==c).reduce_or()) and (not (_c==c).reduce_or()) and (not (_r==c).reduce_or()):
-            # no C in row/col/sqr
-            avails+= chr(c)[0]
-    return avails
-
-
-fn indexOf(s:String,c:String) -> Int:
-    for i in range(len(s)):
-        if s[i]==c:
-            return i
-    return -1
-
-
-
-fn resolv_old(g: String) -> String:
-    let i=indexOf(g,".")
-    if i>=0:
-        let x=free(g,i%9,i//9)
-        for idx in range(len(x)):
-            let ng=resolv( g[:i] + x[idx] + g[i+1:] )
-            if ng: return ng
-        return ""
-    else:
-        return g
-
-fn resolv(g: String) -> String:
-    var ibest:Int=-1
-    var cbest=String("123456789")
-    
-    for i in range(81):
-        if g[i]==".":
-            let avails=free(g,i%9,i//9)
-            if not avails:
-                return ""
-            else:
-                if len(avails) < len(cbest):
-                    ibest=i
-                    cbest=avails
-                    
-                    if len(avails)==1:
-                        break
+    fn __init__(inout self:Grid, g:String) -> None:
+        "Create from a string (of 81 chars)."
+        let dtp = DTypePointer[DType.uint8].alloc(81)
+        self.data = Buffer[81, DType.uint8](dtp)
         
-    if ibest != -1:
-        for idx in range(len(cbest)):
-            let ng=resolv( g[:ibest] + cbest[idx] + g[ibest+1:] )
-            if ng: return ng
-        return ""
-    else:
-        return g
+        @unroll
+        for idx in range(81):
+            self.data[idx] = ord(g[idx])-48 if g[idx]!="." else 0
+
+    fn __init__(inout self, clone:Grid, idx:Int,c:UInt8) -> None:
+        "Clone the grid 'clone', by replacing char at index 'idx' by 'c' one."
+        let dtp = DTypePointer[DType.uint8].alloc(81)
+        var data=clone.data.simd_load[81](0)
+        data[idx]=c
+        dtp.simd_store[81](0, data)
+        self.data = Buffer[81, DType.uint8](dtp)
+
+    fn __init__(inout self:Grid) -> None:
+        "Create a bad one."
+        let dtp = DTypePointer[DType.uint8].alloc(1)
+        self.data = Buffer[81, DType.uint8](dtp)
+        self.data[0]=-1
+
+    fn is_valid(self:Grid) -> Bool:
+        return self.data[0]!=-1
+
+    # fn __del__(owned self:Grid):
+    #     return self.dtp.free()
+
+    fn sqr(self:Grid,x:Int,y:Int) -> GROUP:
+        let off=y*9+x
+        var group=GROUP().splat(0)
+        @unroll
+        for i in range(3):
+            group[i]=self.data[off+i]
+            group[i+3]=self.data[off+i+9]
+            group[i+6]=self.data[off+i+18]
+        return group
+
+    fn col(self:Grid,x:Int) -> GROUP:
+        var group=GROUP().splat(0)
+        @unroll
+        for i in range(9):
+            group[i]=self.data[i*9+x]
+        return group
+
+    fn row(self:Grid,y:Int) -> GROUP:
+        let off=y*9
+        var group=GROUP().splat(0)
+        @unroll
+        for i in range(9):
+            group[i]=self.data[off+i]
+        return group
+
+    fn free(self:Grid,x:Int,y:Int) -> DynamicVector[UInt8]:
+        "Returns a string of numbers that can be fit at (x,y)."
+        let _s = self.sqr((x//3)*3,(y//3)*3)
+        let _c = self.col(x)
+        let _r = self.row(y)
+
+        var avails=DynamicVector[UInt8](9)
+        @unroll
+        for c in range(1,10):
+            if (not (_s==c).reduce_or()) and (not (_c==c).reduce_or()) and (not (_r==c).reduce_or()):
+                # no C in row/col/sqr
+                avails.push_back( c )
+        return avails
+
+    fn solve(self:Grid) -> Grid:
+        var ibest:Int=-1
+        var cbest=DynamicVector[UInt8](9)
+        @unroll
+        for i in range(1,10):
+            cbest.push_back(i)
+        
+        for i in range(81):
+            if self.data[i]==0:
+                let avails=self.free(i%9,i//9)
+                if len(avails)==0:
+                    return Grid()   # bad
+                else:
+                    if len(avails) < len(cbest):
+                        ibest=i
+                        cbest=avails
+                        
+                        if len(avails)==1:
+                            break
+            
+        if ibest != -1:
+            for idx in range(len(cbest)):
+                let ng=Grid( self, ibest, cbest[idx].__int__()).solve()
+                if ng.is_valid(): return ng
+            return Grid() # bad
+        else:
+            return self
+
+    fn to_string(self:Grid) -> String:
+        var str=String("")
+        for i in range(81):
+            let c = self.data[i].__int__()
+            str+= chr(48+c)[0] if c else "."
+        return str            
 
 fn main() raises:
     let buf = open("g_simples.txt", "r").read()
     let t=now()
     for i in range(1011):
-        let g=resolv(buf[i*82:i*82+81])
-        if indexOf(g,".")>=0:
-            print("error")
-        else:
-            print(g)
+        let g=Grid(buf[i*82:i*82+81])
+        print( g.solve().to_string() )
     print("Took:",(now() - t)/1_000_000_000,"sec")
