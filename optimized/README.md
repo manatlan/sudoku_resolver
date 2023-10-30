@@ -35,7 +35,7 @@ py3.11:     0m 16s
 pypy3.10:   0m 12s
 codon0.16:  soon
 
-mojo:       0m 4.7s
+mojo:       0m 2.4s
 
 rust1.71:   0m 6.5s 
 rust1.71:   0m 0.5s (-C opt-level=3 -C target-cpu=native)

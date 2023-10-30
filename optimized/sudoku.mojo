@@ -1,21 +1,47 @@
 from time import now
+alias D16 = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
+fn sqr(g:String,x:Int,y:Int) -> D16:
+    let off=y*9+x
+    var xx=D16()
+    xx=xx.splat(0)
+    @unroll
+    for i in range(3):
+        xx[i]=ord(g[off+i])
+        xx[i+3]=ord(g[off+i+9])
+        xx[i+6]=ord(g[off+i+18])
+    return xx
 
-fn sqr(g:String,x:Int,y:Int) -> String:
-    return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
-fn col(g:String,x:Int) -> String:
-    return g[x::9]
-fn row(g:String,y:Int) -> String:
-    return g[y*9:y*9+9]
+fn col(g:String,x:Int) -> D16:
+    var xx=D16()
+    xx=xx.splat(0)
+    @unroll
+    for i in range(9):
+        xx[i]=ord(g[i*9+x])
+    return xx
 
-fn freeset(n:String) -> String:
-    # Set("123456789") - Set(n)
-    let lx = StringRef("123456789")
-    var ll = String("")
-    for i in range(len(lx)):
-        if indexOf(n,lx[i])<0:
-            ll += lx[i]
+fn row(g:String,y:Int) -> D16:
+    let off=y*9
+    var xx=D16()
+    xx=xx.splat(0)
+    @unroll
+    for i in range(9):
+        xx[i]=ord(g[off+i])
+    return xx
 
-    return ll
+fn free(g:String,x:Int,y:Int) -> String:
+    "Returns a string of numbers that can be fit at (x,y)."
+    let _s = sqr(g,(x//3)*3,(y//3)*3)
+    let _c = col(g,x)
+    let _r = row(g,y)
+
+    var avails=String()
+    @unroll
+    for c in range(49,49+9):
+        if (not (_s==c).reduce_or()) and (not (_c==c).reduce_or()) and (not (_r==c).reduce_or()):
+            # no C in row/col/sqr
+            avails+= chr(c)[0]
+    return avails
+
 
 fn indexOf(s:String,c:String) -> Int:
     for i in range(len(s)):
@@ -23,9 +49,6 @@ fn indexOf(s:String,c:String) -> Int:
             return i
     return -1
 
-fn free(g:String,x:Int,y:Int) -> String:
-    # interset = lambda g,x,y: freeset(vertiz(g,x)) & freeset(horiz(g,y)) & freeset(square(g,(x//3)*3,(y//3)*3))
-    return freeset(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
 
 
 fn resolv_old(g: String) -> String:
