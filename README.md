@@ -36,11 +36,11 @@ java22:     0m 21s (openjdk)
 Nim1.6.14:  0m 11s (release mode)
 Nim1.6.14:  0m 8s (danger mode)
 
-mojo0.4.0:  0m 6.5s
+mojo0.4.0:  0m 7s
 
 c/gcc13.2:  0m 2.7s
 
-rust1.71:   0m 42s (not specialized version)
+rust1.71:   0m 32s (not specialized version)
 
 SPECIALIZED versions (with specialized types/structures by languages)
 =====================
