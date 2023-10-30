@@ -41,14 +41,15 @@ mojo0.4.0:  0m 6.5s
 c/gcc13.2:  0m 2.7s
 
 
-mojo0.4.0:  0m 3.1s (sudoku_optim.mojo : with optimized types)
-rust1.71:   0m 1.2s (sudoku_optim.rs : with ultra-optimized rust types/apis)
+SPECIALIZED versions (with optimal types/structures by languages)
+=====================
+mojo0.4.0:  0m 3.1s (sudoku_specialized.mojo : with optimized types)
+rust1.71:   0m 1.2s (sudoku_specialized.rs : with ultra-optimized rust types/apis)
 ```
 
 BTW, Other experiments results :
 
 ```
-mojo0.4.0:  0m 3.6s (experiments/sudoku_faster.mojo) (same algo + mojo basic tricks)
 mojo0.4.0:  0m 2s   (experiments/mojodojodev.mojo)  (different algo)
 ```
 

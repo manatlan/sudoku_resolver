@@ -23,7 +23,7 @@ py311:
 	python3.11 -uOO sudoku.py
 
 rust:
-	rustc -C opt-level=3 -C target-cpu=native sudoku.rs && ./sudoku
+	rustc -C opt-level=3 -C target-cpu=native sudoku_specialized.rs && ./sudoku_specialized
 
 c:
 	gcc sudoku.c && ./a.out
