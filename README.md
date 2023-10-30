@@ -40,6 +40,7 @@ mojo0.4.0:  0m 6.5s
 
 c/gcc13.2:  0m 2.7s
 
+rust1.71:   0m 42s (not specialized version)
 
 SPECIALIZED versions (with specialized types/structures by languages)
 =====================
