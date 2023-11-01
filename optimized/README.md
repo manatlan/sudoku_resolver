@@ -36,7 +36,7 @@ pypy3.10:   0m 12s
 codon0.16:  0m 14s
 
 mojo0.4.0:  0m 2.4s (sudoku_strings.mojo, with simple strings)
-mojo0.4.0:  0m 0.8s (sudoku.mojo, with specialized types)
+mojo0.4.0:  0m 0.6s (sudoku.mojo, with specialized types)
 
 rust1.71:   0m 6.5s (with ultra-specialized rust types/apis)
 rust1.71:   0m 0.6s (same^ with rustc options : -C opt-level=3 -C target-cpu=native)

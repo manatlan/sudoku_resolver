@@ -44,7 +44,7 @@ rust1.71:   0m 32s (not specialized version)
 
 SPECIALIZED versions (with specialized types/structures by languages)
 =====================
-mojo0.4.0:  0m 3.1s (sudoku_specialized.mojo : with specialized types)
+mojo0.4.0:  0m 2.2s (sudoku_specialized.mojo : with specialized types)
 rust1.71:   0m 1.2s (sudoku_specialized.rs : with ultra-specialized rust types/apis)
 ```
 
