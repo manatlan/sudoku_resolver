@@ -30,12 +30,12 @@ And now, they are resolving all the grids in `g_simples.txt` : **1956 grids** (s
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
-py3.7:      soon
+py3.7:      >4min
 py3.11:     >3min
-pypy3.10:   soon
-codon0.16:  soon
+pypy3.10:   1m 49s
+codon0.16:  1m 46s
 
-mojo0.4.0:  0m 18s (sudoku_strings.mojo, with simple strings)
+mojo0.4.0:  0m 18s   (sudoku_strings.mojo, with simple strings)
 mojo0.4.0:  0m 5.5s  (sudoku.mojo, with specialized types)
 mojo0.4.0:  0m 3.4s  (sudoku_parallel.mojo, with specialized types)
 
