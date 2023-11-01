@@ -33,7 +33,7 @@ proc resolv( g:string ): string =
 import strutils
 import times
 
-let gg = readFile("g_simples.txt").splitLines()[0..100]
+let gg = readFile("grids.txt").splitLines()[0..100]
 
 let t = getTime()
 for g in gg:

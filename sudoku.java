@@ -54,7 +54,7 @@ class Sudoku {
     //###############################################
 
     public static void main (String[] args) throws Exception{
-        final List<String> gg=Files.readAllLines(Paths.get("g_simples.txt")).subList(0, 100);
+        final List<String> gg=Files.readAllLines(Paths.get("grids.txt")).subList(0, 100);
 
         final long t=System.currentTimeMillis();
         for(String g: gg) {

@@ -24,27 +24,26 @@ The idea of the repo, is to compare differents languages at "run times". Current
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
-node18.13:  0m 44s
+node18.13:  0m 45s
 
-py3.7:      0m 40s
-py3.11:     0m 34s
+py3.7:      0m 48s
+py3.11:     0m 29s
 pypy3.10:   0m 15s
 codon0.16:  0m 23s
 
-java22:     0m 21s (openjdk)
+java22:     0m 19s (openjdk)
 
-Nim1.6.14:  0m 11s (release mode)
-Nim1.6.14:  0m 8s (danger mode)
+Nim1.6.14:  0m 10s (danger mode)
 
-mojo0.4.0:  0m 7s
+mojo0.4.0:  0m 8s
 
-c/gcc13.2:  0m 2.7s
+c/gcc13.2:  0m 3s
 
-rust1.71:   0m 32s (not specialized version)
+rust1.71:   0m 24s/40s (not specialized version)
 
 SPECIALIZED versions (with specialized types/structures by languages)
 =====================
-mojo0.4.0:  0m 2.2s (sudoku_specialized.mojo : with specialized types)
+mojo0.4.0:  0m 2.5s (sudoku_specialized.mojo : with specialized types)
 rust1.71:   0m 1.2s (sudoku_specialized.rs : with ultra-specialized rust types/apis)
 ```
 

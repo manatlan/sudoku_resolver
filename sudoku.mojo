@@ -39,7 +39,7 @@ fn resolv(g: String) -> String:
         return g
 
 fn main() raises:
-    let buf = open("g_simples.txt", "r").read()
+    let buf = open("grids.txt", "r").read()
     let t=now()
     for i in range(100):
         let g=resolv(buf[i*82:i*82+81])

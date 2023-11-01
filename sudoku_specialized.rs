@@ -1,3 +1,4 @@
+#!/usr/bin/rustc -C opt-level=3 -C target-cpu=native sudoku_specialized.rs -o sudoku && ./sudoku
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
 // see https://users.rust-lang.org/t/is-rust-slow-too-fast/101796/8?u=manatlan
 use std::fs;
@@ -137,7 +138,7 @@ impl Display for Grid {
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    let content = fs::read_to_string("g_simples.txt")?;
+    let content = fs::read_to_string("grids.txt")?;
     let gg: Vec<&str> = content.lines().take(100).collect();
 
     let t = std::time::Instant::now();

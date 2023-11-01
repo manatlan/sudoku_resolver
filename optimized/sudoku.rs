@@ -1,3 +1,4 @@
+#!/usr/bin/rustc -C opt-level=3 -C target-cpu=native optimized/sudoku.rs && ./sudoku
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
 use std::fs;
 use std::fmt::Formatter;
@@ -158,8 +159,8 @@ impl Display for Grid {
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
 
-    let content = fs::read_to_string("../g_simples.txt")?;
-    let gg: Vec<&str> = content.lines().take(1011).collect();
+    let content = fs::read_to_string("grids.txt")?;
+    let gg: Vec<&str> = content.lines().take(1956).collect();
 
     let t = std::time::Instant::now();
     for line in gg {

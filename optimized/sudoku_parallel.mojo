@@ -120,14 +120,16 @@ struct Grid:
 alias workers = 4
 
 fn main() raises:
-    let buf = open("g_simples.txt", "r").read()
+    let buf = open("grids.txt", "r").read()
     let t=now()
+
     @parameter
     fn in_p(i:Int):
-    #for i in range(1011):
         let g=Grid(buf[i*82:i*82+81])
-        print( g.solve().to_string() )
-    parallelize[in_p](1011,workers)
-    print("Took:",(now() - t)/1_000_000_000,"sec")
+        let gg=g.solve()
+        print( gg.to_string() )
+        
+    parallelize[in_p](1956,workers)
+    print("Took:",(now() - t)/1_000_000,"ms")
     
     _=buf^ #extend lifetime of pointer

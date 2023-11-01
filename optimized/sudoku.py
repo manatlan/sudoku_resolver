@@ -37,7 +37,7 @@ def resolv(g):
 
 import time
 
-gg = [i.strip() for i in open("g_simples.txt")]
+gg = [i.strip() for i in open("grids.txt")]
 
 t=time.monotonic()
 for g in gg:

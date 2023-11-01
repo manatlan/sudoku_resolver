@@ -25,21 +25,21 @@ def resolv(g):
         return g
 ```
 
-And now, they are resolving all the grids in `g_simples.txt` : **1011 grids**
+And now, they are resolving all the grids in `g_simples.txt` : **1956 grids** (some are really complex too)
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
-py3.7:      0m 25s
-py3.11:     0m 16s
-pypy3.10:   0m 12s
-codon0.16:  0m 14s
+py3.7:      soon
+py3.11:     >3min
+pypy3.10:   soon
+codon0.16:  soon
 
-mojo0.4.0:  0m 2.4s (sudoku_strings.mojo, with simple strings)
-mojo0.4.0:  0m 0.6s (sudoku.mojo, with specialized types)
+mojo0.4.0:  0m 18s (sudoku_strings.mojo, with simple strings)
+mojo0.4.0:  0m 5.5s  (sudoku.mojo, with specialized types)
+mojo0.4.0:  0m 3.4s  (sudoku_parallel.mojo, with specialized types)
 
-rust1.71:   0m 6.5s (with ultra-specialized rust types/apis)
-rust1.71:   0m 0.6s (same^ with rustc options : -C opt-level=3 -C target-cpu=native)
+rust1.71:   0m 5.3s  (with ultra-specialized rust types/apis, with rustc options : -C opt-level=3 -C target-cpu=native)
 ```
 
 
