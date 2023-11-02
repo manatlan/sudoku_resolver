@@ -21,10 +21,7 @@ Some grids are available in `g_simples.txt` (a grid by line of 81 chars, empty c
 
 The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specials optimisations provided by the language itself ... and try to resolve the **first 100 grids** !!!
 
-On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
-
-with versions:
- * codon : 0.16.3
+On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions:
  * gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
  * java  : openjdk 22-ea 2024-03-19
  * mojo  : mojo 0.4.0 (9e33b013)
@@ -33,8 +30,10 @@ with versions:
  * py311 : Python 3.11.6
  * py37  : Python 3.7.16
  * pypy  : Python 3.10.13 (f1607341da97ff5a1e93430b6e8c4af0ad1aa019, Sep 28 2023, 05:41:26)
+ * codon : 0.16.3
  * rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
 
+I got :
 ```
 sudoku.c (the simple algo, with strings (AI translation from java one))
  - gcc   : 2.52 seconds
@@ -66,7 +65,7 @@ SPECIALIZED versions (with specialized types/structures by languages)
 sudoku_specialized.mojo (the simple algo, with specialized mojo-types)
  - mojo  : 2.12 seconds
 
-sudoku_specialized.rs (the simple algo, with specialized types)
+sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
  - rust  : 0.97 seconds
 
 ```
@@ -86,3 +85,7 @@ experiments/sudoku_mojodojodev.py (another algo from mojodojo.dev)
 ```
 
 BTW2, tests with [an optimized algo](optimized) are availables too.
+
+## if you want to tests on your own
+
+see [make.py](make.md)

@@ -9,6 +9,7 @@ $ chmod +x make.py
 ```
 
 It should be able to auto-detect compiler/interpreter availables on your computer, and get infos about the versions.
+(all results are saved in an `outputs` folders)
 
 ## to get help
 

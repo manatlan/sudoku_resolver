@@ -2,7 +2,7 @@ from time import now
 from math import iota
 from algorithm import parallelize
 
-#INFO: optimized algo, with specialized mojo-types & parallelization
+#INFO: optimized algo, with specialized types & parallelization
 
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
