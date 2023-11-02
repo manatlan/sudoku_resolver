@@ -1,5 +1,7 @@
 # https://mojodojo.dev/guides/benchmarks/sudoku.html
 
+#INFO: another algo from mojodojo.dev
+
 """
 This is the sudoku solver from here : https://mojodojo.dev/guides/benchmarks/sudoku.html
 which resolve the first 100 grids from g_simples.txt ... in less than 2sec
@@ -108,7 +110,7 @@ struct Board[grid_size: Int]:
 
 def main():
 
-    let buf = open("g_simples.txt", "r").read()
+    let buf = open("grids.txt", "r").read()
 
     let t=now()
     for i in range(100):
@@ -116,5 +118,4 @@ def main():
         board.solve()
         print( board.to_string() )
 
-
-    print("Took:",(now() - t)/1_000_000_000)
+    print("Took:",(now() - t)/1_000_000_000,"s")

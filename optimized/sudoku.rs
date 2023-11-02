@@ -1,5 +1,8 @@
 #!/usr/bin/rustc -C opt-level=3 -C target-cpu=native optimized/sudoku.rs && ./sudoku
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
+
+//INFO: the optimized algo, with specialized rust-types
+
 use std::fs;
 use std::fmt::Formatter;
 use std::str::FromStr;
@@ -168,6 +171,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         grid.resolv();
         println!("{} ", grid);
     }
-    println!("Took: {} ms", t.elapsed().as_millis());
+    println!("Took: {} s", (t.elapsed().as_millis() as f32)/1000.0);
     Ok(())
 }

@@ -1,4 +1,7 @@
 #! python3 -uOO
+
+#INFO: the simple algo, with strings
+
 ############################################### my resolver ;-) (backtracking)
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
 col   = lambda g,x:   g[x::9]

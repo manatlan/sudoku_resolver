@@ -1,7 +1,8 @@
 #! python3 -uOO
 
+#INFO: another algo from mojodojo.dev
+
 import time
-from textwrap import wrap
 
 """python version from https://mojodojo.dev/guides/benchmarks/sudoku.html """
 
@@ -36,14 +37,14 @@ def solve_sudoku(board):
     return True
 
 if __name__=="__main__":
-    gg = [i.strip() for i in open("g_simples.txt")][:100]
+    gg = [i.strip() for i in open("grids.txt")][:100]
 
     # convert my grids into mojodojodev'boards -> boards
     boards=[]
     for g in gg:
         board=[]
-        for row in wrap(g,9):
-            board.append( [ (0 if i=="." else ord(i)-48) for i in row])
+        for x in range(0,81,9):
+            board.append( [ (0 if i=="." else ord(i)-48) for i in g[x:x+9]])
         boards.append( board )
 
     t=time.monotonic()

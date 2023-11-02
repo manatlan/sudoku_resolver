@@ -1,6 +1,9 @@
 from time import now
 from math import iota
 from algorithm import parallelize
+
+#INFO: optimized algo, with specialized mojo-types & parallelization
+
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
 @value
@@ -130,6 +133,6 @@ fn main() raises:
         print( gg.to_string() )
         
     parallelize[in_p](1956,workers)
-    print("Took:",(now() - t)/1_000_000,"ms")
+    print("Took:",(now() - t)/1_000_000_000,"s")
     
     _=buf^ #extend lifetime of pointer

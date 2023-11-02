@@ -1,5 +1,8 @@
 #! nim c -d:danger -r
 
+#INFO: the simple algo, with strings
+
+
 ############################################### my resolver ;-) (backtracking)
 proc sqr( g:string, x:int, y:int ): string =
     let x = (x div 3)*3
@@ -35,10 +38,10 @@ import times
 
 let gg = readFile("grids.txt").splitLines()[0..100]
 
-let t = getTime()
+let t = cpuTime()
 for g in gg:
     let rg=resolv(g)
     assert rg!="" and rg.find(".")<0, "not resolved ?!"
     echo rg
-echo "Took: ", getTime() - t
+echo "Took: ", cpuTime() - t
 

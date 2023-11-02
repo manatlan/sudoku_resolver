@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.nio.file.Paths;
+//INFO: the simple algo, with strings
 
 class Sudoku {
 
@@ -62,6 +63,6 @@ class Sudoku {
             if( !(rg!=null && rg.indexOf(".")<0)) throw new Exception("not resolved ?!");
             System.out.println(rg);
         }
-        System.out.println("Took: "+( System.currentTimeMillis() - t)+"ms");
+        System.out.println("Took: "+(( System.currentTimeMillis() - t)/1000.0)+"s");
     }
 }

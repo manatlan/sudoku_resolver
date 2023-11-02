@@ -1,5 +1,7 @@
 from time import now
 
+#INFO: the simple algo, with strings
+
 fn sqr(g:String,x:Int,y:Int) -> String:
     return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
 fn col(g:String,x:Int) -> String:
@@ -47,4 +49,4 @@ fn main() raises:
             print("error")
         else:
             print(g)
-    print("Took:",(now() - t)/1_000_000_000,"sec")
+    print("Took:",(now() - t)/1_000_000_000,"s")

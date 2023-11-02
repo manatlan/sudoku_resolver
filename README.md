@@ -23,34 +23,66 @@ The idea of the repo, is to compare differents languages at "run times". Current
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
+with versions:
+ * codon : 0.16.3
+ * gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+ * java  : openjdk 22-ea 2024-03-19
+ * mojo  : mojo 0.4.0 (9e33b013)
+ * nim   : Nim Compiler Version 1.6.14 [Linux: amd64]
+ * node  : v18.13.0
+ * py311 : Python 3.11.6
+ * py37  : Python 3.7.16
+ * pypy  : Python 3.10.13 (f1607341da97ff5a1e93430b6e8c4af0ad1aa019, Sep 28 2023, 05:41:26)
+ * rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
+
 ```
-node18.13:  0m 45s
+sudoku.c (the simple algo, with strings (AI translation from java one))
+ - gcc   : 2.52 seconds
 
-py3.7:      0m 48s
-py3.11:     0m 29s
-pypy3.10:   0m 15s
-codon0.16:  0m 23s
+sudoku.java (the simple algo, with strings)
+ - java  : 18.74 seconds
 
-java22:     0m 19s (openjdk)
+sudoku.js (the simple algo, with strings (AI translation from java one))
+ - node  : 44.99 seconds
 
-Nim1.6.14:  0m 10s (danger mode)
+sudoku.mojo (the simple algo, with strings)
+ - mojo  : 6.65 seconds
 
-mojo0.4.0:  0m 8s
+sudoku.nim (the simple algo, with strings)
+ - nim   : 10.14 seconds
 
-c/gcc13.2:  0m 3s
+sudoku.py (the simple algo, with strings)
+ - pypy  : 18.84 seconds
+ - codon : 20.43 seconds
+ - py311 : 26.86 seconds
+ - py37  : 39.78 seconds
 
-rust1.71:   0m 24s/40s (not specialized version)
+sudoku.rs (the simple algo, with strings (AI translation from java one))
+ - rust  : 37.79 seconds
 
 SPECIALIZED versions (with specialized types/structures by languages)
 =====================
-mojo0.4.0:  0m 2.5s (sudoku_specialized.mojo : with specialized types)
-rust1.71:   0m 1.2s (sudoku_specialized.rs : with ultra-specialized rust types/apis)
+
+sudoku_specialized.mojo (the simple algo, with specialized mojo-types)
+ - mojo  : 2.12 seconds
+
+sudoku_specialized.rs (the simple algo, with specialized types)
+ - rust  : 0.97 seconds
+
 ```
 
 BTW, Other experiments results :
 
 ```
-mojo0.4.0:  0m 2s   (experiments/mojodojodev.mojo)  (different algo)
+experiments/sudoku_mojodojodev.mojo (another algo from mojodojo.dev)
+ - mojo  : 1.96 seconds
+
+experiments/sudoku_mojodojodev.py (another algo from mojodojo.dev)
+ - codon : 1.45 seconds
+ - pypy  : 19.88 seconds
+ - py311 : 77.97 seconds
+ - py37  : 173.91 seconds
+
 ```
 
 BTW2, tests with [an optimized algo](optimized) are availables too.

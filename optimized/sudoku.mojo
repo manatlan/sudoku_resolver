@@ -1,6 +1,9 @@
 
 from time import now
 
+#INFO: optimized algo, with specialized mojo-types
+
+
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
 @value
@@ -118,4 +121,4 @@ fn main() raises:
         let g=Grid(buf[i*82:i*82+81])
         let gg=g.solve()
         print( gg.to_string() )
-    print("Took:",(now() - t)/1_000_000,"ms")
+    print("Took:",(now() - t)/1_000_000_000,"s")

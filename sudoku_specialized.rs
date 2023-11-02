@@ -1,4 +1,6 @@
 #!/usr/bin/rustc -C opt-level=3 -C target-cpu=native sudoku_specialized.rs -o sudoku && ./sudoku
+//INFO: the simple algo, with specialized rust-types
+
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
 // see https://users.rust-lang.org/t/is-rust-slow-too-fast/101796/8?u=manatlan
 use std::fs;
@@ -147,6 +149,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         grid.resolv();
         println!("{} ", grid);
     }
-    println!("Took: {} ms", t.elapsed().as_millis());
+    println!("Took: {} s", (t.elapsed().as_millis() as f32)/1000.0);
     Ok(())
 }

@@ -1,6 +1,9 @@
 from time import now
 alias GROUP = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
+#INFO: optimized algo, with strings
+
+
 fn sqr(g:String,x:Int,y:Int) -> GROUP:
     let off=y*9+x
     var group=GROUP().splat(0)
@@ -91,4 +94,5 @@ fn main() raises:
     for i in range(1956):
         let g=resolv(buf[i*82:i*82+81])
         print(g)
-    print("Took:",(now() - t)/1_000_000_000,"sec")
+    print("Took:",(now() - t)/1_000_000_000,"s")
+
