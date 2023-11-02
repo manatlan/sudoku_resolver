@@ -17,7 +17,7 @@ def resolv(g):
 ```
 
 
-Some grids are available in `g_simples.txt` (a grid by line of 81 chars, empty cases are `.`)
+Some grids are available in `grids.txt` (a grid by line of 81 chars, empty cases are `.`)
 
 The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specials optimisations provided by the language itself ... and try to resolve the **first 100 grids** !!!
 
