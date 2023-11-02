@@ -1,3 +1,5 @@
+# the "optimized" algo
+
 Basically the same thing, but with **a big improvment** on the algorithm, which makes them a lot faster 
 
 Here is the python version, it's the same algo but with a new constraint "choosing the most constrained digit each iteration" (thanks to [2e71828](https://users.rust-lang.org/u/2e71828))
