@@ -1,7 +1,7 @@
 #!/usr/bin/rustc -C opt-level=3 -C target-cpu=native optimized/sudoku.rs && ./sudoku
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
 
-//INFO: the optimized algo, with specialized rust-types
+//INFO: the optimized algo, with ultra-specialized types/api
 
 use std::fs;
 use std::fmt::Formatter;
