@@ -35,9 +35,9 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions:
  * codon : 0.16.3
  * rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
 
-# Simple version, results
+## Simple version, results
 
-The 1/1 implementation of the py version, in each language (using strings)
+The 1/1 implementations of the py version, in each language (using strings)
 
 ```
 sudoku.c (the simple algo, with strings (AI translation from java one))
@@ -78,7 +78,18 @@ sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
 
 ```
 
-## EXPERIMENTS versions results:
+
+## OPTIMIZED algo
+
+See results on [an optimized algo](optimized) versions. (a better algo)
+
+
+## if you want to tests on your own
+
+see [make.py](make.md)
+
+
+### EXPERIMENTS versions results:
 
 Just for tests purposes
 
@@ -94,11 +105,3 @@ experiments/sudoku_mojodojodev.py (another algo from mojodojo.dev)
 
 ```
 
-## OPTIMIZED algo
-
-See results on [an optimized algo](optimized) versions. (a better algo)
-
-
-## if you want to tests on your own
-
-see [make.py](make.md)
