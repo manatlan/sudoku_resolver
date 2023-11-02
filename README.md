@@ -21,6 +21,8 @@ Some grids are available in `grids.txt` (a grid by line of 81 chars, empty cases
 
 The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specials optimisations provided by the language itself ... and try to resolve the **first 100 grids** !!!
 
+## Context (on my computer)
+
 On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions:
  * gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
  * java  : openjdk 22-ea 2024-03-19
@@ -33,7 +35,10 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions:
  * codon : 0.16.3
  * rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
 
-I got :
+# Simple version, results
+
+The 1/1 implementation of the py version, in each language (using strings)
+
 ```
 sudoku.c (the simple algo, with strings (AI translation from java one))
  - gcc   : 2.52 seconds
@@ -58,10 +63,13 @@ sudoku.py (the simple algo, with strings)
 
 sudoku.rs (the simple algo, with strings (AI translation from java one))
  - rust  : 37.79 seconds
+```
 
-SPECIALIZED versions (with specialized types/structures by languages)
-=====================
+## SPECIALIZED versions, results
 
+The same algo, but with specialized types/structures for the language (to speed up things)
+
+```
 sudoku_specialized.mojo (the simple algo, with specialized mojo-types)
  - mojo  : 2.12 seconds
 
@@ -70,7 +78,9 @@ sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
 
 ```
 
-BTW, Other experiments results :
+## EXPERIMENTS versions results:
+
+Just for tests purposes
 
 ```
 experiments/sudoku_mojodojodev.mojo (another algo from mojodojo.dev)
@@ -84,7 +94,10 @@ experiments/sudoku_mojodojodev.py (another algo from mojodojo.dev)
 
 ```
 
-BTW2, tests with [an optimized algo](optimized) are availables too.
+## OPTIMIZED algo
+
+See results on [an optimized algo](optimized) versions. (a better algo)
+
 
 ## if you want to tests on your own
 
