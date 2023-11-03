@@ -1,4 +1,4 @@
-Here is the **simplest|minimal|readable** python3 resolver (naive backtracing, recursive):
+Here is the **simplest|minimal|readable** python3 resolver (naive backtracking, recursive):
 
 ```python
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
