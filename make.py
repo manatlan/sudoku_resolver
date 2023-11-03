@@ -198,7 +198,7 @@ if __name__=="__main__":
             opts.append(i[2:].lower())
         else:
             if os.path.isdir(i):
-                files.extend( glob.glob( os.path.join(".",TESTFILES) ) )
+                files.extend( glob.glob( os.path.join(i,TESTFILES) ) )
             else:
                 files.append(i)
 
