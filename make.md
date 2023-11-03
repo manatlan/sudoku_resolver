@@ -40,7 +40,7 @@ Note, that it will run with every things that can run a python file (on my host 
 To force only one interpreter, specify the mode
 
 ```
-$ ./make.py sudoky.py pypy
+$ ./make.py sudoky.py --pypy
 ```
 
 It will run it against pypy only !
@@ -61,11 +61,17 @@ if you want to run the "optimized" versions :
 $ ./make.py optimized
 ```
 
-## run all my tests
+if you want to run the "optimized" versions, only mojo ones:
+
+```
+$ ./make.py optimized --mojo
+```
+
+## run all tests
 
 Just type :
 ```
-$ ./make.py all
+$ ./make.py . optimized experiments
 ```
 
 ## to get stats

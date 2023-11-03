@@ -59,24 +59,26 @@ LANGS=dict(
 
 
 def help():
-    print(f"USAGE: {os.path.relpath(__file__)} <file> [<option>]")
+    print(f"USAGE: {os.path.relpath(__file__)} <file> ... [<option> ...]")
     print("Where <file> is:")
-    print(" * all : execute all")
     print(" * stats : generate stats")
+    print(" * hstats : generate human stats")
     print(" * <file> : execute all compilers for this kind of file")
     print(" * <folder> : execute all compilers for files in this folder")
     print("Where <option> can be, to force a specific one:")
     for k,v in LANGS.items():
-        print(f" * {k:5s} : {v['v']}")
-        print(f"           {v['c'].replace('$0',v['e']).replace('$1','<file>')}")
+        print(f" --{k:5s} : {v['v']}")
+        print(f"            {v['c'].replace('$0',v['e']).replace('$1','<file>')}")
 
 
-def batch(files):
+def batch(files, opts):
     found=False
     for file in files:
         ext=file.split(".")[-1]
         for k,v in LANGS.items():
             if v.get("ext") == ext:
+                if opts and k not in opts:
+                    continue
                 found=True
                 main( file,k )        
     if not found:
@@ -124,6 +126,7 @@ def main(file,lang) -> int:
             print(cp.stdout)
             print(cp.stderr)
             return cp.returncode
+        return 0
     else:
         help()
         return -1
@@ -188,29 +191,36 @@ def update():
 if __name__=="__main__":
     update()
 
-    if len(sys.argv)==3:
-        ret=main( sys.argv[1],sys.argv[2] )
-    elif len(sys.argv)==2:
-        if sys.argv[1]=="all":
-            files=glob.glob( os.path.join(".",TESTFILES) ) + glob.glob( os.path.join("optimized",TESTFILES) ) + glob.glob( os.path.join("experiments",TESTFILES) )
-            ret=batch( files )
-        elif sys.argv[1]=="stats":
-            jzon=analyse()
-            print(json.dumps(jzon,indent=2))
-            ret=0
-        elif sys.argv[1]=="hstats":
-            jzon=analyse()
-            printmd(jzon)
-            ret=0
-        elif os.path.isdir(sys.argv[1]):
-            files=glob.glob( os.path.join(sys.argv[1],TESTFILES) )
-            ret=batch( files )
-        elif os.path.isfile(sys.argv[1]):
-            files=[sys.argv[1]]
-            ret=batch( files )
+    files=[]
+    opts=[]
+    for i in sys.argv[1:]:
+        if i.startswith("--"):
+            opts.append(i[2:].lower())
         else:
-            print("WTF is",sys.argv[1])
-            ret=-1
+            if os.path.isdir(i):
+                files.extend( glob.glob( os.path.join(".",TESTFILES) ) )
+            else:
+                files.append(i)
+
+    for i in opts:
+        if i not in LANGS.keys():
+            print(f"ERROR : --{i} is not in {list(LANGS.keys())}")
+            sys.exit(-1)
+
+    if len(files)>=1:
+        if len(files)==1:
+            if files[0]=="stats":
+                jzon=analyse()
+                print(json.dumps(jzon,indent=2))
+                ret=0
+            elif files[0]=="hstats":
+                jzon=analyse()
+                printmd(jzon)
+                ret=0
+            else:
+                ret=batch( files, opts )
+        else:
+            ret=batch(files, opts )
     else:
-        ret=main("?","?")
+        ret=main("?","?")   # just for help prints 
     sys.exit(ret)
