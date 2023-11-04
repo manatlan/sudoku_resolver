@@ -67,13 +67,13 @@ struct Grid:
             group[i]=self.data[off+i]
         return group
 
-    fn free(self:Grid,x:Int,y:Int) -> InlinedFixedVector[9, UInt8]:
+    fn free(self:Grid,x:Int,y:Int) -> InlinedFixedVector[UInt8,9]:
         "Returns a string of numbers that can be fit at (x,y)."
         let _s = self.sqr((x//3)*3,(y//3)*3)
         let _c = self.col(x)
         let _r = self.row(y)
 
-        var avails = InlinedFixedVector[9, UInt8](9)
+        var avails = InlinedFixedVector[UInt8,9](9)
         @unroll
         for c in range(1,10):
             if (not (_s==c).reduce_or()) and (not (_c==c).reduce_or()) and (not (_r==c).reduce_or()):
@@ -85,7 +85,7 @@ struct Grid:
     
     fn solve(self:Grid) -> Grid:
         var ibest:Int=-1
-        var cbest=InlinedFixedVector[9, UInt8](9)
+        var cbest=InlinedFixedVector[UInt8,9](9)
         @unroll
         for i in range(1,10):
             cbest.append(i)
@@ -120,10 +120,10 @@ struct Grid:
             str+= chr(48+c)[0] if c else "."
         return str 
 
-alias workers = 4
+#alias workers = 4
 
 fn main() raises:
-    let buf = open("grids.txt", "r").read()
+    let buf = open("../grids.txt", "r").read()
     let t=now()
 
     @parameter
@@ -132,7 +132,7 @@ fn main() raises:
         let gg=g.solve()
         print( gg.to_string() )
         
-    parallelize[in_p](1956,workers)
+    parallelize[in_p](1956,1956) #more workers to distribute the effort on cores
     print("Took:",(now() - t)/1_000_000_000,"s")
     
     _=buf^ #extend lifetime of pointer
