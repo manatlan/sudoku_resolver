@@ -59,8 +59,21 @@ LANGS=dict(
         ext="c",
     ),
 )
+#########################################################################
+## helpers
+#########################################################################
 
-
+def update():
+    """ update the global dict LANGS, to current supported lang of the host"""
+    for k,v in list(LANGS.items()):
+        cp=subprocess.run(f"which {v['e']}",shell=True,text=True,capture_output=True)
+        if cp.returncode==0:
+            LANGS[k]['e']=cp.stdout.strip()
+            cp=subprocess.run([LANGS[k]['e'],"--version"],text=True,capture_output=True)
+            LANGS[k]['v']=cp.stdout.splitlines()[0]
+        else:
+            print(f"*WARNING* no {k} lang (you can install '{v['e']}')!")
+            del LANGS[k]
 
 def help():
     print(f"USAGE: {os.path.relpath(__file__)} <file> ... [<option> ...]")
@@ -74,8 +87,12 @@ def help():
         print(f" --{k:5s} : {v['v']}")
         print(f"            {v['c'].replace('$0',v['e']).replace('$1','<file>')}")
 
+#########################################################################
+## run/batch methods
+#########################################################################
 
-def batch(files, opts):
+def batch(files:list, opts:"list|None") -> int:
+    """execute files, and if opts, restrict to lang from 'opts'"""
     found=False
     for file in files:
         ext=file.split(".")[-1]
@@ -84,14 +101,15 @@ def batch(files, opts):
                 if opts and k not in opts:
                     continue
                 found=True
-                main( file,k )        
+                run( file,k )        
     if not found:
         print(f"ERROR: didn't found a compiler for {file}")
         return -1
     else:
         return 0
 
-def main(file,lang) -> int:
+def run(file:str,lang:str) -> int:
+    """ run file 'file' with the defined lang 'lang'"""
     file=os.path.relpath(file)
     d = LANGS.get(lang)
     if d:
@@ -135,13 +153,17 @@ def main(file,lang) -> int:
         help()
         return -1
 
-def getseconds(file):
-    contents = open(file).read().splitlines()
-    last=contents[-1]
-    assert last.lower().startswith("took")
-    return float(re.findall( r"[\d\.]+",last)[0])
+#########################################################################
+## stats methods
+#########################################################################
+def getseconds(file:str) -> float:
+    """get seconds in last line of the resulted file 'file')"""
+    last_line = open(file).read().splitlines()[-1]
+    assert last_line.lower().startswith("took")
+    return float(re.findall( r"[\d\.]+",last_line)[0])
 
-def getinfo(file):
+def getinfo(file:str) -> str:
+    """get info from the source file 'file'"""
     contents = open(file).read().splitlines()
     for i in contents:
         if i.startswith("//INFO:"):
@@ -150,7 +172,8 @@ def getinfo(file):
             return i[6:].strip()
     return "?"
 
-def analyse() -> dict:
+def analyze() -> dict:
+    """analyze outputs results from outfput folder, and return json details"""
     d={}
     for i in glob.glob("outputs/*out")+glob.glob("outputs/*/*out"):
         file,mode,nb,_ = i[8:].split("|")
@@ -163,9 +186,10 @@ def analyse() -> dict:
     d={k:d[k] for k in sorted(d.keys())}
     return d
 
-def printmd(d):
+def print_human_stats(jzon:dict):
+    """ print human readable stats"""
     legends=[]
-    for k,v in d.items():
+    for k,v in jzon.items():
         tests=[]
         nb=-1
         for i in LANGS.keys():
@@ -183,16 +207,6 @@ def printmd(d):
         print(f" * {k:5s} : {v}")
 
 
-def update():
-    for k,v in list(LANGS.items()):
-        cp=subprocess.run(f"which {v['e']}",shell=True,text=True,capture_output=True)
-        if cp.returncode==0:
-            LANGS[k]['e']=cp.stdout.strip()
-            cp=subprocess.run([LANGS[k]['e'],"--version"],text=True,capture_output=True)
-            LANGS[k]['v']=cp.stdout.splitlines()[0]
-        else:
-            print(f"*WARNING* no {k} lang (you can install '{v['e']}')!")
-            del LANGS[k]
 
 if __name__=="__main__":
     update()
@@ -216,17 +230,17 @@ if __name__=="__main__":
     if len(files)>=1:
         if len(files)==1:
             if files[0]=="stats":
-                jzon=analyse()
+                jzon=analyze()
                 print(json.dumps(jzon,indent=2))
                 ret=0
             elif files[0]=="hstats":
-                jzon=analyse()
-                printmd(jzon)
+                jzon=analyze()
+                print_human_stats(jzon)
                 ret=0
             else:
                 ret=batch( files, opts )
         else:
             ret=batch(files, opts )
     else:
-        ret=main("?","?")   # just for help prints 
+        ret=run("?","?")   # just for help prints 
     sys.exit(ret)
