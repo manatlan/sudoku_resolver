@@ -26,13 +26,13 @@ It will show you the command line options
 Just type (example: the rust one)
 
 ```
-$ ./make.py sudoky.rs
+$ ./make.py sudoku.rs
 ```
 
 Just type (example: the python one)
 
 ```
-$ ./make.py sudoky.py
+$ ./make.py sudoku.py
 ```
 
 Note, that it will run with every things that can run a python file (on my host : pypy, py3.7, py3.11, codon)
@@ -40,7 +40,7 @@ Note, that it will run with every things that can run a python file (on my host 
 To force only one interpreter, specify the mode
 
 ```
-$ ./make.py sudoky.py --pypy
+$ ./make.py sudoku.py --pypy
 ```
 
 It will run it against pypy only !
