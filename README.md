@@ -86,8 +86,18 @@ See results on [an optimized algo](optimized) versions. (a better algo)
 
 ## if you want to tests on your own
 
-see [make.py](make.md)
+You will need, at least, python3 ;-)
+```
+$ git clone https://github.com/manatlan/sudoku_resolver.git
+$ cd sudoku_resolver
+$ chmod +x make.py
+$ ./make.py .
+...(processing)...
+$ ./make.py hstats
+```
+(repeat the `./make.py .` to get accurate results)
 
+see command line [make.py](make.md)
 
 ### EXPERIMENTS versions results:
 
