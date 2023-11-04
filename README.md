@@ -99,17 +99,5 @@ See results on [an optimized algo](optimized) versions. (a better algo)
 
 ## EXPERIMENTS results:
 
-Just for tests purposes
-
-```
-experiments/sudoku_mojodojodev.mojo (another algo from mojodojo.dev)
- - mojo  : 1.96 seconds
-
-experiments/sudoku_mojodojodev.py (another algo from mojodojo.dev)
- - codon : 1.45 seconds
- - pypy  : 19.88 seconds
- - py311 : 77.97 seconds
- - py37  : 173.91 seconds
-
-```
+See [experimentals](experiments) versions. (just for tests purposes)
 
