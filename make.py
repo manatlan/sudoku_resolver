@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 import subprocess,sys,os,glob,re,json
+"""
+See doc :
+https://github.com/manatlan/sudoku_resolver/blob/master/make.md
+"""
 
 TESTFILES="sudoku*.*"   # pattern for tested files
 
