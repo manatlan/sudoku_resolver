@@ -78,15 +78,9 @@ sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
 
 ```
 
+## If you want to tests on your own
 
-## OPTIMIZED algo
-
-See results on [an optimized algo](optimized) versions. (a better algo)
-
-
-## if you want to tests on your own
-
-You will need, at least, python3 ;-)
+You will need, at least, python3 ;-) (it will autodetect compilers/interpreters on your host)
 ```
 $ git clone https://github.com/manatlan/sudoku_resolver.git
 $ cd sudoku_resolver
@@ -99,7 +93,11 @@ $ ./make.py hstats
 
 see command line [make.py](make.md)
 
-### EXPERIMENTS versions results:
+## OPTIMIZED algo
+
+See results on [an optimized algo](optimized) versions. (a better algo)
+
+## EXPERIMENTS results:
 
 Just for tests purposes
 
