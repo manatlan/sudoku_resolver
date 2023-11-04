@@ -163,14 +163,16 @@ def printmd(d):
     legends=[]
     for k,v in d.items():
         tests=[]
+        nb=-1
         for i in LANGS.keys():
             if i in v:
+                nb=len(v[i]["tests"])
                 tests.append( (i, v[i]["moy"]) )
                 legends.append( (i,v[i]["version"] ))
         tests.sort(key=lambda x: x[1])
         print(f"{k} ({v['info']})")
         for k,v in tests:
-            print(f" - {k:5s} : {v} seconds")
+            print(f" - {k:5s} : {v} seconds ({nb}tests)")
     print()
     print("with versions:")
     for k,v in sorted(list(set(legends))):
