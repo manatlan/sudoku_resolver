@@ -19,6 +19,7 @@ struct Grid:
             self.data[idx] = ord(g[idx])-48 if g[idx]!="." else 0
 
     fn sqr(self:Grid,x:Int,y:Int) -> GROUP:
+        'Returns a group of 9 values, of the square at x,y.'
         let off=y*9+x
         var group=GROUP().splat(0)
         @unroll
@@ -29,6 +30,7 @@ struct Grid:
         return group
 
     fn col(self:Grid,x:Int) -> GROUP:
+        'Returns a group of 9 values, of the column x.'
         var group=GROUP().splat(0)
         @unroll
         for i in range(9):
@@ -36,6 +38,7 @@ struct Grid:
         return group
 
     fn row(self:Grid,y:Int) -> GROUP:
+        'Returns a group of 9 values, of the row y.'
         let off=y*9
         var group=GROUP().splat(0)
         @unroll
@@ -43,21 +46,29 @@ struct Grid:
             group[i]=self.data[off+i]
         return group
 
-    fn free(self:Grid,x:Int,y:Int) -> InlinedFixedVector[UInt8]:
-        "Returns a string of numbers that can be fit at (x,y)."
-        let _s = self.sqr((x//3)*3,(y//3)*3)
+    fn free(self: Grid, x: Int, y: Int) -> InlinedFixedVector[UInt8]:
+        "Returns a list of available values that can be fit in (x,y)."
+        "(this thing is a bit tricky coz it uses simd operation, to be as fast as possible)"
+        let _s = self.sqr((x // 3) * 3, (y // 3) * 3)
         let _c = self.col(x)
         let _r = self.row(y)
 
         var avails = InlinedFixedVector[UInt8](9)
+
         @unroll
-        for c in range(1,10):
-            if (not (_s==c).reduce_or()) and (not (_c==c).reduce_or()) and (not (_r==c).reduce_or()):
+        for c in range(1, 10):
+            if (
+                (not (_s == c).reduce_or())
+                and (not (_c == c).reduce_or())
+                and (not (_r == c).reduce_or())
+            ):
                 # no C in row/col/sqr
-                avails.append( c )
+                avails.append(c)
         return avails
 
-    fn solve(self:Grid) -> Bool:
+    fn solve(self: Grid) -> Bool:
+        "Solve the grid, returns true/false if it cans."
+        "It's the optimized algo : so it will try the hole which have a minimal choice (ideally 1)."
         var ibest:Int=-1
         var cbest=InlinedFixedVector[UInt8](9)
         @unroll
@@ -87,12 +98,13 @@ struct Grid:
             return True
 
     fn to_string(self:Grid) -> String:
+        "Returns a string of 81chars of the grid."
         var str=String("")
         @unroll
         for i in range(81):
             let c = self.data[i].__int__()
             str+= chr(48+c)[0] if c else "."
-        return str            
+        return str           
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()

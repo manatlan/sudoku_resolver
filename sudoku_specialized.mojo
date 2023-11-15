@@ -3,21 +3,23 @@
 
 from time import now
 
-alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
+alias TYPE = DType.uint8        # used this type in grid
+alias GROUP = SIMD[TYPE, 16]    # reality is 9, but should be a multiple of **2 .. so 16 !
+alias SIZE = 81                 # size of the buffer
 
 struct Grid:
-    var data: Buffer[81, DType.uint8]
+    var data: Buffer[SIZE, TYPE]
 
     fn __init__(inout self:Grid, g:String) -> None:
         "Create from a string (of 81 chars)."
-        let dtp = DTypePointer[DType.uint8].alloc(81)
-        self.data = Buffer[81, DType.uint8](dtp)
+        self.data = Buffer[SIZE, TYPE]( DTypePointer[TYPE].alloc(SIZE) )
         
         @unroll
-        for idx in range(81):
+        for idx in range(SIZE):
             self.data[idx] = ord(g[idx])-48 if g[idx]!="." else 0
 
     fn sqr(self:Grid,x:Int,y:Int) -> GROUP:
+        'Returns a group of 9 values, of the square at x,y.'
         let off=y*9+x
         var group=GROUP().splat(0)
         @unroll
@@ -28,6 +30,7 @@ struct Grid:
         return group
 
     fn col(self:Grid,x:Int) -> GROUP:
+        'Returns a group of 9 values, of the column x.'
         var group=GROUP().splat(0)
         @unroll
         for i in range(9):
@@ -35,6 +38,7 @@ struct Grid:
         return group
 
     fn row(self:Grid,y:Int) -> GROUP:
+        'Returns a group of 9 values, of the row y.'
         let off=y*9
         var group=GROUP().splat(0)
         @unroll
@@ -43,7 +47,8 @@ struct Grid:
         return group
 
     fn free(self: Grid, x: Int, y: Int) -> InlinedFixedVector[UInt8]:
-        "Returns a string of numbers that can be fit at (x,y)."
+        "Returns a list of available values that can be fit in (x,y)."
+        "(this thing is a bit tricky coz it uses simd operation, to be as fast as possible)"
         let _s = self.sqr((x // 3) * 3, (y // 3) * 3)
         let _c = self.col(x)
         let _r = self.row(y)
@@ -62,28 +67,24 @@ struct Grid:
         return avails
 
     fn solve(self: Grid) -> Bool:
-        var i:Int = -1
-        for x in range(81):
-            if self.data[x]==0:
-                i=x
-                break
-
-        if i>=0:
-            let x=self.free(i%9,i//9)
-            for idx in range(len(x)):
-                self.data[i]=x[idx].__int__()
-                if self.solve(): 
-                    return True
-            self.data[i]=0
-            return False
-        else:
-            return True
-
+        "Solve the grid, returns true/false if it cans."
+        "It's the simple algo : so it tries always the first hole."
+        for i in range(SIZE):
+            if self.data[i]==0:
+                let ll=self.free(i%9,i//9)
+                for idx in range(len(ll)):
+                    self.data[i]=ll[idx].__int__()
+                    if self.solve(): 
+                        return True
+                self.data[i]=0
+                return False
+        return True
 
     fn to_string(self:Grid) -> String:
+        "Returns a string of 81chars of the grid."
         var str=String("")
         @unroll
-        for i in range(81):
+        for i in range(SIZE):
             let c = self.data[i].__int__()
             str+= chr(48+c)[0] if c else "."
         return str            

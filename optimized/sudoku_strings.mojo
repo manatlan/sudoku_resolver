@@ -44,17 +44,6 @@ fn free(g:String,x:Int,y:Int) -> String:
     return avails
 
 
-fn resolv_old(g: String) -> String:
-    let i=g.find(".")
-    if i>=0:
-        let x=free(g,i%9,i//9)
-        for idx in range(len(x)):
-            let ng=resolv( g[:i] + x[idx] + g[i+1:] )
-            if ng: return ng
-        return ""
-    else:
-        return g
-
 fn resolv(g: String) -> String:
     var ibest:Int=-1
     var cbest=String("123456789")
