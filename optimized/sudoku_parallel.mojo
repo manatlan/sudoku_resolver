@@ -20,28 +20,6 @@ struct Grid:
             self.data[idx] = ptr[idx]-48 if ptr[idx]!=46 else 0
         _=g
 
-    fn __init__(inout self, clone:Grid, idx:Int,c:UInt8) -> None:
-        "Clone the grid 'clone', by replacing char at index 'idx' by 'c' one."
-        #use stack_allocation
-        self.data = Buffer[81, DType.uint8].stack_allocation()
-        for i in range(82):
-            self.data[i] = clone.data[i]
-        self.data[idx]=c
-
-    fn __init__(inout self:Grid) -> None:
-        "Create a bad one."
-        
-        let dtp = DTypePointer[DType.uint8].alloc(1)
-        self.data = Buffer[81, DType.uint8](dtp)
-        #self.data = Buffer[81, DType.uint8].stack_allocation()
-        self.data[0]=-1
-
-    fn is_valid(self:Grid) -> Bool:
-        return self.data[0]!=-1
-
-    # fn __del__(owned self:Grid):
-    #     return self.dtp.free()
-
     fn sqr(self:Grid,x:Int,y:Int) -> GROUP:
         let off=y*9+x
         var group=GROUP().splat(0)
@@ -83,7 +61,7 @@ struct Grid:
         return avails
 
     
-    fn solve(self:Grid) -> Grid:
+    fn solve(self:Grid) -> Bool:
         var ibest:Int=-1
         var cbest=InlinedFixedVector[UInt8](9)
         @unroll
@@ -94,7 +72,7 @@ struct Grid:
             if self.data[i]==0:
                 let avails=self.free(i%9,i//9)
                 if len(avails)==0:
-                    return Grid()   # bad
+                    return False
                 else:
                     if len(avails) < len(cbest):
                         ibest=i
@@ -103,14 +81,14 @@ struct Grid:
                         if len(avails)==1:
                             break
             
-            
         if ibest != -1:
             for idx in range(len(cbest)):
-                let ng=Grid( self, ibest, cbest[idx].__int__()).solve()
-                if ng.is_valid(): return ng^
-            return Grid() # bad
+                self.data[ibest]=cbest[idx].__int__()
+                if self.solve(): return True
+            self.data[ibest]=0
+            return False
         else:
-            return self
+            return True
 
     fn to_string(self:Grid) -> String:
         var str=String("")
@@ -129,9 +107,8 @@ fn main() raises:
     @parameter
     fn in_p(i:Int):
         let g=Grid(buf[i*82:i*82+81])
-        let gg=g.solve()
-        print( gg.to_string() )
-        
+        print( g.solve() and g.to_string() )
+
     parallelize[in_p](1956,workers)
     print("Took:",(now() - t)/1_000_000_000,"s")
     

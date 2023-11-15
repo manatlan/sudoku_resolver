@@ -34,10 +34,10 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 ```
 
 optimized/sudoku.mojo (optimized algo, with specialized types)
- - mojo  : 3.94 seconds
+ - mojo  : 3.60 seconds
 
 optimized/sudoku_parallel.mojo (optimized algo, with specialized types & parallelization)
- - mojo  : 2.37 seconds
+ - mojo  : 2.28 seconds
 
 optimized/sudoku.rs (the optimized algo, with ultra-specialized types/api)
  - rust  : 3.87 seconds

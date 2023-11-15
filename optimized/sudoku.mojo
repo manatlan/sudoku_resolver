@@ -19,26 +19,6 @@ struct Grid:
         for idx in range(81):
             self.data[idx] = ord(g[idx])-48 if g[idx]!="." else 0
 
-    fn __init__(inout self, clone:Grid, idx:Int,c:UInt8) -> None:
-        "Clone the grid 'clone', by replacing char at index 'idx' by 'c' one."
-        let dtp = DTypePointer[DType.uint8].alloc(81)
-        var data=clone.data.simd_load[81](0)
-        data[idx]=c
-        dtp.simd_store[81](0, data)
-        self.data = Buffer[81, DType.uint8](dtp)
-
-    fn __init__(inout self:Grid) -> None:
-        "Create a bad one."
-        let dtp = DTypePointer[DType.uint8].alloc(1)
-        self.data = Buffer[81, DType.uint8](dtp)
-        self.data[0]=-1
-
-    fn is_valid(self:Grid) -> Bool:
-        return self.data[0]!=-1
-
-    # fn __del__(owned self:Grid):
-    #     return self.dtp.free()
-
     fn sqr(self:Grid,x:Int,y:Int) -> GROUP:
         let off=y*9+x
         var group=GROUP().splat(0)
@@ -78,7 +58,7 @@ struct Grid:
                 avails.append( c )
         return avails
 
-    fn solve(self:Grid) -> Grid:
+    fn solve(self:Grid) -> Bool:
         var ibest:Int=-1
         var cbest=InlinedFixedVector[UInt8](9)
         @unroll
@@ -89,7 +69,7 @@ struct Grid:
             if self.data[i]==0:
                 let avails=self.free(i%9,i//9)
                 if len(avails)==0:
-                    return Grid()   # bad
+                    return False
                 else:
                     if len(avails) < len(cbest):
                         ibest=i
@@ -100,11 +80,12 @@ struct Grid:
             
         if ibest != -1:
             for idx in range(len(cbest)):
-                let ng=Grid( self, ibest, cbest[idx].__int__()).solve()
-                if ng.is_valid(): return ng
-            return Grid() # bad
+                self.data[ibest]=cbest[idx].__int__()
+                if self.solve(): return True
+            self.data[ibest]=0
+            return False
         else:
-            return self
+            return True
 
     fn to_string(self:Grid) -> String:
         var str=String("")
@@ -119,6 +100,5 @@ fn main() raises:
     let t=now()
     for i in range(1956):
         let g=Grid(buf[i*82:i*82+81])
-        let gg=g.solve()
-        print( gg.to_string() )
+        print( g.solve() and g.to_string() )
     print("Took:",(now() - t)/1_000_000_000,"s")
