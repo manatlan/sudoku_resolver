@@ -37,7 +37,7 @@ optimized/sudoku_specialized.mojo (optimized algo, with specialized types)
  - mojo  : 3.60 seconds
 
 optimized/sudoku_specialized_parallel.mojo (optimized algo, with specialized types & parallelization)
- - mojo  : 2.28 seconds
+ - mojo  : 1.36 seconds
 
 optimized/sudoku_specialized.rs (the optimized algo, with ultra-specialized types/api)
  - rust  : 3.87 seconds

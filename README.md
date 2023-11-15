@@ -23,17 +23,30 @@ The idea of the repo, is to compare differents languages at "run times". Current
 
 ## Context (on my computer)
 
-On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions:
+On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions and command line used:
+```
  * codon : 0.16.3
+           $ /home/manatlan/.codon/bin/codon run -release <source>
  * gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+           $ /usr/bin/gcc <source> -o exe && ./exe
  * java  : openjdk 22-ea 2024-03-19
+           $ /usr/bin/java <source>
  * mojo  : mojo 0.5.0 (6e50a738)
+           $ /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo run <source>
  * nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
+           $ /home/manatlan/.nimble/bin/nim r -d:danger <source>
  * node  : v18.13.0
+           $ /usr/bin/node <source>
  * py311 : Python 3.11.6
+           $ /usr/bin/python3.11 -uOO <source>
  * py37  : Python 3.7.16
+           $ /usr/local/bin/python3.7 -uOO <source>
  * pypy  : Python 3.10.13 (f1607341da97ff5a1e93430b6e8c4af0ad1aa019, Sep 28 2023, 05:41:26)
+           $ /home/manatlan/Téléchargements/pypy3.10-v7.3.13-linux64/bin/pypy3 -uOO <source>
  * rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
+           $ /usr/bin/rustc -C opt-level=3 -C target-cpu=native <source> -o exe && ./exe
+```
+
 
 ## Simple version, results
 

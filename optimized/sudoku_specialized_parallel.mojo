@@ -48,14 +48,14 @@ struct Grid:
             group[i]=self.data[off+i]
         return group
 
-    fn free(self: Grid, x: Int, y: Int) -> InlinedFixedVector[UInt8]:
+    fn free(self: Grid, x: Int, y: Int) -> InlinedFixedVector[UInt8,9]:
         "Returns a list of available values that can be fit in (x,y)."
         "(this thing is a bit tricky coz it uses simd operation, to be as fast as possible)"
         let _s = self.sqr((x // 3) * 3, (y // 3) * 3)
         let _c = self.col(x)
         let _r = self.row(y)
 
-        var avails = InlinedFixedVector[UInt8](9)
+        var avails = InlinedFixedVector[UInt8,9](9)
 
         @unroll
         for c in range(1, 10):
@@ -72,7 +72,7 @@ struct Grid:
         "Solve the grid, returns true/false if it cans."
         "It's the optimized algo : so it will try the hole which have a minimal choice (ideally 1)."
         var ibest:Int=-1
-        var cbest=InlinedFixedVector[UInt8](9)
+        var cbest=InlinedFixedVector[UInt8,9](9)
         @unroll
         for i in range(1,10):
             cbest.append(i)
@@ -109,8 +109,6 @@ struct Grid:
         return str           
 
 
-alias workers = 4
-
 fn main() raises:
     let buf = open("grids.txt", "r").read()
     let t=now()
@@ -120,7 +118,7 @@ fn main() raises:
         let g=Grid(buf[i*82:i*82+81])
         print( g.solve() and g.to_string() )
 
-    parallelize[in_p](1956,workers)
+    parallelize[in_p](1956,1956) #more workers to distribute the effort on cores
     print("Took:",(now() - t)/1_000_000_000,"s")
     
     _=buf^ #extend lifetime of pointer
