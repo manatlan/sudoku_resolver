@@ -78,7 +78,11 @@ sudoku.rs (the simple algo, with strings (AI translation from java one))
  - rust  : 37.49 seconds
 ```
 
+<<<<<<< HEAD
 (*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
+=======
+(*) : was 6.65 with mojo0.4 and [src](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo)), [perf issue](https://github.com/modularml/mojo/issues/1216
+>>>>>>> 04fa312 (update)
 
 ## SPECIALIZED versions, results
 
