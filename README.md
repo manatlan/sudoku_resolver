@@ -50,7 +50,7 @@ sudoku.js (the simple algo, with strings (AI translation from java one))
  - node  : 44.49 seconds
 
 sudoku.mojo (the simple algo, with strings)
- - mojo  : 16.37 seconds (was 6.65 with mojo0.4 and [src](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo)), [perf issue](https://github.com/modularml/mojo/issues/1216)
+ - mojo  : 16.37 seconds (*)
 
 sudoku.nim (the simple algo, with strings)
  - nim   : 9.12 seconds
@@ -64,6 +64,8 @@ sudoku.py (the simple algo, with strings)
 sudoku.rs (the simple algo, with strings (AI translation from java one))
  - rust  : 37.49 seconds
 ```
+
+(*) : was 6.65 with mojo0.4 and [src](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo)), [perf issue](https://github.com/modularml/mojo/issues/1216
 
 ## SPECIALIZED versions, results
 
