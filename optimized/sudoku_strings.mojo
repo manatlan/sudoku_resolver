@@ -1,7 +1,7 @@
 from time import now
 alias GROUP = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
-#INFO: optimized algo, with strings
+#INFO: the optimized algo, with strings
 
 
 fn sqr(g:String,x:Int,y:Int) -> GROUP:
@@ -44,16 +44,8 @@ fn free(g:String,x:Int,y:Int) -> String:
     return avails
 
 
-fn indexOf(s:String,c:String) -> Int:
-    for i in range(len(s)):
-        if s[i]==c:
-            return i
-    return -1
-
-
-
 fn resolv_old(g: String) -> String:
-    let i=indexOf(g,".")
+    let i=g.find(".")
     if i>=0:
         let x=free(g,i%9,i//9)
         for idx in range(len(x)):

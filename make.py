@@ -199,8 +199,8 @@ def print_human_stats(jzon:dict):
                 legends.append( (i,v[i]["version"] ))
         tests.sort(key=lambda x: x[1])
         print(f"{k} ({v['info']})")
-        for k,v in tests:
-            print(f" - {k:5s} : {v} seconds ({nb}tests)")
+        for kk,vv in tests:
+            print(f" - {kk:5s} : {vv} seconds ({nb}tests {round(min(v[kk]['tests']),2)}<{round(max(v[kk]['tests']),2)})")
     print()
     print("with versions:")
     for k,v in sorted(list(set(legends))):

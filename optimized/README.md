@@ -32,24 +32,27 @@ And now, they are resolving all the grids in `g_simples.txt` : **1956 grids** (s
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
-optimized/sudoku_strings.java (the optimized algo, with strings)
- - java  : 109,09 seconds
-
-optimized/sudoku.py (the optimized algo, with strings)
- - codon : 94.23 seconds
- - pypy  : 95.53 seconds
- - py311 : 127.28 seconds
- - py37  : 194.98 seconds
-
-optimized/sudoku.rs (the optimized algo, with ultra-specialized types/api)
- - rust  : 3.85 seconds
 
 optimized/sudoku.mojo (optimized algo, with specialized types)
- - mojo  : 3.92 seconds
+ - mojo  : 3.94 seconds
 
 optimized/sudoku_parallel.mojo (optimized algo, with specialized types & parallelization)
- - mojo  : 2.36 seconds
+ - mojo  : 2.37 seconds
 
+optimized/sudoku.rs (the optimized algo, with ultra-specialized types/api)
+ - rust  : 3.87 seconds
+
+optimized/sudoku_strings.java (the optimized algo, with strings)
+ - java  : 105.35 seconds
+
+optimized/sudoku.py (the optimized algo, with strings)
+ - codon : 94.89 seconds
+ - pypy  : 95.68 seconds
+ - py311 : 135.56 seconds
+ - py37  : 197.21 seconds
+
+optimized/sudoku_strings.mojo (the optimized algo, with strings)
+ - mojo  : 61.43 seconds
 
 ```
 

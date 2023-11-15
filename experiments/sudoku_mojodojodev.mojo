@@ -1,3 +1,4 @@
+
 # https://mojodojo.dev/guides/benchmarks/sudoku.html
 
 #INFO: another algo from mojodojo.dev
@@ -18,24 +19,24 @@ struct Board[grid_size: Int]:
     var sub_size: Int
     alias elements = grid_size**2
 
-    fn __init__(inout self, *values: Int) raises:
-        "The original one."
-        let args_list = VariadicList(values)
-        if len(args_list) != grid_size**2:
-            raise Error("The amount of elements must be equal to the grid_size parameter squared")
+    # fn __init__(inout self, *values: Int) raises:
+    #     "The original one."
+    #     let args_list = VariadicList(values)
+    #     if len(args_list) != grid_size**2:
+    #         raise Error("The amount of elements must be equal to the grid_size parameter squared")
 
-        let sub_size = sqrt(Float64(grid_size))
-        if sub_size - sub_size.cast[DType.int64]().cast[DType.float64]() > 0:
-            raise Error("The square root of the grid grid_size must be a whole number 9 = 3, 16 = 4")
-        self.sub_size = sub_size.cast[DType.int64]().to_int()
+    #     let sub_size = sqrt(Float64(grid_size))
+    #     if sub_size - sub_size.cast[DType.int64]().cast[DType.float64]() > 0:
+    #         raise Error("The square root of the grid grid_size must be a whole number 9 = 3, 16 = 4")
+    #     self.sub_size = sub_size.cast[DType.int64]().to_int()
 
 
-        self.data = DTypePointer[DType.uint8].alloc(grid_size**2)
-        for i in range(len(args_list)):
-            self.data.simd_store[1](i, args_list[i])
+    #     self.data = DTypePointer[DType.uint8].alloc(grid_size**2)
+    #     for i in range(len(args_list)):
+    #         self.data.simd_store[1](i, args_list[i])
 
     fn __init__(inout self, grid: String) raises:
-        "Special version, to undestand grid:String"
+        "Special version, to translate from grid:String."
 
         var args_list = DynamicVector[UInt8](81)
         for x in range(len(grid)):

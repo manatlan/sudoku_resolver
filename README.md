@@ -24,15 +24,15 @@ The idea of the repo, is to compare differents languages at "run times". Current
 ## Context (on my computer)
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions:
+ * codon : 0.16.3
  * gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
  * java  : openjdk 22-ea 2024-03-19
- * mojo  : mojo 0.4.0 (9e33b013)
- * nim   : Nim Compiler Version 1.6.14 [Linux: amd64]
+ * mojo  : mojo 0.5.0 (6e50a738)
+ * nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
  * node  : v18.13.0
  * py311 : Python 3.11.6
  * py37  : Python 3.7.16
  * pypy  : Python 3.10.13 (f1607341da97ff5a1e93430b6e8c4af0ad1aa019, Sep 28 2023, 05:41:26)
- * codon : 0.16.3
  * rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
 
 ## Simple version, results
@@ -41,28 +41,28 @@ The 1/1 implementations of the py version, in each language (using strings)
 
 ```
 sudoku.c (the simple algo, with strings (AI translation from java one))
- - gcc   : 2.52 seconds
+ - gcc   : 2.43 seconds
 
 sudoku.java (the simple algo, with strings)
- - java  : 18.74 seconds
+ - java  : 20.14 seconds
 
 sudoku.js (the simple algo, with strings (AI translation from java one))
- - node  : 44.99 seconds
+ - node  : 44.49 seconds
 
 sudoku.mojo (the simple algo, with strings)
- - mojo  : 6.65 seconds
+ - mojo  : 16.37 seconds (was 6.65 with mojo0.4 and [src](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo)), [perf issue](https://github.com/modularml/mojo/issues/1216)
 
 sudoku.nim (the simple algo, with strings)
- - nim   : 10.14 seconds
+ - nim   : 9.12 seconds
 
 sudoku.py (the simple algo, with strings)
- - pypy  : 18.84 seconds
- - codon : 20.43 seconds
- - py311 : 26.86 seconds
- - py37  : 39.78 seconds
+ - pypy  : 18.71 seconds
+ - codon : 20.79 seconds
+ - py311 : 26.56 seconds
+ - py37  : 39.74 seconds
 
 sudoku.rs (the simple algo, with strings (AI translation from java one))
- - rust  : 37.79 seconds
+ - rust  : 37.49 seconds
 ```
 
 ## SPECIALIZED versions, results
@@ -71,11 +71,10 @@ The same algo, but with specialized types/structures for the language (to speed 
 
 ```
 sudoku_specialized.mojo (the simple algo, with specialized mojo-types)
- - mojo  : 2.12 seconds
+ - mojo  : 2.07 seconds
 
 sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
- - rust  : 0.97 seconds
-
+ - rust  : 0.96 seconds
 ```
 
 ## If you want to tests on your own

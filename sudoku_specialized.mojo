@@ -63,13 +63,13 @@ struct Grid:
             group[i]=self.data[off+i]
         return group
 
-    fn free(self: Grid, x: Int, y: Int) -> InlinedFixedVector[9, UInt8]:
+    fn free(self: Grid, x: Int, y: Int) -> InlinedFixedVector[UInt8]:
         "Returns a string of numbers that can be fit at (x,y)."
         let _s = self.sqr((x // 3) * 3, (y // 3) * 3)
         let _c = self.col(x)
         let _r = self.row(y)
 
-        var avails = InlinedFixedVector[9, UInt8](9)
+        var avails = InlinedFixedVector[UInt8](9)
 
         @unroll
         for c in range(1, 10):
@@ -93,7 +93,8 @@ struct Grid:
             let x=self.free(i%9,i//9)
             for idx in range(len(x)):
                 let ng=Grid( self, i, x[idx] ).solve()
-                if ng.is_valid(): return ng
+                if ng.is_valid(): 
+                    return ng
             return Grid()
         else:
             return self

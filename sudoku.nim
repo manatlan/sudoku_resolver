@@ -1,4 +1,4 @@
-#! nim c -d:danger -r
+#! ~/.nimble/bin/nim c -d:danger -r
 
 #INFO: the simple algo, with strings
 
@@ -36,7 +36,7 @@ proc resolv( g:string ): string =
 import strutils
 import times
 
-let gg = readFile("grids.txt").splitLines()[0..100]
+let gg = readFile("grids.txt").splitLines()[0..99]
 
 let t = cpuTime()
 for g in gg:

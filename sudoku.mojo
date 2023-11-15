@@ -1,6 +1,17 @@
 from time import now
+"""
+this is "the simple algo, with strings" ... adapted for mojo 0.5 features (str.find).
+
+If you are looking for mojo issue #1216 (https://github.com/modularml/mojo/issues/1216)
+
+the old code (dev for mojo0.4) is here:
+https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo
+(this [^^] was a lot faster (10x) using mojo0.4 than mojo0.5 !!!!)
+(and this [^^] is faster (2x) than this code [vv] with mojo0.5.0)
+"""
 
 #INFO: the simple algo, with strings
+alias ALL = StringRef("123456789")
 
 fn sqr(g:String,x:Int,y:Int) -> String:
     return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
@@ -8,29 +19,16 @@ fn col(g:String,x:Int) -> String:
     return g[x::9]
 fn row(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
-
-fn freeset(n:String) -> String:
-    # Set("123456789") - Set(n)
-    let lx = StringRef("123456789")
+fn free(g:String,x:Int,y:Int) -> String:
+    let freeset=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
     var ll = String("")
-    for i in range(len(lx)):
-        if indexOf(n,lx[i])<0:
-            ll += lx[i]
-
+    for i in range(len(ALL)):
+        if freeset.find(ALL[i])<0:
+            ll += ALL[i]
     return ll
 
-fn indexOf(s:String,c:String) -> Int:
-    for i in range(len(s)):
-        if s[i]==c:
-            return i
-    return -1
-
-fn free(g:String,x:Int,y:Int) -> String:
-    # interset = lambda g,x,y: freeset(vertiz(g,x)) & freeset(horiz(g,y)) & freeset(square(g,(x//3)*3,(y//3)*3))
-    return freeset(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
-
 fn resolv(g: String) -> String:
-    let i=indexOf(g,".")
+    let i=g.find(".")
     if i>=0:
         let x=free(g,i%9,i//9)
         for idx in range(len(x)):
@@ -44,9 +42,5 @@ fn main() raises:
     let buf = open("grids.txt", "r").read()
     let t=now()
     for i in range(100):
-        let g=resolv(buf[i*82:i*82+81])
-        if indexOf(g,".")>=0:
-            print("error")
-        else:
-            print(g)
+        print(resolv(buf[i*82:i*82+81]))
     print("Took:",(now() - t)/1_000_000_000,"s")
