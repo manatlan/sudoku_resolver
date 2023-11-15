@@ -42,10 +42,14 @@ optimized/sudoku_parallel.mojo (optimized algo, with specialized types & paralle
 optimized/sudoku.rs (the optimized algo, with ultra-specialized types/api)
  - rust  : 3.87 seconds
 
+
+
+
+
 optimized/sudoku_strings.java (the optimized algo, with strings)
  - java  : 105.35 seconds
 
-optimized/sudoku.py (the optimized algo, with strings)
+optimized/sudoku_strings.py (the optimized algo, with strings)
  - codon : 94.89 seconds
  - pypy  : 95.68 seconds
  - py311 : 135.56 seconds
