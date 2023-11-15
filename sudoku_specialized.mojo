@@ -5,7 +5,6 @@ from time import now
 
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
-@value
 struct Grid:
     var data: Buffer[81, DType.uint8]
 
@@ -17,26 +16,6 @@ struct Grid:
         @unroll
         for idx in range(81):
             self.data[idx] = ord(g[idx])-48 if g[idx]!="." else 0
-
-    fn __init__(inout self, clone:Grid, idx:Int,c:UInt8) -> None:
-        "Clone the grid 'clone', by replacing char at index 'idx' by 'c' one."
-        let dtp = DTypePointer[DType.uint8].alloc(81)
-        var data=clone.data.simd_load[81](0)
-        data[idx]=c
-        dtp.simd_store[81](0, data)
-        self.data = Buffer[81, DType.uint8](dtp)
-
-    fn __init__(inout self:Grid) -> None:
-        "Create a bad one."
-        let dtp = DTypePointer[DType.uint8].alloc(1)
-        self.data = Buffer[81, DType.uint8](dtp)
-        self.data[0]=-1
-
-    fn is_valid(self:Grid) -> Bool:
-        return self.data[0]!=-1
-
-    # fn __del__(owned self:Grid):
-    #     return self.dtp.free()
 
     fn sqr(self:Grid,x:Int,y:Int) -> GROUP:
         let off=y*9+x
@@ -82,7 +61,7 @@ struct Grid:
                 avails.append(c)
         return avails
 
-    fn solve(self: Grid) -> Grid:
+    fn solve(self: Grid) -> Bool:
         var i:Int = -1
         for x in range(81):
             if self.data[x]==0:
@@ -92,12 +71,13 @@ struct Grid:
         if i>=0:
             let x=self.free(i%9,i//9)
             for idx in range(len(x)):
-                let ng=Grid( self, i, x[idx] ).solve()
-                if ng.is_valid(): 
-                    return ng
-            return Grid()
+                self.data[i]=x[idx].__int__()
+                if self.solve(): 
+                    return True
+            self.data[i]=0
+            return False
         else:
-            return self
+            return True
 
 
     fn to_string(self:Grid) -> String:
@@ -113,5 +93,5 @@ fn main() raises:
     let t=now()
     for i in range(100):
         let g=Grid(buf[i*82:i*82+81])
-        print( g.solve().to_string() )
+        print( g.solve() and g.to_string() )
     print("Took:",(now() - t)/1_000_000_000,"s")

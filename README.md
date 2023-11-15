@@ -73,7 +73,7 @@ The same algo, but with specialized types/structures for the language (to speed 
 
 ```
 sudoku_specialized.mojo (the simple algo, with specialized mojo-types)
- - mojo  : 2.07 seconds
+ - mojo  : 0.88 seconds
 
 sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
  - rust  : 0.96 seconds
