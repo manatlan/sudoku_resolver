@@ -33,29 +33,29 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
 
-optimized/sudoku.mojo (optimized algo, with specialized types)
+optimized/sudoku_specialized.mojo (optimized algo, with specialized types)
  - mojo  : 3.60 seconds
 
-optimized/sudoku_parallel.mojo (optimized algo, with specialized types & parallelization)
+optimized/sudoku_specialized_parallel.mojo (optimized algo, with specialized types & parallelization)
  - mojo  : 2.28 seconds
 
-optimized/sudoku.rs (the optimized algo, with ultra-specialized types/api)
+optimized/sudoku_specialized.rs (the optimized algo, with ultra-specialized types/api)
  - rust  : 3.87 seconds
 
 
 
 
 
-optimized/sudoku_strings.java (the optimized algo, with strings)
+optimized/sudoku.java (the optimized algo, with strings)
  - java  : 105.35 seconds
 
-optimized/sudoku_strings.py (the optimized algo, with strings)
+optimized/sudoku.py (the optimized algo, with strings)
  - codon : 94.89 seconds
  - pypy  : 95.68 seconds
  - py311 : 135.56 seconds
  - py37  : 197.21 seconds
 
-optimized/sudoku_strings.mojo (the optimized algo, with strings)
+optimized/sudoku.mojo (the optimized algo, with strings)
  - mojo  : 61.43 seconds
 
 ```
