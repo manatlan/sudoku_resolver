@@ -78,11 +78,7 @@ sudoku.rs (the simple algo, with strings (AI translation from java one))
  - rust  : 37.49 seconds
 ```
 
-<<<<<<< HEAD
 (*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
-=======
-(*) : was 6.65 with mojo0.4 and [src](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo)), [perf issue](https://github.com/modularml/mojo/issues/1216
->>>>>>> 04fa312 (update)
 
 ## SPECIALIZED versions, results
 
@@ -91,6 +87,9 @@ The same algo, but with specialized types/structures for the language (to speed 
 ```
 sudoku_specialized.mojo (the simple algo, with specialized mojo-types)
  - mojo  : 0.88 seconds
+
+sudoku_specialized_parallel.mojo (the simple algo, with specialized types & parallelization)
+ - mojo  : 0.36 seconds (7tests 0.34<0.39)
 
 sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
  - rust  : 0.96 seconds
