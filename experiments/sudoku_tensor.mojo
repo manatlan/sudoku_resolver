@@ -2,7 +2,7 @@
 from tensor import Tensor
 from time import now
 
-#INFO: the simple algo, with Tensor
+#INFO: the simple algo, with Tensor (100grids)
 
 
 struct Grid[dtype: DType = DType.uint8, dim: Int = 9]():

@@ -3,7 +3,7 @@ from time import now
 from math import iota
 from algorithm import parallelize
 from sudoku_specialized import Grid
-#INFO: the simple algo, with specialized types & parallelization
+#INFO: the simple algo, with specialized types & parallelization (100grids)
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()

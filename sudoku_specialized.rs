@@ -1,5 +1,5 @@
 #!./make.py
-//INFO: the simple algo, with ultra-specialized types/api
+//INFO: the simple algo, with ultra-specialized types/api (100grids)
 
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
 // see https://users.rust-lang.org/t/is-rust-slow-too-fast/101796/8?u=manatlan

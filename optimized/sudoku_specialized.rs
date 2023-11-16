@@ -1,7 +1,7 @@
 #!./make.py
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
 
-//INFO: the optimized algo, with ultra-specialized types/api
+//INFO: the optimized algo, with ultra-specialized types/api (1956grids)
 
 use std::fs;
 use std::fmt::Formatter;

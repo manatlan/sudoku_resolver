@@ -2,7 +2,7 @@
 from tensor import Tensor
 from time import now
 
-#INFO: the optimizes algo, with Tensor
+#INFO: the optimizes algo, with Tensor (100grids)
 
 
 struct Grid[dtype: DType = DType.uint8, dim: Int = 9]():
@@ -132,7 +132,7 @@ struct Grid[dtype: DType = DType.uint8, dim: Int = 9]():
 fn main() raises:
     let buf = open("grids.txt", "r").read()
     let t=now()
-    for i in range(1956):
+    for i in range(100):
         var g=Grid(buf[i*82:i*82+81])
         g.solve()
     print("Took:",(now() - t)/1_000_000_000,"s")

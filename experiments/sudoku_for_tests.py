@@ -1,6 +1,6 @@
 #!./make.py
 
-#INFO: the simple|optimized algo, with specialized types (slower than the strings version!)
+#INFO: the simple|optimized algo, with specialized types (slower than the strings version!) (100grids)
 
 """
 this version is more explicit, bicoz you can understand the diff between simple vs optimized

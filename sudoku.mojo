@@ -11,7 +11,7 @@ https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo
 (and this [^^] is faster (2x) than this code [vv] with mojo0.5.0)
 """
 
-#INFO: the simple algo, with strings
+#INFO: the simple algo, with strings (100grids)
 alias ALL = StringRef("123456789")
 
 fn sqr(g:String,x:Int,y:Int) -> String:

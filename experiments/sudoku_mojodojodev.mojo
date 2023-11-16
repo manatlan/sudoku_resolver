@@ -1,7 +1,7 @@
 #!./make.py
 # https://mojodojo.dev/guides/benchmarks/sudoku.html
 
-#INFO: another algo from mojodojo.dev
+#INFO: another algo from mojodojo.dev (100grids)
 
 """
 This is the sudoku solver from here : https://mojodojo.dev/guides/benchmarks/sudoku.html

@@ -5,7 +5,7 @@ from algorithm import parallelize
 
 from sudoku_specialized import Grid
 
-#INFO: optimized algo, with specialized types & parallelization
+#INFO: optimized algo, with specialized types & parallelization (1956grids)
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()

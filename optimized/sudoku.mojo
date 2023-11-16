@@ -2,7 +2,7 @@
 from time import now
 alias GROUP = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
-#INFO: the optimized algo, with strings
+#INFO: the optimized algo, with strings (1956grids)
 
 
 fn sqr(g:String,x:Int,y:Int) -> GROUP:

@@ -1,5 +1,5 @@
 #!./make.py
-#INFO: the simple algo, with strings
+#INFO: the simple algo, with strings (100grids)
 
 
 ############################################### my resolver ;-) (backtracking)

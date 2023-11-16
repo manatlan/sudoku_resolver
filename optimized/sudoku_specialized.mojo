@@ -1,7 +1,7 @@
 #!./make.py
 from time import now
 
-#INFO: optimized algo, with specialized types
+#INFO: optimized algo, with specialized types (1956grids)
 
 
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !

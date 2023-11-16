@@ -1,5 +1,5 @@
 #!./make.py
-//INFO: the simple algo, with strings (AI translation from java one)
+//INFO: the simple algo, with strings (AI translation from java one) (100grids)
 
 use std::fs;
 use std::collections::HashSet;

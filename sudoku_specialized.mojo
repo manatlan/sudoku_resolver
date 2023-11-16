@@ -1,5 +1,5 @@
 #!./make.py
-#INFO: the simple algo, with specialized mojo-types
+#INFO: the simple algo, with specialized mojo-types (100grids)
 
 from time import now
 

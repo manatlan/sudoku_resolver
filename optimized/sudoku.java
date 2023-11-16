@@ -3,7 +3,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.nio.file.Paths;
-//INFO: the optimized algo, with strings
+//INFO: the optimized algo, with strings (1956grids)
 
 class Sudoku {
 

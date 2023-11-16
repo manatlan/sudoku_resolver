@@ -1,6 +1,6 @@
 #!./make.py
 
-#INFO: another algo from mojodojo.dev
+#INFO: another algo from mojodojo.dev (100grids)
 
 import time
 
