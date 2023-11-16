@@ -1,4 +1,4 @@
-#! python3 -uOO
+#!./make.py
 
 #INFO: another algo from mojodojo.dev
 

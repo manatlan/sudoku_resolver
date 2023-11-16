@@ -1,4 +1,4 @@
-#! python3 -uOO
+#!./make.py
 
 #INFO: the optimized algo, with strings
 

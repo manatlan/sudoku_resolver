@@ -1,4 +1,4 @@
-
+#!./make.py
 from time import now
 
 #INFO: optimized algo, with specialized types

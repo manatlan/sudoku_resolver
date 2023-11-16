@@ -1,3 +1,4 @@
+#!./make.py
 from time import now
 """
 this is "the simple algo, with strings" ... adapted for mojo 0.5 features (str.find).

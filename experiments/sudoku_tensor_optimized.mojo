@@ -1,3 +1,4 @@
+#!./make.py
 from tensor import Tensor
 from time import now
 

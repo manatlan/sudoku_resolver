@@ -62,6 +62,9 @@ LANGS=dict(
 #########################################################################
 ## helpers
 #########################################################################
+def myprint(*a,**k):
+    k["flush"]=True
+    print(*a,**k)
 
 def update():
     """ update the global dict LANGS, to current supported lang of the host"""
@@ -103,7 +106,7 @@ def batch(files:list, opts:"list|None") -> int:
                 found=True
                 run( file,k )        
     if not found:
-        print(f"ERROR: didn't found a compiler for {file}")
+        myprint(f"ERROR: didn't found a compiler for {file}")
         return -1
     else:
         return 0
@@ -116,7 +119,7 @@ def run(file:str,lang:str) -> int:
         cmd=d["c"]
         cmd=cmd.replace("$0",d["e"])
         cmd=cmd.replace("$1",file)
-        print(f"[{lang}]> {cmd}")
+        myprint(f"[{lang}]> {cmd}")
         cp=subprocess.run(cmd,shell=True,text=True,capture_output=True)
         if cp.returncode==0:
             if "/" in file:
@@ -137,16 +140,16 @@ def run(file:str,lang:str) -> int:
             with open(dest,"w+") as fid:
                 fid.write(cp.stdout)
             lines=cp.stdout.splitlines()
-            print( lines[0])
-            print( f"... {len(lines)} lines ...")
+            myprint( lines[0])
+            myprint( f"... {len(lines)} lines ...")
             for line in lines[-3:]:
                 print( line )
-            print()
+            myprint()
             return 0
         else:
-            print("ERROR")
-            print(cp.stdout)
-            print(cp.stderr)
+            myprint("ERROR")
+            myprint(cp.stdout)
+            myprint(cp.stderr)
             return cp.returncode
         return 0
     else:
@@ -183,6 +186,7 @@ def analyze() -> dict:
         info.setdefault("tests",[]).append(getseconds(i))
         info["moy"] = round( sum( info["tests"] ) / len(info["tests"]), 2)
         info["version"] = LANGS[mode]["v"]
+        info["executed"] = LANGS[mode]["c"].replace("$0",LANGS[mode]["e"]).replace("$1","<source>")
     d={k:d[k] for k in sorted(d.keys())}
     return d
 
@@ -196,15 +200,16 @@ def print_human_stats(jzon:dict):
             if i in v:
                 nb=len(v[i]["tests"])
                 tests.append( (i, v[i]["moy"]) )
-                legends.append( (i,v[i]["version"] ))
+                legends.append( (i,v[i]["version"],v[i]["executed"]) )
         tests.sort(key=lambda x: x[1])
-        print(f"{k} ({v['info']})")
+        myprint(f"{k} ({v['info']})")
         for kk,vv in tests:
-            print(f" - {kk:5s} : {vv} seconds ({nb}tests {round(min(v[kk]['tests']),2)}<{round(max(v[kk]['tests']),2)})")
-    print()
-    print("with versions:")
-    for k,v in sorted(list(set(legends))):
-        print(f" * {k:5s} : {v}")
+            myprint(f" - {kk:5s} : {vv} seconds ({nb}tests {round(min(v[kk]['tests']),2)}<{round(max(v[kk]['tests']),2)})")
+    myprint()
+    myprint("with versions:")
+    for k,v,e in sorted(list(set(legends))):
+        myprint(f" * {k:5s} : {v}")
+        myprint(f"           $ {e}")
 
 
 
@@ -224,14 +229,14 @@ if __name__=="__main__":
 
     for i in opts:
         if i not in LANGS.keys():
-            print(f"ERROR : --{i} is not in {list(LANGS.keys())}")
+            myprint(f"ERROR : --{i} is not in {list(LANGS.keys())}")
             sys.exit(-1)
 
     if len(files)>=1:
         if len(files)==1:
             if files[0]=="stats":
                 jzon=analyze()
-                print(json.dumps(jzon,indent=2))
+                myprint(json.dumps(jzon,indent=2))
                 ret=0
             elif files[0]=="hstats":
                 jzon=analyze()

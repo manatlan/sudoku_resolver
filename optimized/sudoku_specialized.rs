@@ -1,4 +1,4 @@
-#!/usr/bin/rustc -C opt-level=3 -C target-cpu=native optimized/sudoku_specialized.rs -o sudoku && ./sudoku
+#!./make.py
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
 
 //INFO: the optimized algo, with ultra-specialized types/api

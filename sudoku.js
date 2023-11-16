@@ -1,4 +1,4 @@
-#! node sudoku.js
+#!./make.py
 //INFO: the simple algo, with strings (AI translation from java one)
 
 // Import the necessary modules

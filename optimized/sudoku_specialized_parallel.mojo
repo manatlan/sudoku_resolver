@@ -1,3 +1,4 @@
+#!./make.py
 from time import now
 from math import iota
 from algorithm import parallelize

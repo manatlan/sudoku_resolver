@@ -1,4 +1,4 @@
-
+#!./make.py
 #INFO: the simple algo, with specialized mojo-types
 
 from time import now

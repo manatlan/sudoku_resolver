@@ -1,4 +1,4 @@
-#! python3 -uOO
+#!./make.py
 
 #INFO: the simple|optimized algo, with specialized types (slower than the strings version!)
 

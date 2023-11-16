@@ -1,4 +1,4 @@
-
+#!./make.py
 # https://mojodojo.dev/guides/benchmarks/sudoku.html
 
 #INFO: another algo from mojodojo.dev

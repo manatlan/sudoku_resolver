@@ -1,4 +1,3 @@
-//!/usr/bin/gcc sudoku.c -o sudoku && ./sudoku
 //INFO: the simple algo, with strings (AI translation from java one)
 
 #include <stdio.h>

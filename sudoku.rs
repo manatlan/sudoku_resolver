@@ -1,7 +1,5 @@
-#!/usr/bin/rustc -C opt-level=3 -C target-cpu=native sudoku.rs && ./sudoku
-
+#!./make.py
 //INFO: the simple algo, with strings (AI translation from java one)
-
 
 use std::fs;
 use std::collections::HashSet;

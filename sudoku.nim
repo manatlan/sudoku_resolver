@@ -1,5 +1,4 @@
-#! ~/.nimble/bin/nim c -d:danger -r
-
+#!./make.py
 #INFO: the simple algo, with strings
 
 

@@ -1,3 +1,4 @@
+#!./make.py
 from time import now
 alias GROUP = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
