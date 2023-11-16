@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess,sys,os,glob,re,json,statistics
+import subprocess,sys,os,glob,re,json,statistics,re,fnmatch
 """
 See doc :
 https://github.com/manatlan/sudoku_resolver/blob/master/make.md
@@ -95,13 +95,14 @@ def batch(files:list, opts:"list|None") -> int:
     """execute files, and if opts, restrict to lang from 'opts'"""
     found=False
     for file in files:
-        ext=file.split(".")[-1]
-        for k,v in LANGS.items():
-            if v.get("ext") == ext:
-                if opts and k not in opts:
-                    continue
-                found=True
-                run( file,k )        
+        if fnmatch.fnmatch(os.path.basename(file),TESTFILES):
+            ext=file.split(".")[-1]
+            for k,v in LANGS.items():
+                if v.get("ext") == ext:
+                    if opts and k not in opts:
+                        continue
+                    found=True
+                    run( file,k )        
     if not found:
         myprint(f"ERROR: didn't found a compiler for {file}")
         return -1
@@ -201,7 +202,12 @@ if __name__=="__main__":
             mode="stats"
             args.pop(0)
             if not args: args=["."]
+        elif re.match("(\d+)x",args[0]):
+            nb=int(re.match("(\d+)x",args[0])[1])
+            mode="test"
+            args.pop(0)
         else:
+            nb=1
             mode="test"
 
         files=[]
@@ -224,7 +230,8 @@ if __name__=="__main__":
                     sys.exit(-1)
 
         if mode=="test":
-            ret=batch(files, opts )
+            for i in range(nb):
+                ret=batch(files, opts )
         else:
             ret=stats(files)
     else:
