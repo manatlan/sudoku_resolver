@@ -4,4 +4,4 @@ a.out
 exe
 sudoku_optim
 sudoku_specialized
-outputs/
+.outputs/

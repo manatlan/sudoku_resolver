@@ -19,7 +19,7 @@ Just type
 $ ./make.py
 ```
 
-It will show you the command line options
+It will show you the command line options, and all detected languages and command lines.
 
 ## to run one version
 
@@ -76,12 +76,17 @@ $ ./make.py . optimized experiments
 
 ## to get stats
 
-To output json stats:
+To output stats:
 ```
 $ ./make.py stats
 ```
 
-To output humans readable stats:
+To output specifics stats of all mojo files:
 ```
-$ ./make.py hstats
+$ ./make.py stats *.mojo
+```
+
+To output specifics stats of optimized versions:
+```
+$ ./make.py stats optimized/
 ```

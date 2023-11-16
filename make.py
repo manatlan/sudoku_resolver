@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess,sys,os,glob,re,json
+import subprocess,sys,os,glob,re,json,statistics
 """
 See doc :
 https://github.com/manatlan/sudoku_resolver/blob/master/make.md
@@ -79,16 +79,13 @@ def update():
             del LANGS[k]
 
 def help():
-    print(f"USAGE: {os.path.relpath(__file__)} <file> ... [<option> ...]")
-    print("Where <file> is:")
-    print(" * stats : generate stats")
-    print(" * hstats : generate human stats")
-    print(" * <file> : execute all compilers for this kind of file")
-    print(" * <folder> : execute all compilers for files in this folder")
+    print(f"USAGE TEST: {os.path.relpath(__file__)} <file|folder> ... <option>")
+    print(f"USAGE STAT: {os.path.relpath(__file__)} stats <file|folder> ...")
+    print()
     print("Where <option> can be, to force a specific one:")
     for k,v in LANGS.items():
         print(f" --{k:5s} : {v['v']}")
-        print(f"            {v['c'].replace('$0',v['e']).replace('$1','<file>')}")
+        print(f"           {v['c'].replace('$0',v['e']).replace('$1','<file>')}")
 
 #########################################################################
 ## run/batch methods
@@ -111,6 +108,20 @@ def batch(files:list, opts:"list|None") -> int:
     else:
         return 0
 
+def create_result(file,lang, output,cmd,version):
+    folder,file = os.path.dirname(file) or ".",os.path.basename(file)
+    dest = f"{folder}/.outputs/{file}|{lang}|0"
+
+    if not os.path.isdir(os.path.dirname(dest)):
+        os.makedirs(os.path.dirname(dest))
+
+    while os.path.isfile(dest):
+        parts=dest.split("|")
+        dest="|".join( [parts[0], parts[1], str( int(parts[2]) + 1)])
+
+    with open(dest,"w+") as fid:
+        fid.write( json.dumps( dict(cmd=cmd,version=version,output=output), indent=4 ))
+
 def run(file:str,lang:str) -> int:
     """ run file 'file' with the defined lang 'lang'"""
     file=os.path.relpath(file)
@@ -122,23 +133,8 @@ def run(file:str,lang:str) -> int:
         myprint(f"[{lang}]> {cmd}")
         cp=subprocess.run(cmd,shell=True,text=True,capture_output=True)
         if cp.returncode==0:
-            if "/" in file:
-                folder,file = os.path.dirname(file),os.path.basename(file)
-                folder=os.path.join("outputs",folder)
-            else:            
-                folder="outputs"
-                
-            if not os.path.isdir(folder):
-                os.makedirs(folder)
-
-            foutput = f"{file}|{lang}|0|out"
-            dest=os.path.join(folder,foutput)
-            while os.path.isfile(dest):
-                foutputs=foutput.split("|")
-                foutput="|".join( [foutputs[0], foutputs[1], str( int(foutputs[2]) + 1), foutputs[3]])
-                dest=os.path.join(folder,foutput)
-            with open(dest,"w+") as fid:
-                fid.write(cp.stdout)
+            create_result(file,lang, cp.stdout, cmd, d["v"])
+            
             lines=cp.stdout.splitlines()
             myprint( lines[0])
             myprint( f"... {len(lines)} lines ...")
@@ -159,9 +155,9 @@ def run(file:str,lang:str) -> int:
 #########################################################################
 ## stats methods
 #########################################################################
-def getseconds(file:str) -> float:
-    """get seconds in last line of the resulted file 'file')"""
-    last_line = open(file).read().splitlines()[-1]
+def getseconds(output:str) -> float:
+    """get seconds in last line of the 'output')"""
+    last_line = output.splitlines()[-1]
     assert last_line.lower().startswith("took")
     return float(re.findall( r"[\d\.]+",last_line)[0])
 
@@ -175,77 +171,62 @@ def getinfo(file:str) -> str:
             return i[6:].strip()
     return "?"
 
-def analyze() -> dict:
-    """analyze outputs results from outfput folder, and return json details"""
-    d={}
-    for i in glob.glob("outputs/*out")+glob.glob("outputs/*/*out"):
-        file,mode,nb,_ = i[8:].split("|")
-        fileinfo=d.setdefault(file,{})
-        fileinfo["info"]=getinfo(file)
-        info=fileinfo.setdefault(mode,{})
-        info.setdefault("tests",[]).append(getseconds(i))
-        info["moy"] = round( sum( info["tests"] ) / len(info["tests"]), 2)
-        info["version"] = LANGS[mode]["v"]
-        info["executed"] = LANGS[mode]["c"].replace("$0",LANGS[mode]["e"]).replace("$1","<source>")
-    d={k:d[k] for k in sorted(d.keys())}
-    return d
+def stats(files:list):
+    for file in files:
+        folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
+        results = sorted(glob.glob(f"{folder}/.outputs/{filename}|*"))
+        if results:
+            myprint("\n",file,":",getinfo(file))
+            
+            bymode={}
+            for result in results:
+                _,mode,nb = result.split("|")
 
-def print_human_stats(jzon:dict):
-    """ print human readable stats"""
-    legends=[]
-    for k,v in jzon.items():
-        tests=[]
-        nb=-1
-        for i in LANGS.keys():
-            if i in v:
-                nb=len(v[i]["tests"])
-                tests.append( (i, v[i]["moy"]) )
-                legends.append( (i,v[i]["version"],v[i]["executed"]) )
-        tests.sort(key=lambda x: x[1])
-        myprint(f"{k} ({v['info']})")
-        for kk,vv in tests:
-            myprint(f" - {kk:5s} : {vv} seconds ({nb}tests {round(min(v[kk]['tests']),2)}<{round(max(v[kk]['tests']),2)})")
-    myprint()
-    myprint("with versions:")
-    for k,v,e in sorted(list(set(legends))):
-        myprint(f" * {k:5s} : {v}")
-        myprint(f"           $ {e}")
-
+                data=json.load( open(result,"r+") )
+                seconds=getseconds(data["output"])
+                bymode.setdefault(mode,[]).append(seconds)
+            
+            rr=lambda x: round(x,2)
+            for mode, tests in bymode.items():
+                moy= rr( statistics.median(tests) )
+                myprint(f"  - {mode:5s} : {moy} seconds ({len(tests)}x, {rr(min(tests)):.02f}><{rr(max(tests)):.02f})")
 
 
 if __name__=="__main__":
     update()
+    args=sys.argv[1:]
 
-    files=[]
-    opts=[]
-    for i in sys.argv[1:]:
-        if i.startswith("--"):
-            opts.append(i[2:].lower())
+    if args:
+        if args[0]=="stats":
+            mode="stats"
+            args.pop(0)
+            if not args: args=["."]
         else:
-            if os.path.isdir(i):
-                files.extend( glob.glob( os.path.join(i,TESTFILES) ) )
-            else:
-                files.append(i)
+            mode="test"
 
-    for i in opts:
-        if i not in LANGS.keys():
-            myprint(f"ERROR : --{i} is not in {list(LANGS.keys())}")
-            sys.exit(-1)
-
-    if len(files)>=1:
-        if len(files)==1:
-            if files[0]=="stats":
-                jzon=analyze()
-                myprint(json.dumps(jzon,indent=2))
-                ret=0
-            elif files[0]=="hstats":
-                jzon=analyze()
-                print_human_stats(jzon)
-                ret=0
+        files=[]
+        opts=[]
+        for i in args:
+            if i.startswith("--"):
+                opt=i[2:].lower()
+                if opt not in LANGS.keys():
+                    myprint(f"ERROR : --{opt} is not in {list(LANGS.keys())}")
+                    sys.exit(-1)
+                else:
+                    opts.append(opt)
             else:
-                ret=batch( files, opts )
-        else:
+                if os.path.isdir(i):
+                    files.extend( glob.glob( os.path.join(i,TESTFILES) ) )
+                elif os.path.isfile(i):
+                    files.append(i)
+                else:
+                    myprint(f"ERROR : {i} not found")
+                    sys.exit(-1)
+
+        if mode=="test":
             ret=batch(files, opts )
+        else:
+            ret=stats(files)
     else:
         ret=run("?","?")   # just for help prints 
     sys.exit(ret)
