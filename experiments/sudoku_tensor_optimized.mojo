@@ -112,17 +112,17 @@ struct Grid[dtype: DType = DType.uint8, dim: Int = 9]():
         return True
 
 
-  fn print(self):
-    print(self.mat)
+  # fn print(self):
+  #   print(self.mat)
 
-#   fn to_string(self) -> String:
-#     var g=String("")
-#     for x in range(9):
-#         for y in range(9):
-#             let c=self[x,y]
-#             g+=chr(c.__int__()+48) if c else "."
+  fn to_string(self) -> String:
+    var g=String("")
+    for x in range(9):
+        for y in range(9):
+            let c=self[x,y]
+            g+=chr(c.__int__()+48) if c else "."
                 
-#     return g
+    return g
 
   fn __getitem__(self,x:Int,y:Int)->SIMD[dtype,1]:
     return self.mat[x,y]
@@ -134,5 +134,5 @@ fn main() raises:
     let t=now()
     for i in range(100):
         var g=Grid(buf[i*82:i*82+81])
-        g.solve()
+        print( g.solve() and g.to_string())
     print("Took:",(now() - t)/1_000_000_000,"s")
