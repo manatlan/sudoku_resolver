@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess,sys,os,glob,re,json,statistics,re,fnmatch
+import subprocess,sys,os,glob,re,json,statistics,re,fnmatch,time
 """
 See doc :
 https://github.com/manatlan/sudoku_resolver/blob/master/make.md
@@ -62,6 +62,8 @@ LANGS=dict(
 #########################################################################
 ## helpers
 #########################################################################
+rr=lambda x: round(x,2)
+
 def myprint(*a,**k):
     k["flush"]=True
     print(*a,**k)
@@ -187,7 +189,6 @@ def stats(files:list):
                 seconds=getseconds(data["output"])
                 bymode.setdefault(mode,[]).append(seconds)
             
-            rr=lambda x: round(x,2)
             for mode, tests in bymode.items():
                 moy= rr( statistics.median(tests) )
                 myprint(f"  - {mode:5s} : {moy} seconds ({len(tests)}x, {rr(min(tests)):.02f}><{rr(max(tests)):.02f})")
@@ -230,8 +231,10 @@ if __name__=="__main__":
                     sys.exit(-1)
 
         if mode=="test":
+            t=time.monotonic()
             for i in range(nb):
                 ret=batch(files, opts )
+            myprint(f"(total time: %ss)" % rr(time.monotonic()-t))
         else:
             ret=stats(files)
     else:

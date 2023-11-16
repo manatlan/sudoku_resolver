@@ -52,30 +52,32 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions and command lin
 
 The 1/1 implementations of the py version, in each language (using strings)
 
-```
-sudoku.c (the simple algo, with strings (AI translation from java one))
- - gcc   : 2.43 seconds
+``` 
+ ./sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
+  - gcc   : 2.46 seconds (24x, 2.29><2.93)
 
-sudoku.java (the simple algo, with strings)
- - java  : 20.14 seconds
+ ./sudoku.mojo : the simple algo, with strings (100grids)
+  - mojo  : 16.42 seconds (12x, 16.09><17.41) <-------------------- (*)
 
-sudoku.js (the simple algo, with strings (AI translation from java one))
- - node  : 44.49 seconds
+ ./sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
+  - node  : 43.83 seconds (11x, 43.54><45.33)
 
-sudoku.mojo (the simple algo, with strings)
- - mojo  : 16.37 seconds (*)
 
-sudoku.nim (the simple algo, with strings)
- - nim   : 9.12 seconds
+ ./sudoku.nim : the simple algo, with strings (100grids)
+  - nim   : 9.13 seconds (14x, 8.88><9.29)
 
-sudoku.py (the simple algo, with strings)
- - pypy  : 18.71 seconds
- - codon : 20.79 seconds
- - py311 : 26.56 seconds
- - py37  : 39.74 seconds
+ ./sudoku.rs : the simple algo, with strings (AI translation from java one) (100grids)
+  - rust  : 38.01 seconds (11x, 27.18><47.40)
 
-sudoku.rs (the simple algo, with strings (AI translation from java one))
- - rust  : 37.49 seconds
+ ./sudoku.py : the simple algo, with strings (100grids)
+  - codon : 20.25 seconds (14x, 20.08><21.90)
+  - py311 : 26.2 seconds (14x, 23.51><35.60)
+  - py37  : 39.96 seconds (14x, 33.65><48.75)
+  - pypy  : 19.01 seconds (14x, 18.48><20.30)
+
+ ./sudoku.java : the simple algo, with strings (100grids)
+  - java  : 20.83 seconds (12x, 17.25><27.68)
+
 ```
 
 (*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
@@ -85,14 +87,15 @@ sudoku.rs (the simple algo, with strings (AI translation from java one))
 The same algo, but with specialized types/structures for the language (to speed up things)
 
 ```
-sudoku_specialized.mojo (the simple algo, with specialized mojo-types)
- - mojo  : 0.88 seconds
+ ./sudoku_specialized.mojo : the simple algo, with specialized mojo-types (100grids)
+  - mojo  : 0.92 seconds (37x, 0.91><1.07)
 
-sudoku_specialized_parallel.mojo (the simple algo, with specialized types & parallelization)
- - mojo  : 0.36 seconds (7tests 0.34<0.39)
+ ./sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
+  - mojo  : 0.36 seconds (34x, 0.35><0.47)
 
-sudoku_specialized.rs (the simple algo, with ultra-specialized types/api)
- - rust  : 0.96 seconds
+ ./sudoku_specialized.rs : the simple algo, with ultra-specialized types/api (100grids)
+  - rust  : 0.93 seconds (30x, 0.93><1.18)
+
 ```
 
 ## If you want to tests on your own
