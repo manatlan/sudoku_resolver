@@ -1,4 +1,4 @@
-name: Tests on github
+name: Aeff
 
 on: workflow_dispatch
 
@@ -22,7 +22,7 @@ jobs:
 
       - name: commit results
         run: |
-          git add RESULTS.txt
+          git add ./RESULTS.txt
           git commit -m "update results from github"
           git push
 
