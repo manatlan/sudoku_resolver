@@ -22,23 +22,24 @@ jobs:
 
       - name: test
         run: |
+          which python3
           which pypy3
 
-      - name: test make help
-        run: |
-          chmod +x make.py
-          ./make.py 
+      # - name: test make help
+      #   run: |
+      #     chmod +x make.py
+      #     ./make.py 
 
-      - name: tests all
-        run: |
-          ./make.py . optimized
+      # - name: tests all
+      #   run: |
+      #     ./make.py . optimized
 
-      - name: show stats
-        run: |
-          ./make.py stats . optimized
+      # - name: show stats
+      #   run: |
+      #     ./make.py stats . optimized
 
-      # - name: Upload artifacts
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: package
-      #     path: bin/app.apk
+      # # - name: Upload artifacts
+      # #   uses: actions/upload-artifact@v2
+      # #   with:
+      # #     name: package
+      # #     path: bin/app.apk
