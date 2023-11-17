@@ -1,4 +1,4 @@
-#!./make.py
+#!./make.py --codon
 
 #INFO: the simple|optimized algo, with specialized types (slower than the strings version!) (100grids)
 
@@ -24,19 +24,19 @@ class GridDataList:
                 row.append( 0 if c=="." else ord(c)-48 ) 
             self._rows.append(row)
 
-    def _row(self,y:int) -> set:
+    def _row(self,y:int) ->  Set[int]:
         'Returns a set of distinct values, of the row y.'
         return set( self._rows[y] )
 
-    def _col(self,x:int) -> set:
+    def _col(self,x:int) ->  Set[int]:
         'Returns a set of distinct values, of the column x.'
         return set( [self._rows[y][x] for y in range(9)] )
 
-    def _sqr(self,x:int,y:int) -> set:
+    def _sqr(self,x:int,y:int) ->  Set[int]:
         'Returns a set of distinct values, in the square at x,y.'
         return set( self._rows[y][x:x+3] + self._rows[y+1][x:x+3] + self._rows[y+2][x:x+3] )
 
-    def free(self,x,y) -> set:
+    def free(self,x,y) -> Set[int]:
         "Returns a list of available values that can be fit in (x,y)."
         avails = {1,2,3,4,5,6,7,8,9}
         avails-=self._col(x)
@@ -44,7 +44,7 @@ class GridDataList:
         avails-=self._sqr((x//3)*3,(y//3)*3)
         return avails
 
-    def __str__(self):
+    def __str__(self) -> str:
         return "".join( [ "".join( ["." if x==0 else chr(x+48) for x in row]) for row in self._rows] )
 
     def get(self,x:int,y:int) -> int:
@@ -72,7 +72,7 @@ class GridDataString:
         avails = set("123456789") - set(self._col(x) + self._row(y) + self._sqr((x//3)*3,(y//3)*3))
         return set([ord(i)-48 for i in avails])
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.data
 
     def get(self,x:int,y:int) -> int:

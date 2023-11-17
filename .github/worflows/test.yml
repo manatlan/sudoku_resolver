@@ -1,0 +1,26 @@
+name: Test
+
+on: workflow_dispatch
+
+jobs:
+  # Build job. Builds app for Android with Buildozer
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: prepare
+        run: |
+          chmod +x make.py
+
+      - name: test make help
+        run: |
+          ./make.py
+
+      # - name: Upload artifacts
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: package
+      #     path: bin/app.apk
