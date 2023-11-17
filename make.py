@@ -68,7 +68,7 @@ SEPARATOR="|" if platform.system().lower()!="windows" else "&"  # separator in o
 #########################################################################
 ## helpers
 #########################################################################
-rr=lambda x: round(x,2)
+rr=lambda x: round(x,3)
 
 def myprint(*a,**k):
     k["flush"]=True
@@ -124,6 +124,7 @@ def help():
 
 def batch(files:list, opts:"list|None") -> int:
     """execute files, and if opts, restrict to lang from 'opts'"""
+    file="?"
     found=False
     for file in files:
         if fnmatch.fnmatch(os.path.basename(file),TESTFILES):
@@ -204,33 +205,41 @@ def getinfo(file:str) -> str:
     return "?"
 
 def stats(files:list, opts:list):
+    # print(files,opts)
+    total=0.0
     for file in files:
         folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
         results = sorted(glob.glob(f"{folder}/.outputs/{filename}*"))
         if results:
-            
+
             bymode={}
             for result in results:
+                # print(result)
                 _,mode,nb = result.split(SEPARATOR)
-
                 data=json.load( open(result,"r+") )
                 seconds=getseconds(data["output"])
+                if opts and (mode not in opts): continue
                 bymode.setdefault(mode,[]).append(seconds)
 
-            if opts and (mode not in opts): continue
+            if opts and not bymode: continue
             myprint(f"\n{file} : {getinfo(file)}")
 
             for mode, tests in bymode.items():
-                if opts and (mode not in opts): continue
                 moy= rr( statistics.median(tests) )
-                myprint(f"  - {mode:5s} : {moy} seconds ({len(tests)}x, {rr(min(tests)):.02f}><{rr(max(tests)):.02f})")
+                myprint(f"  - {mode:5s} : {moy:.03f} seconds ({len(tests)}x, {rr(min(tests)):.03f}><{rr(max(tests)):.03f})")
+                total += moy
+
+    if total:
+        myprint(f"\n(total time: {total:.03f} seconds)")
 
 
 if __name__=="__main__":
     update()
     args=sys.argv[1:]
+    ret=0
 
     if args:
+        nb=1
         if args[0]=="stats":
             mode="stats"
             args.pop(0)
@@ -238,12 +247,11 @@ if __name__=="__main__":
                 # not files given in input, assuming '.'
                 args.insert(0,".")
 
-        elif re.match("(\d+)x",args[0]):
-            nb=int(re.match("(\d+)x",args[0])[1])
+        elif f:=re.match(r"(\d+)x",args[0]):
+            nb=int(f[1])
             mode="test"
             args.pop(0)
         else:
-            nb=1
             mode="test"
 
         files=[]
@@ -269,9 +277,9 @@ if __name__=="__main__":
             t=time.monotonic()
             for i in range(nb):
                 ret=batch(files, opts )
-            myprint(f"(total time: %ss)" % rr(time.monotonic()-t))
+            myprint(f"(total time: %s seconds)" % rr(time.monotonic()-t))
         else:
             ret=stats(files, opts)
     else:
-        ret=run("?","?")   # just for help prints 
+        help()
     sys.exit(ret)
