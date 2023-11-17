@@ -59,7 +59,7 @@ jobs:
       - name: export stats
         run: |
           ./make.py jstats . optimized >> RESULTS.TXT
-          
+
           echo "```" > RESULTS.md
           ./results.py >> RESULTS.md
           echo "```" > RESULTS.md
@@ -70,6 +70,4 @@ jobs:
           author_name: github
           author_email: mail@example.com
           message: 'update results from github'
-          add: 
-            - 'RESULTS.TXT'
-            - 'RESULTS.md'
+          add: 'RESULTS.*'
