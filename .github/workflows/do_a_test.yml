@@ -34,7 +34,8 @@ jobs:
         run: |
           curl https://get.modular.com | sh - && modular auth ${{ secrets.MODULAR }}
           modular install mojo
-          
+          echo "/home/runner/.modular/pkg/packages.modular.com_mojo/bin" >> $GITHUB_PATH
+
       - name: test make help
         run: |
           chmod +x make.py
