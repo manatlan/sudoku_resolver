@@ -51,8 +51,7 @@ jobs:
 
       - name: export stats
         run: |
-          ./make.py > RESULTS.TXT
-          ./make.py stats . optimized >> RESULTS.TXT
+          ./make.py jstats >> RESULTS.TXT
 
       - name: Commit results
         uses: EndBug/add-and-commit@v9

@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import subprocess,sys,os,glob,re,json,statistics,re,fnmatch,time,shutil,platform,multiprocessing
+import subprocess,sys,os,glob,re,json,statistics,re,fnmatch,time,shutil,platform,multiprocessing,datetime
 """
 See doc :
 https://github.com/manatlan/sudoku_resolver/blob/master/make.md
@@ -103,7 +103,7 @@ def update():
             cp=subprocess.run([LANGS[k]['e'],"--version"],text=True,capture_output=True)
             LANGS[k]['v']=cp.stdout.splitlines()[0]
         else:
-            print(f"*WARNING* no {k} lang (you can install '{v['e']}')!")
+            print(f"*WARNING* no {k} lang (you can install '{v['e']}')!",file=sys.stderr)   # not in stdin !
             del LANGS[k]
 
 def help():
@@ -233,6 +233,42 @@ def stats(files:list, opts:list):
         myprint(f"\n(total time: {total:.03f} seconds)")
 
 
+
+def jstats(files:list, opts:list):
+    stats={}
+    for file in files:
+        folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
+        results = sorted(glob.glob(f"{folder}/.outputs/{filename}*"))
+        if results:
+
+            bymode={}
+            for result in results:
+                if "|" in result:
+                    # ensure compatibility with previous "make.py"
+                    _,mode,nb = result.split("|")
+                else:
+                    _,mode,nb = result.split("&")
+                data=json.load( open(result,"r+") )
+                seconds=getseconds(data["output"])
+                if opts and (mode not in opts): continue
+                bymode.setdefault(mode,[]).append(seconds)
+
+            if opts and not bymode: continue
+
+            for mode, tests in bymode.items():
+                moy= rr( statistics.median(tests) )
+                d=LANGS[mode]
+                stats[file]=dict(
+                    mode=mode,
+                    info=getinfo(file),
+                    seconds=moy,
+                    cmd=subcmd(d["c"],d["e"],file),
+                    version=d["v"],
+                )
+
+    now=datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%M%S')
+    return json.dumps( (now,stats) )
+
 if __name__=="__main__":
     update()
     args=sys.argv[1:]
@@ -242,6 +278,12 @@ if __name__=="__main__":
         nb=1
         if args[0]=="stats":
             mode="stats"
+            args.pop(0)
+            if not [i for i in args if not i.startswith("--")]:
+                # not files given in input, assuming '.'
+                args.insert(0,".")
+        elif args[0]=="jstats":
+            mode="jstats"
             args.pop(0)
             if not [i for i in args if not i.startswith("--")]:
                 # not files given in input, assuming '.'
@@ -278,8 +320,13 @@ if __name__=="__main__":
             for i in range(nb):
                 ret=batch(files, opts )
             myprint(f"(total time: %s seconds)" % rr(time.monotonic()-t))
-        else:
+        elif mode=="stats":
             ret=stats(files, opts)
+        elif mode=="jstats":
+            out=jstats(files, opts)
+            print(out)
+
+    
     else:
         help()
     sys.exit(ret)
