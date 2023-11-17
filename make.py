@@ -43,7 +43,11 @@ LANGS=dict(
     	c="$0 $1 -o exe && ./exe",
         ext="c",
     ),
-
+    pypy=dict(	
+        e="pypy3",
+    	c="$0 -uOO $1",
+        ext="py",
+    ),
 
     #specifics ......................................................
     codon=dict(	
@@ -51,12 +55,7 @@ LANGS=dict(
     	c="$0 run -release $1",
         ext="py",
     ),
-    pypy=dict(	
-        e="~/Téléchargements/pypy3.10-v7.3.13-linux64/bin/pypy3",
-    	c="$0 -uOO $1",
-        ext="py",
-    ),
-    py37=dict(	
+    py37=dict(
         e="python3.7",
     	c="$0 -uOO $1",
         ext="py",
