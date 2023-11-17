@@ -12,8 +12,8 @@ jobs:
 
       - name: "install codon"
         run: |
-          /bin/bash -c "$(curl -fsSL https://exaloop.io/install.sh)"
-          
+          source ./.github/workflows/install_codon.sh
+
       - name: "install nim2"
         uses: jiro4989/setup-nim-action@v1
         with:
