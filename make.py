@@ -258,8 +258,7 @@ def jstats(files:list, opts:list):
             for mode, tests in bymode.items():
                 moy= rr( statistics.median(tests) )
                 d=LANGS[mode]
-                stats[file]=dict(
-                    mode=mode,
+                stats.setdefault(file,{})[mode]=dict(
                     info=getinfo(file),
                     seconds=moy,
                     cmd=subcmd(d["c"],d["e"],file),
