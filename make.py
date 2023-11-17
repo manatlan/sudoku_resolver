@@ -63,18 +63,19 @@ LANGS=dict(
     ),
 
 )
-SEPARATOR="|" if platform.system().lower()!="windows" else "&"  # separator in output filenames
 
 #########################################################################
 ## helpers
 #########################################################################
 rr=lambda x: round(x,3)
 
+todict = lambda x: dict( [[i.strip() for i in line.split(":",1) if ":" in line] for line in x.splitlines() if line.strip()] )
+
+subcmd = lambda cmd,p0,p1: cmd.replace('$0',p0).replace('$1',p1)
+
 def myprint(*a,**k):
     k["flush"]=True
     print(*a,**k)
-
-todict = lambda x: dict( [[i.strip() for i in line.split(":",1) if ":" in line] for line in x.splitlines() if line.strip()] )
 
 def get_info_host() -> str:
     s=f"PLATFORM : {platform.processor()}/{platform.platform()} with {multiprocessing.cpu_count()} cpus"
@@ -116,7 +117,7 @@ def help():
     print("Where <option> can be, to force a specific one:")
     for k,v in LANGS.items():
         print(f" --{k:5s} : {v['v']}")
-        print(f"           {v['c'].replace('$0',v['e']).replace('$1','<file>')}")
+        print(f"           {subcmd(v['c'],v['e'],'<file>')}")
 
 #########################################################################
 ## run/batch methods
@@ -143,14 +144,14 @@ def batch(files:list, opts:"list|None") -> int:
 
 def create_result(file,lang, output,cmd,version):
     folder,file = os.path.dirname(file) or ".",os.path.basename(file)
-    dest = f"{folder}/.outputs/{file}{SEPARATOR}{lang}{SEPARATOR}0"
+    dest = f"{folder}/.outputs/{file}&{lang}&0"
 
     if not os.path.isdir(os.path.dirname(dest)):
         os.makedirs(os.path.dirname(dest))
 
     while os.path.isfile(dest):
-        parts=dest.split(SEPARATOR)
-        dest=SEPARATOR.join( [parts[0], parts[1], str( int(parts[2]) + 1)])
+        parts=dest.split("&")
+        dest="&".join( [parts[0], parts[1], str( int(parts[2]) + 1)])
 
     with open(dest,"w+") as fid:
         fid.write( json.dumps( dict(cmd=cmd,version=version,output=output), indent=4 ))
@@ -160,9 +161,7 @@ def run(file:str,lang:str) -> int:
     file=os.path.relpath(file)
     d = LANGS.get(lang)
     if d:
-        cmd=d["c"]
-        cmd=cmd.replace("$0",d["e"])
-        cmd=cmd.replace("$1",file)
+        cmd=subcmd(d["c"],d["e"],file)
         myprint(f"[{lang}]> {cmd}")
         cp=subprocess.run(cmd,shell=True,text=True,capture_output=True)
         if cp.returncode==0:
@@ -205,7 +204,6 @@ def getinfo(file:str) -> str:
     return "?"
 
 def stats(files:list, opts:list):
-    # print(files,opts)
     total=0.0
     for file in files:
         folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
@@ -214,8 +212,11 @@ def stats(files:list, opts:list):
 
             bymode={}
             for result in results:
-                # print(result)
-                _,mode,nb = result.split(SEPARATOR)
+                if "|" in result:
+                    # ensure compatibility with previous "make.py"
+                    _,mode,nb = result.split("|")
+                else:
+                    _,mode,nb = result.split("&")
                 data=json.load( open(result,"r+") )
                 seconds=getseconds(data["output"])
                 if opts and (mode not in opts): continue
@@ -247,8 +248,8 @@ if __name__=="__main__":
                 # not files given in input, assuming '.'
                 args.insert(0,".")
 
-        elif f:=re.match(r"(\d+)x",args[0]):
-            nb=int(f[1])
+        elif re.match(r"(\d+)x",args[0]):
+            nb=int(re.match(r"(\d+)x",args[0])[1])
             mode="test"
             args.pop(0)
         else:
