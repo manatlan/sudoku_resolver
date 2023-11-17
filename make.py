@@ -218,7 +218,7 @@ def stats(files:list, opts:list):
                 bymode.setdefault(mode,[]).append(seconds)
 
             if opts and (mode not in opts): continue
-            myprint("\n",file,":",getinfo(file))
+            myprint(f"\n{file} : {getinfo(file)}")
 
             for mode, tests in bymode.items():
                 if opts and (mode not in opts): continue
