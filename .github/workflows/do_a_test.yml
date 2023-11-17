@@ -62,7 +62,7 @@ jobs:
 
           echo "```" > RESULTS.md
           ./results.py >> RESULTS.md
-          echo "```" > RESULTS.md
+          echo "```" >> RESULTS.md
 
       - name: Commit results
         uses: EndBug/add-and-commit@v9
