@@ -11,23 +11,18 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: prepare
-        run: |
-          sudo apt install nim
-          chmod +x make.py
-
       - name: test make help
         run: |
+          chmod +x make.py
           ./make.py 
 
       - name: tests all
         run: |
-          ./make.py .
+          ./make.py . optimized
 
-      - name: tests all
+      - name: show stats
         run: |
-          ./make.py stats
-
+          ./make.py stats . optimized
 
       # - name: Upload artifacts
       #   uses: actions/upload-artifact@v2
