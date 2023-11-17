@@ -22,6 +22,7 @@ jobs:
 
       - name: test
         run: |
+          sudo rm `which python3`
           which python3
           which pypy3
 
