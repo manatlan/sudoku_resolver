@@ -30,6 +30,11 @@ jobs:
           which python3
           which pypy3
 
+      - name: "install mojo"
+        run: |
+          curl https://get.modular.com | sh - && modular auth ${{ secrets.MODULAR }}
+          modular install mojo
+          
       - name: test make help
         run: |
           chmod +x make.py
