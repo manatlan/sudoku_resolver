@@ -20,11 +20,10 @@ jobs:
           ./make.py > RESULTS.TXT
           ./make.py stats . optimized >> RESULTS.TXT
 
-      - name: commit results
-        run: |
-          git config --global user.name "github"
-          git config --global user.email "noreply@noreply.github.com"
-          git add RESULTS.txt
-          git commit -m "update results from github"
-          git push
-
+      - name: Commit results
+        uses: EndBug/add-and-commit@v9
+        with:
+          author_name: github
+          author_email: mail@example.com
+          message: 'update results from github'
+          add: 'RESULTS.txt'
