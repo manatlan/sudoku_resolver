@@ -26,4 +26,4 @@ jobs:
           author_name: github
           author_email: mail@example.com
           message: 'update results from github'
-          add: 'RESULTS.txt'
+          add: 'RESULTS.TXT'
