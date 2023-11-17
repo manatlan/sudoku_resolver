@@ -1,4 +1,4 @@
-name: Tests on github
+name: Tests on github (update RESULTS.TXT)
 
 on: workflow_dispatch
 
@@ -37,7 +37,7 @@ jobs:
 
       - name: tests all
         run: |
-          ./make.py 3x . optimized
+          ./make.py . optimized
 
       - name: show stats
         run: |
@@ -48,8 +48,10 @@ jobs:
           ./make.py > RESULTS.TXT
           ./make.py stats . optimized >> RESULTS.TXT
 
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+      - name: Commit results
+        uses: EndBug/add-and-commit@v9
         with:
-          name: package
-          path: RESULTS.TXT
+          author_name: github
+          author_email: mail@example.com
+          message: 'update results from github'
+          add: 'RESULTS.TXT'
