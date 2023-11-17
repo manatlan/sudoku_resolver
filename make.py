@@ -63,6 +63,8 @@ LANGS=dict(
     ),
 
 )
+SEPARATOR="|" if platform.system().lower()!="windows" else "&"  # separator in output filenames
+
 #########################################################################
 ## helpers
 #########################################################################
@@ -140,14 +142,14 @@ def batch(files:list, opts:"list|None") -> int:
 
 def create_result(file,lang, output,cmd,version):
     folder,file = os.path.dirname(file) or ".",os.path.basename(file)
-    dest = f"{folder}/.outputs/{file}|{lang}|0"
+    dest = f"{folder}/.outputs/{file}{SEPARATOR}{lang}{SEPARATOR}0"
 
     if not os.path.isdir(os.path.dirname(dest)):
         os.makedirs(os.path.dirname(dest))
 
     while os.path.isfile(dest):
-        parts=dest.split("|")
-        dest="|".join( [parts[0], parts[1], str( int(parts[2]) + 1)])
+        parts=dest.split(SEPARATOR)
+        dest=SEPARATOR.join( [parts[0], parts[1], str( int(parts[2]) + 1)])
 
     with open(dest,"w+") as fid:
         fid.write( json.dumps( dict(cmd=cmd,version=version,output=output), indent=4 ))
@@ -204,12 +206,12 @@ def getinfo(file:str) -> str:
 def stats(files:list, opts:list):
     for file in files:
         folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
-        results = sorted(glob.glob(f"{folder}/.outputs/{filename}|*"))
+        results = sorted(glob.glob(f"{folder}/.outputs/{filename}*"))
         if results:
             
             bymode={}
             for result in results:
-                _,mode,nb = result.split("|")
+                _,mode,nb = result.split(SEPARATOR)
 
                 data=json.load( open(result,"r+") )
                 seconds=getseconds(data["output"])
