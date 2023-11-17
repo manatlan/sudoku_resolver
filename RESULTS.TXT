@@ -1,0 +1,29 @@
+*WARNING* no mojo lang (you can install 'mojo')!
+*WARNING* no nim lang (you can install 'nim')!
+*WARNING* no pypy lang (you can install 'pypy3')!
+*WARNING* no codon lang (you can install '~/.codon/bin/codon')!
+*WARNING* no py37 lang (you can install 'python3.7')!
+USAGE TEST: make.py <file|folder> ... <option>
+USAGE STAT: make.py stats <file|folder> ... <option>
+Tool to test and sort results from differents interpreters/languages
+On the host:
+PLATFORM : x86_64/Linux-6.2.0-1015-azure-x86_64-with-glibc2.35 with 4 cpus
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+MEMINFO  : 16365036 kB
+
+Where <option> can be, to force a specific one:
+ --java  : openjdk 11.0.21 2023-10-17
+           /usr/bin/java <file>
+ --node  : v18.18.2
+           /usr/local/bin/node <file>
+ --py3   : Python 3.10.12
+           /usr/bin/python3 -uOO <file>
+ --rust  : rustc 1.73.0 (cc66ad468 2023-10-03)
+           /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o exe && ./exe
+ --gcc   : gcc (Ubuntu 11.4.0-1ubuntu1~22.04) 11.4.0
+           /usr/bin/gcc <file> -o exe && ./exe
+*WARNING* no mojo lang (you can install 'mojo')!
+*WARNING* no nim lang (you can install 'nim')!
+*WARNING* no pypy lang (you can install 'pypy3')!
+*WARNING* no codon lang (you can install '~/.codon/bin/codon')!
+*WARNING* no py37 lang (you can install 'python3.7')!
