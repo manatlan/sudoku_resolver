@@ -58,7 +58,11 @@ jobs:
 
       - name: export stats
         run: |
-          ./make.py jstats >> RESULTS.TXT
+          ./make.py jstats . optimized >> RESULTS.TXT
+          
+          echo "```" > RESULTS.md
+          ./results.py >> RESULTS.md
+          echo "```" > RESULTS.md
 
       - name: Commit results
         uses: EndBug/add-and-commit@v9
@@ -66,4 +70,6 @@ jobs:
           author_name: github
           author_email: mail@example.com
           message: 'update results from github'
-          add: 'RESULTS.TXT'
+          add: 
+            - 'RESULTS.TXT'
+            - 'RESULTS.md'
