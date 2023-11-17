@@ -15,6 +15,15 @@ jobs:
         with:
           nim-version: '2.0.x' # ex: 1.0.x, 1.2.x, 1.4.x, 2.0.x ...
 
+      - name: install pypy3.9
+        uses: actions/setup-python@v4 
+        with:
+          python-version: 'pypy3.9' 
+
+      - name: test
+        run: |
+          which pypy3
+
       - name: test make help
         run: |
           chmod +x make.py
