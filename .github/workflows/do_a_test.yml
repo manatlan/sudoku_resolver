@@ -60,9 +60,9 @@ jobs:
         run: |
           ./make.py jstats . optimized >> RESULTS.TXT
 
-          echo "'''" > RESULTS.md
+          echo "\`\`\`" > RESULTS.md
           python3 results.py >> RESULTS.md
-          echo "'''" >> RESULTS.md
+          echo "\`\`\`" >> RESULTS.md
 
       - name: Commit results
         uses: EndBug/add-and-commit@v9
