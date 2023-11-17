@@ -23,6 +23,10 @@ jobs:
         run: |
           ./make.py .
 
+      - name: tests all
+        run: |
+          ./make.py stats
+
 
       # - name: Upload artifacts
       #   uses: actions/upload-artifact@v2
