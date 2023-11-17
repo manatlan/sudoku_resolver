@@ -13,6 +13,7 @@ jobs:
 
       - name: prepare
         run: |
+          sudo apt install nim
           chmod +x make.py
 
       - name: test make help
