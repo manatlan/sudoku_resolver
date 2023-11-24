@@ -9,7 +9,9 @@ from pprint import pp
 from make import get_info_host
 
 print("# Host infos")
+print("```")
 print(get_info_host())
+print("```")
 
 
 interpreters={}
