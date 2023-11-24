@@ -16,11 +16,13 @@ for tests in open("RESULTS.TXT").read().splitlines():
             all.setdefault(f,{}).setdefault(mode,[]).append(result)
 
 for file,tests in sorted(all.items()):
-    print(file)
+    first=list(tests.values())[0][0]
+    print(file,":",first["info"])
     for mode,tests in tests.items():
         times=[]
         for test in tests:
             times.append( test['seconds'] )
+            # print(test["version"])
             # print(f"  - {mode:5s} : {test['seconds']} ({test['version']}) ({test['timestamp']})")
         seconds = statistics.median( times )
         print(f"  - {mode:5s} : {seconds:.03f} ({len(times)}x, {min(times):.03f}><{max(times):.03f})")
