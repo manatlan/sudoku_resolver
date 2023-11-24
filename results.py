@@ -6,7 +6,13 @@ in a more human readable output (md)
 
 import json,statistics
 from pprint import pp
+from make import get_info_host
 
+print("# Host infos")
+print(get_info_host())
+
+
+interpreters={}
 all={}
 for tests in open("RESULTS.TXT").read().splitlines():
     timestamp,results=json.loads(tests)
@@ -14,7 +20,15 @@ for tests in open("RESULTS.TXT").read().splitlines():
         for mode,result in results[f].items():
             result["timestamp"]=timestamp
             all.setdefault(f,{}).setdefault(mode,[]).append(result)
+            interpreters[mode]=dict(cmd=result["cmd"],version=result["version"])
+print()
+print("With:")
+for mode,info in sorted(interpreters.items()):
+    print(f" - {mode:5s} : {info['version']}")
 
+print()
+print("# Results")
+print("```")
 for file,tests in sorted(all.items()):
     first=list(tests.values())[0][0]
     print(file,":",first["info"])
@@ -27,3 +41,4 @@ for file,tests in sorted(all.items()):
         seconds = statistics.median( times )
         print(f"  - {mode:5s} : {seconds:.03f} ({len(times)}x, {min(times):.03f}><{max(times):.03f})")
     print()
+print("```")
