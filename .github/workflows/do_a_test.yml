@@ -5,9 +5,9 @@ on:
   schedule:
     # every day at 2:00 AM
     - cron:  '0 2 * * *'
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
       
 jobs:
   
