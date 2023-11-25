@@ -14,7 +14,7 @@ impl NumSet {
         Self([true; 9])
     }
 
-    fn iter<'a>(&'a self) -> impl 'a + Iterator<Item = u8> {
+    fn iter(&self) -> impl '_ + Iterator<Item = u8> {
         self.0
             .iter()
             .enumerate()
@@ -40,12 +40,12 @@ impl<T: IntoIterator<Item = u8>> SubAssign<T> for NumSet {
 
 /// A Set intended to contain every hole inside the sudoku board.
 struct SpaceSet {
-    data: [usize; 81],
+    data: [u8; 81],
     len: usize,
 }
 
-impl FromIterator<usize> for SpaceSet {
-    fn from_iter<T: IntoIterator<Item = usize>>(iter: T) -> Self {
+impl FromIterator<u8> for SpaceSet {
+    fn from_iter<T: IntoIterator<Item = u8>>(iter: T) -> Self {
         let mut out = Self::empty();
         for n in iter {
             out.insert(n);
@@ -62,8 +62,8 @@ impl SpaceSet {
         }
     }
 
-    fn insert(&mut self, item: usize) {
-        self.data[self.len as usize] = item;
+    fn insert(&mut self, item: u8) {
+        self.data[self.len] = item;
         self.len += 1;
     }
 
@@ -72,8 +72,8 @@ impl SpaceSet {
         self.data[index] = self.data[self.len];
     }
 
-    fn iter<'a>(&'a self) -> impl 'a + Iterator<Item = usize> {
-        self.data[..self.len as usize].iter().copied()
+    fn iter(&self) -> impl '_ + Iterator<Item = u8> {
+        self.data[..self.len].iter().copied()
     }
 
     /// creates a new SpaceSet to track all the holes in the grid
@@ -81,17 +81,17 @@ impl SpaceSet {
         grid.data
             .iter()
             .enumerate()
-            .filter_map(|(i, n)| (*n == Grid::EMPTY).then_some(i))
+            .filter_map(|(i, n)| (*n == Grid::EMPTY).then_some(i as u8))
             .collect()
     }
 
     // NOTE: this is quite heavily coupled to the implementation details of Grid.
     // i could make it as generic as Iterator::min_by_key, but it is not necessary.
     /// finds a tile in the grid with the fewest possible outcomes
-    fn pop_min(&mut self, grid: &Grid) -> Option<(usize, NumSet)> {
+    fn pop_min(&mut self, grid: &Grid) -> Option<(u8, NumSet)> {
         let (i, out) = self
             .iter()
-            .map(|space| (space, grid.free(space % 9, space / 9)))
+            .map(|space| (space, grid.free(space as usize % 9, space as usize / 9)))
             .enumerate()
             .min_by_key(|(_i, (_space, num_set))| num_set.len())?;
         self.remove(i);
@@ -137,7 +137,7 @@ impl Grid {
     const ZERO_IDX: u8 = b'1';
 
     /// returns the values of all tiles in the block that a tile belongs to
-    fn sqr<'a>(&'a self, x: usize, y: usize) -> impl 'a + Iterator<Item = u8> {
+    fn sqr(&self, x: usize, y: usize) -> impl '_ + Iterator<Item = u8> {
         let x = (x / 3) * 3;
         let y = (y / 3) * 3;
         let i = y * 9 + x;
@@ -149,12 +149,12 @@ impl Grid {
     }
 
     /// returns the values of all tiles in the column that a tile belongs to
-    fn col<'a>(&'a self, x: usize) -> impl 'a + Iterator<Item = u8> {
+    fn col(&self, x: usize) -> impl '_ + Iterator<Item = u8> {
         (0..9).map(move |y| self.data[x + y * 9])
     }
 
     /// returns the values of all tiles in the row that a tile belongs to
-    fn row<'a>(&'a self, y: usize) -> impl 'a + Iterator<Item = u8> {
+    fn row(&self, y: usize) -> impl '_ + Iterator<Item = u8> {
         self.data[y * 9..y * 9 + 9].iter().copied()
     }
 
@@ -168,15 +168,15 @@ impl Grid {
     }
 
     fn resolve_inner(&mut self, spaces: &mut SpaceSet) -> bool {
-        let Some((i, set)) = spaces.pop_min(&self) else {
+        let Some((i, set)) = spaces.pop_min(self) else {
             return true;
         };
         for elem in set.iter() {
-            self.data[i] = elem;
+            self.data[i as usize] = elem;
             if self.resolve_inner(spaces) {
                 return true;
             }
-            self.data[i] = Grid::EMPTY;
+            self.data[i as usize] = Grid::EMPTY;
         }
         spaces.insert(i);
         false
@@ -185,7 +185,7 @@ impl Grid {
     /// attempts to solve the board through mutation, and returns true if it is solved
     /// returns false if it is unsolvable, and i believe it returns to its original state as well
     fn resolve(&mut self) -> bool {
-        let mut spaces = SpaceSet::find_all(&self);
+        let mut spaces = SpaceSet::find_all(self);
         self.resolve_inner(&mut spaces)
     }
 }
