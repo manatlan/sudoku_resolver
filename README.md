@@ -87,14 +87,14 @@ The 1/1 implementations of the py version, in each language (using strings)
 The same algo, but with specialized types/structures for the language (to speed up things)
 
 ```
- ./sudoku_specialized.mojo : the simple algo, with specialized mojo-types (100grids)
-  - mojo  : 0.92 seconds (37x, 0.91><1.07)
+./sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
+  - mojo  : 0.915 seconds (23x, 0.911><0.963)
 
- ./sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
-  - mojo  : 0.36 seconds (34x, 0.35><0.47)
+./sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
+  - mojo  : 0.361 seconds (21x, 0.350><0.392)
 
-  ./sudoku_specialized.rs : the simple algo, with specialized types (100grids)
-  - rust  : 0.692 seconds (10x, 0.684><0.729)
+./sudoku_specialized.rs : the simple algo, with specialized types (100grids)
+  - rust  : 0.688 seconds (34x, 0.681><0.785)
 
 ```
 
@@ -112,6 +112,10 @@ $ ./make.py stats
 (repeat the `./make.py .` to get accurate results)
 
 see command line [make.py](make.md)
+
+## Auto tests on github host
+
+All nights: a github's action automatize the tests, and produce results in [Results Page](RESULTS.md).
 
 ## OPTIMIZED algo
 
