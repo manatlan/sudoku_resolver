@@ -1,10 +1,15 @@
 #!/usr/bin/rustc -C opt-level=3 -C target-cpu=native experiments/sudoku_redstoneboi.rs -o exe && ./exe
+
+//INFO: using strings (but specialized charset & mutable resolv'str) (100grids)
+
 // from https://www.reddit.com/r/rust/comments/183ex3i/need_help_to_make_a_rust_algo_faster/
 // from https://gist.github.com/raffimolero/0cc7f282cf6795d8a8ff1cb69d51d6d0 **REDSTONEBOI**
 
 // from ./sudoku.rs base but :
 // "A HashSet of 10 characters is insanely inefficient for the task at hand. It could very well just be an array of 10 bools. I created a new type for this and it dropped the runtime from 44s avg to 17s. I then changed col, row, sqr to return impl 'a + Iterator<Item = char> and removed as many collects as possible to get rid of a bunch of allocations. Then I changed resolv to make only one clone of the given String, and keep mutating it back and forth instead of using format!() which made way too many allocations."
 // 38s -> 8s
+
+
 use std::{fs, ops::Neg};
 
 #[derive(Default)]
