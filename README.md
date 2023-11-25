@@ -107,7 +107,7 @@ $ cd sudoku_resolver
 $ chmod +x make.py
 $ ./make.py .
 ...(processing)...
-$ ./make.py hstats
+$ ./make.py stats
 ```
 (repeat the `./make.py .` to get accurate results)
 
