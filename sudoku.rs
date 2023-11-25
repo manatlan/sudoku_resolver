@@ -7,35 +7,40 @@ use std::{collections::HashSet, fs};
 // Using UTF-8 will slow it down among other things mentioned.
 // see https://www.reddit.com/r/rust/comments/183ex3i/comment/kapb8sj/?utm_source=share&utm_medium=web2x&context=3
 
-fn sqr(g: &[u8], x: usize, y: usize) -> Vec<u8> {
+fn sqr(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
     let x = (x / 3) * 3;
     let y = (y / 3) * 3;
-    let i = y * 9 + x;
-    [&g[i..i + 3], &g[i + 9..i + 9 + 3], &g[i + 18..i + 18 + 3]].concat()
+    [
+        g[y * 9 + x..y * 9 + x + 3].iter().copied(),
+        g[y * 9 + x + 9..y * 9 + x + 12].iter().copied(),
+        g[y * 9 + x + 18..y * 9 + x + 21].iter().copied(),
+    ]
+    .into_iter()
+    .flatten()
 }
 
-fn col(g: &[u8], x: usize) -> Vec<u8> {
-    (0..9).map(|y| g[x + y * 9]).collect()
+fn col(g: &[u8], x: usize) -> impl Iterator<Item = u8> + '_ {
+    (0..9).map(move |y| g[x + y * 9])
 }
 
-fn row(g: &[u8], y: usize) -> &[u8] {
-    &g[y * 9..y * 9 + 9]
+fn row(g: &[u8], y: usize) -> impl Iterator<Item = u8> + '_ {
+    g[y * 9..y * 9 + 9].iter().copied()
 }
 
-fn freeset(g: &HashSet<u8>) -> Vec<u8> {
-    let all_digits: HashSet<u8> = b"123456789".iter().copied().collect();
-    all_digits.difference(g).copied().collect()
+fn freeset(g: impl Iterator<Item = u8>) -> HashSet<u8> {
+    let mut all_digits: HashSet<u8> = b"123456789".iter().copied().collect();
+    for digit in g {
+        all_digits.remove(&digit);
+    }
+    all_digits
 }
 
-fn free(g: &[u8], x: usize, y: usize) -> Vec<u8> {
+fn free(g: &[u8], x: usize, y: usize) -> HashSet<u8> {
     let row_bytes = row(g, y);
     let col_bytes = col(g, x);
     let sqr_bytes = sqr(g, x, y);
-    let mut all_bytes: HashSet<u8> = HashSet::new();
-    all_bytes.extend(row_bytes.iter());
-    all_bytes.extend(col_bytes.iter());
-    all_bytes.extend(sqr_bytes.iter());
-    freeset(&all_bytes)
+
+    freeset(row_bytes.chain(col_bytes).chain(sqr_bytes))
 }
 
 fn resolv(g: &[u8]) -> Option<Vec<u8>> {
