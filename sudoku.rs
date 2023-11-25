@@ -32,7 +32,7 @@ fn row(g: &str, y: usize) -> String {
 }
 
 fn freeset(g: &str) -> HashSet<char> {
-    let all_digits: HashSet<u8> = b"123456789".iter().collect();
+    let all_digits: HashSet<char> = "123456789".chars().collect();
     let s: HashSet<char> = g.chars().collect();
     all_digits.difference(&s).cloned().collect()
 }
