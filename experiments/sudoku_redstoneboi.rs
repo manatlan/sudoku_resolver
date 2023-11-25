@@ -6,8 +6,8 @@
 // from https://gist.github.com/raffimolero/0cc7f282cf6795d8a8ff1cb69d51d6d0 **REDSTONEBOI**
 
 // from ./sudoku.rs base but :
-// "A HashSet of 10 characters is insanely inefficient for the task at hand. It could very well just be an array of 10 bools. I created a new type for this and it dropped the runtime from 44s avg to 17s. I then changed col, row, sqr to return impl 'a + Iterator<Item = char> and removed as many collects as possible to get rid of a bunch of allocations. Then I changed resolv to make only one clone of the given String, and keep mutating it back and forth instead of using format!() which made way too many allocations."
-// 38s -> 5.6s
+// https://www.reddit.com/r/rust/comments/183ex3i/comment/kaoknx8/?utm_source=share&utm_medium=web2x&context=3
+// 38s -> 1.6s
 
 use std::{fs, ops::SubAssign};
 
@@ -48,7 +48,10 @@ fn sqr<'a>(g: &'a str, x: usize, y: usize) -> impl 'a + Iterator<Item = char> {
 }
 
 fn col<'a>(g: &'a str, x: usize) -> impl 'a + Iterator<Item = char> {
-    (0..9).map(move |y| g.chars().skip(x + y * 9).next().unwrap())
+    (0..9).map(move |y| {
+        let i = x + y * 9;
+        g[i..i + 1].chars().next().unwrap()
+    })
 }
 
 fn row<'a>(g: &'a str, y: usize) -> impl 'a + Iterator<Item = char> {
@@ -97,3 +100,4 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     println!("Took: {} s", (t.elapsed().as_millis() as f32) / 1000.0);
     Ok(())
 }
+
