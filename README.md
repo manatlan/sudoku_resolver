@@ -93,8 +93,8 @@ The same algo, but with specialized types/structures for the language (to speed 
  ./sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
   - mojo  : 0.36 seconds (34x, 0.35><0.47)
 
- ./sudoku_specialized.rs : the simple algo, with ultra-specialized types/api (100grids)
-  - rust  : 0.93 seconds (30x, 0.93><1.18)
+  ./sudoku_specialized.rs : the simple algo, with specialized types (100grids)
+  - rust  : 0.692 seconds (10x, 0.684><0.729)
 
 ```
 
