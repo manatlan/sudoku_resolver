@@ -11,11 +11,7 @@ fn sqr(g: &str, x: usize, y: usize) -> String {
     let x = (x / 3) * 3;
     let y = (y / 3) * 3;
     let i = y * 9 + x;
-    g[i..i + 3]
-        .chars()
-        .chain(g[i + 9..i + 9 + 3].chars())
-        .chain(g[i + 18..i + 18 + 3].chars())
-        .collect()
+    [&g[i..i + 3], &g[i + 9..i + 9 + 3], &g[i + 18..i + 18 + 3]].concat()
 }
 
 fn col(g: &str, x: usize) -> String {
@@ -27,17 +23,16 @@ fn col(g: &str, x: usize) -> String {
         .collect()
 }
 
-fn row(g: &str, y: usize) -> String {
-    g[y * 9..y * 9 + 9].chars().collect()
+fn row(g: &str, y: usize) -> &str {
+    &g[y * 9..y * 9 + 9]
 }
 
-fn freeset(g: &str) -> HashSet<char> {
+fn freeset(g: &HashSet<char>) -> String {
     let all_digits: HashSet<char> = "123456789".chars().collect();
-    let s: HashSet<char> = g.chars().collect();
-    all_digits.difference(&s).cloned().collect()
+    all_digits.difference(g).cloned().collect()
 }
 
-fn free(g: &str, x: usize, y: usize) -> HashSet<char> {
+fn free(g: &str, x: usize, y: usize) -> String {
     let row_chars = row(g, y);
     let col_chars = col(g, x);
     let sqr_chars = sqr(g, x, y);
@@ -45,12 +40,12 @@ fn free(g: &str, x: usize, y: usize) -> HashSet<char> {
     all_chars.extend(row_chars.chars());
     all_chars.extend(col_chars.chars());
     all_chars.extend(sqr_chars.chars());
-    freeset(&all_chars.iter().collect::<String>())
+    freeset(&all_chars)
 }
 
 fn resolv(g: String) -> Option<String> {
     if let Some(i) = g.find('.') {
-        for elem in free(&g, i % 9, i / 9) {
+        for elem in free(&g, i % 9, i / 9).chars() {
             if let Some(ng) = resolv(format!("{}{}{}", &g[..i], elem, &g[i + 1..])) {
                 return Some(ng);
             }
