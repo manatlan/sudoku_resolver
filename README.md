@@ -67,7 +67,7 @@ The 1/1 implementations of the py version, in each language (using strings)
   - nim   : 9.13 seconds (14x, 8.88><9.29)
 
  ./sudoku.rs : the simple algo, with strings (AI translation from java one) (100grids)
-  - rust  : 38.01 seconds (11x, 27.18><47.40)
+  - rust  : 30.995 seconds (12x, 24.404><38.890)
 
  ./sudoku.py : the simple algo, with strings (100grids)
   - codon : 20.25 seconds (14x, 20.08><21.90)
