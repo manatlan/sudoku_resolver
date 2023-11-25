@@ -2,6 +2,11 @@
 //INFO: the simple algo, with strings (AI translation from java one) (100grids)
 use std::{collections::HashSet, fs};
 
+// TIP from u/Feeling-Departure-4 :
+// This is all ASCII, so you can use as_bytes(), then you iterate using a simple iter() instead of chars(). For byte characters and strings, just use a prefix: b"0123456789" or b'.'. The function signature will use &[u8] instead of &str.
+// Using UTF-8 will slow it down among other things mentioned.
+// see https://www.reddit.com/r/rust/comments/183ex3i/comment/kapb8sj/?utm_source=share&utm_medium=web2x&context=3
+
 fn sqr(g: &str, x: usize, y: usize) -> String {
     let x = (x / 3) * 3;
     let y = (y / 3) * 3;
@@ -27,7 +32,7 @@ fn row(g: &str, y: usize) -> String {
 }
 
 fn freeset(g: &str) -> HashSet<char> {
-    let all_digits: HashSet<char> = "123456789".chars().collect();
+    let all_digits: HashSet<u8> = b"123456789".iter().collect();
     let s: HashSet<char> = g.chars().collect();
     all_digits.difference(&s).cloned().collect()
 }
