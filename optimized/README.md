@@ -55,7 +55,10 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
   - mojo  : 1.22 seconds (19x, 1.18><1.41)
 
  optimized/sudoku_specialized.rs : the optimized algo, with ultra-specialized types/api (1956grids)
-  - rust  : 3.73 seconds (20x, 3.71><4.04)
+  - rust  : 3.920 seconds (17x, 3.750><9.999)
+
+ optimized/sudoku_specialized2.rs : the optimized algo, with specialized types (and readable) (1956grids)
+  - rust  : 7.155 seconds (3x, 7.147><7.427)
 
 ```
 
