@@ -92,13 +92,14 @@ impl Grid {
         all_chars
     }
 
-    fn resolv_inner(&mut self) -> bool {
-        let Some(i) = self.data.iter().position(|c| *c == EMPTY) else {
+    fn resolv_inner(&mut self, pos: usize) -> bool {
+        let Some(mut i) = self.data[pos..].iter().position(|c| *c == EMPTY) else {
             return true;
         };
+        i += pos;
         for elem in self.free(i % 9, i / 9).iter() {
             self.data[i] = elem;
-            if self.resolv_inner() {
+            if self.resolv_inner(i) {
                 return true;
             }
             self.data[i] = EMPTY;
@@ -109,7 +110,7 @@ impl Grid {
 
 fn resolv(g: &str) -> Option<String> {
     let mut g = g.parse::<Grid>().unwrap();
-    g.resolv_inner().then(|| g.to_string())
+    g.resolv_inner(0).then(|| g.to_string())
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
