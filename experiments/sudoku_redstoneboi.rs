@@ -7,58 +7,44 @@
 
 // from ./sudoku.rs base but :
 // "A HashSet of 10 characters is insanely inefficient for the task at hand. It could very well just be an array of 10 bools. I created a new type for this and it dropped the runtime from 44s avg to 17s. I then changed col, row, sqr to return impl 'a + Iterator<Item = char> and removed as many collects as possible to get rid of a bunch of allocations. Then I changed resolv to make only one clone of the given String, and keep mutating it back and forth instead of using format!() which made way too many allocations."
-// 38s -> 8s
+// 38s -> 5.6s
 
+use std::{fs, ops::SubAssign};
 
-use std::{fs, ops::Neg};
-
-#[derive(Default)]
-struct CharSet([bool; 10]);
+struct CharSet([bool; 9]);
 
 impl CharSet {
-    fn new() -> Self {
-        Self::default()
-    }
-
-    fn extend(&mut self, iter: impl IntoIterator<Item = char>) {
-        for c in iter {
-            let i = if c == '.' { 0 } else { c as u8 - b'0' };
-            self.0[i as usize] = true;
-        }
+    fn all() -> Self {
+        Self([true; 9])
     }
 
     fn iter<'a>(&'a self) -> impl 'a + Iterator<Item = char> {
-        self.0.iter().enumerate().filter_map(|(i, v)| {
-            v.then(|| {
-                if i == 0 {
-                    '.'
-                } else {
-                    (b'0' + i as u8) as char
-                }
-            })
-        })
+        self.0
+            .iter()
+            .enumerate()
+            .filter_map(|(i, v)| v.then(|| (b'1' + i as u8) as char))
     }
 }
 
-impl Neg for CharSet {
-    type Output = Self;
-
-    fn neg(mut self) -> Self::Output {
-        for c in self.0.iter_mut() {
-            *c ^= true;
+impl<T: IntoIterator<Item = char>> SubAssign<T> for CharSet {
+    fn sub_assign(&mut self, rhs: T) {
+        for c in rhs {
+            if c == '.' {
+                continue;
+            }
+            self.0[(c as u8 - b'1') as usize] = false;
         }
-        self
     }
 }
 
 fn sqr<'a>(g: &'a str, x: usize, y: usize) -> impl 'a + Iterator<Item = char> {
     let x = (x / 3) * 3;
     let y = (y / 3) * 3;
-    g.chars()
-        .skip(y * 9 + x)
-        .take(3)
-        .chain(g.chars().skip(y * 9 + x + 9).take(3))
-        .chain(g.chars().skip(y * 9 + x + 18).take(3))
+    let i = y * 9 + x;
+    g[i..i + 3]
+        .chars()
+        .chain(g[i + 9..i + 9 + 3].chars())
+        .chain(g[i + 18..i + 18 + 3].chars())
 }
 
 fn col<'a>(g: &'a str, x: usize) -> impl 'a + Iterator<Item = char> {
@@ -66,34 +52,28 @@ fn col<'a>(g: &'a str, x: usize) -> impl 'a + Iterator<Item = char> {
 }
 
 fn row<'a>(g: &'a str, y: usize) -> impl 'a + Iterator<Item = char> {
-    g.chars().skip(y * 9).take(9)
+    g[y * 9..y * 9 + 9].chars()
 }
 
 fn free(g: &str, x: usize, y: usize) -> CharSet {
-    let row_chars = row(g, y);
-    let col_chars = col(g, x);
-    let sqr_chars = sqr(g, x, y);
-    let mut all_chars: CharSet = CharSet::new();
-    all_chars.extend(row_chars);
-    all_chars.extend(col_chars);
-    all_chars.extend(sqr_chars);
-    -all_chars
+    let mut all_chars: CharSet = CharSet::all();
+    all_chars -= row(g, y);
+    all_chars -= col(g, x);
+    all_chars -= sqr(g, x, y);
+    all_chars
 }
 
 fn resolv_inner(g: &mut String) -> bool {
-    if let Some(i) = g.find('.') {
-        for elem in free(g, i % 9, i / 9).iter() {
-            let mut buf = [0; 4];
-            g.replace_range(i..i + 1, elem.encode_utf8(&mut buf));
-            if resolv_inner(g) {
-                return true;
-            }
-            g.replace_range(i..i + 1, ".");
+    let Some(i) = g.find('.') else { return true };
+    for elem in free(g, i % 9, i / 9).iter() {
+        let mut buf = [0; 1];
+        g.replace_range(i..i + 1, elem.encode_utf8(&mut buf));
+        if resolv_inner(g) {
+            return true;
         }
-        false
-    } else {
-        true
+        g.replace_range(i..i + 1, ".");
     }
+    false
 }
 
 fn resolv(g: &str) -> Option<String> {
