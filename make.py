@@ -243,7 +243,7 @@ def stats(files:list, opts:list):
 
 def jstats(files:list, opts:list):
     stats={}
-    for file in files:
+    for file in sorted(files):
         folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
         results = sorted(glob.glob(f"{folder}/.outputs/{filename}*"))
         if results:
