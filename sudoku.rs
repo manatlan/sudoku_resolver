@@ -7,57 +7,54 @@ use std::{collections::HashSet, fs};
 // Using UTF-8 will slow it down among other things mentioned.
 // see https://www.reddit.com/r/rust/comments/183ex3i/comment/kapb8sj/?utm_source=share&utm_medium=web2x&context=3
 
-fn sqr(g: &str, x: usize, y: usize) -> String {
+fn sqr(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
     let x = (x / 3) * 3;
     let y = (y / 3) * 3;
-    let i = y * 9 + x;
-    g[i..i + 3]
-        .chars()
-        .chain(g[i + 9..i + 9 + 3].chars())
-        .chain(g[i + 18..i + 18 + 3].chars())
-        .collect()
+    IntoIterator::into_iter([
+        &g[y * 9 + x..y * 9 + x + 3],
+        &g[y * 9 + x + 9..y * 9 + x + 12],
+        &g[y * 9 + x + 18..y * 9 + x + 21],
+    ])
+    .flatten()
+    .cloned()
 }
 
-fn col(g: &str, x: usize) -> String {
-    (0..9)
-        .map(move |y| {
-            let i = x + y * 9;
-            g[i..i + 1].chars().next().unwrap()
-        })
-        .collect()
+fn col(g: &[u8], x: usize) -> impl Iterator<Item = u8> + '_ {
+    (0..9).map(move |y| g[x + y * 9])
 }
 
-fn row(g: &str, y: usize) -> String {
-    g[y * 9..y * 9 + 9].chars().collect()
+fn row(g: &[u8], y: usize) -> impl Iterator<Item = u8> + '_ {
+    g[y * 9..y * 9 + 9].iter().copied()
 }
 
-fn freeset(g: &str) -> HashSet<char> {
-    let all_digits: HashSet<char> = "123456789".chars().collect();
-    let s: HashSet<char> = g.chars().collect();
-    all_digits.difference(&s).cloned().collect()
+fn freeset(g: impl Iterator<Item = u8>) -> HashSet<u8> {
+    let mut all_digits: HashSet<u8> = b"123456789".iter().copied().collect();
+    for digit in g {
+        all_digits.remove(&digit);
+    }
+    all_digits
 }
 
-fn free(g: &str, x: usize, y: usize) -> HashSet<char> {
-    let row_chars = row(g, y);
-    let col_chars = col(g, x);
-    let sqr_chars = sqr(g, x, y);
-    let mut all_chars: HashSet<char> = HashSet::new();
-    all_chars.extend(row_chars.chars());
-    all_chars.extend(col_chars.chars());
-    all_chars.extend(sqr_chars.chars());
-    freeset(&all_chars.iter().collect::<String>())
+fn free(g: &[u8], x: usize, y: usize) -> HashSet<u8> {
+    let row_bytes = row(g, y);
+    let col_bytes = col(g, x);
+    let sqr_bytes = sqr(g, x, y);
+
+    freeset(row_bytes.chain(col_bytes).chain(sqr_bytes))
 }
 
-fn resolv(g: String) -> Option<String> {
-    if let Some(i) = g.find('.') {
-        for elem in free(&g, i % 9, i / 9) {
-            if let Some(ng) = resolv(format!("{}{}{}", &g[..i], elem, &g[i + 1..])) {
+fn resolv(g: &[u8]) -> Option<Vec<u8>> {
+    if let Some(i) = g.iter().position(|&c| c == b'.') {
+        for elem in free(g, i % 9, i / 9) {
+            let mut new_board = g.to_owned();
+            new_board[i] = elem;
+            if let Some(ng) = resolv(&new_board) {
                 return Some(ng);
             }
         }
         None
     } else {
-        Some(g.to_string())
+        Some(g.to_owned())
     }
 }
 fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -66,11 +63,11 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let t = std::time::Instant::now();
     for g in gg {
-        if let Some(rg) = resolv(g.to_owned()) {
-            if rg.chars().any(|c| c == '.') {
+        if let Some(rg) = resolv(g.as_bytes()) {
+            if rg.iter().any(|c| *c == b'.') {
                 panic!("not resolved ?!");
             }
-            println!("{}", rg);
+            println!("{}", std::str::from_utf8(&rg)?);
         }
     }
     println!("Took: {} s", (t.elapsed().as_millis() as f32) / 1000.0);
