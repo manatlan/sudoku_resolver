@@ -10,13 +10,13 @@ use std::{collections::HashSet, fs};
 fn sqr(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
     let x = (x / 3) * 3;
     let y = (y / 3) * 3;
-    [
-        g[y * 9 + x..y * 9 + x + 3].iter().copied(),
-        g[y * 9 + x + 9..y * 9 + x + 12].iter().copied(),
-        g[y * 9 + x + 18..y * 9 + x + 21].iter().copied(),
-    ]
-    .into_iter()
+    IntoIterator::into_iter([
+        &g[y * 9 + x..y * 9 + x + 3],
+        &g[y * 9 + x + 9..y * 9 + x + 12],
+        &g[y * 9 + x + 18..y * 9 + x + 21],
+    ])
     .flatten()
+    .cloned()
 }
 
 fn col(g: &[u8], x: usize) -> impl Iterator<Item = u8> + '_ {
