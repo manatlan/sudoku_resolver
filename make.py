@@ -118,6 +118,13 @@ def help():
         print(f" --{k:5s} : {v['v']}")
         print(f"           {subcmd(v['c'],v['e'],'<file>')}")
 
+
+def check_output(stdout:str) -> int:
+    """return the nb of valid grid found, if all ok"""
+    grids=re.findall(r"[1-9]{81}",stdout)
+    ok=all( [all( [i.count(x)==9 for x in "123456789"] ) for i in grids])
+    return len(grids) if ok else 0
+    
 #########################################################################
 ## run/batch methods
 #########################################################################
