@@ -151,9 +151,13 @@ impl Grid {
         let x = (x / 3) * 3;
         let y = (y / 3) * 3;
         let i = y * 9 + x;
-        NumSet::from_iter(self.data[i..i + 3].iter().copied())
-            + NumSet::from_iter(self.data[i + 9..i + 12].iter().copied())
-            + NumSet::from_iter(self.data[i + 18..i + 21].iter().copied())
+        NumSet::from_iter(
+            self.data[i..i + 3]
+                .iter()
+                .chain(self.data[i + 9..i + 12].iter())
+                .chain(self.data[i + 18..i + 21].iter())
+                .copied(),
+        )
     }
 
     fn col(&self, x: usize) -> NumSet {
