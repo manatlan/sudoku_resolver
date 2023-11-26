@@ -1,11 +1,17 @@
 #!./make.py
-//INFO: the simple algo, with strings (AI translation from java one) (100grids)
-use std::{collections::HashSet, fs};
+//INFO: the simple algo, with Strings (as byte[]) (100grids)
 
-// TIP from u/Feeling-Departure-4 :
-// This is all ASCII, so you can use as_bytes(), then you iterate using a simple iter() instead of chars(). For byte characters and strings, just use a prefix: b"0123456789" or b'.'. The function signature will use &[u8] instead of &str.
-// Using UTF-8 will slow it down among other things mentioned.
-// see https://www.reddit.com/r/rust/comments/183ex3i/comment/kapb8sj/?utm_source=share&utm_medium=web2x&context=3
+// This version doesn't use "Strings", but "byte[]", because :
+// The weapons are not the same because other languages do not have UTF-8 encoded
+// strings. So Rust is at huge disadvantage here for no reason. String operations 
+// that are constant time in other languages take linear time in Rust because it 
+// tries to handle the complexity of UTF correctly. (https://www.reddit.com/user/ondrejdanek/)
+// https://www.reddit.com/r/rust/comments/183ex3i/comment/kapmmub/?utm_source=share&utm_medium=web2x&context=3
+
+// the original with string is here "./experiments/sudoku_original_with_strings_only.rs" (~30s)
+// thanks @noamtashma for the fix !
+
+use std::{collections::HashSet, fs};
 
 fn sqr(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
     let x = (x / 3) * 3;
