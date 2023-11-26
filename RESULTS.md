@@ -1,8 +1,8 @@
 # Host infos
 ```
 PLATFORM : x86_64/Linux-6.2.0-1016-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
-MEMINFO  : 16365020 kB
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+MEMINFO  : 16365016 kB
 ```
 
 With:
@@ -19,58 +19,58 @@ With:
 # Results
 ```
 ./sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
-  - gcc   : 2.832 (1x, 2.832><2.832)
+  - gcc   : 2.705 (2x, 2.578><2.832)
 
 ./sudoku.java : the simple algo, with strings (100grids)
-  - java  : 20.707 (1x, 20.707><20.707)
+  - java  : 19.085 (2x, 17.464><20.707)
 
 ./sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
-  - node  : 34.160 (1x, 34.160><34.160)
+  - node  : 32.908 (2x, 31.657><34.160)
 
 ./sudoku.mojo : the simple algo, with strings (100grids)
-  - mojo  : 16.032 (1x, 16.032><16.032)
+  - mojo  : 15.539 (2x, 15.046><16.032)
 
 ./sudoku.nim : the simple algo, with strings (100grids)
-  - nim   : 9.114 (1x, 9.114><9.114)
+  - nim   : 8.719 (2x, 8.324><9.114)
 
 ./sudoku.py : the simple algo, with strings (100grids)
-  - codon : 15.924 (1x, 15.924><15.924)
-  - py3   : 36.911 (1x, 36.911><36.911)
-  - pypy  : 14.484 (1x, 14.484><14.484)
+  - codon : 15.538 (2x, 15.153><15.924)
+  - py3   : 32.718 (2x, 28.524><36.911)
+  - pypy  : 13.905 (2x, 13.327><14.484)
 
 ./sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
-  - rust  : 8.498 (1x, 8.498><8.498)
+  - rust  : 8.988 (2x, 8.498><9.479)
 
 ./sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
-  - mojo  : 0.738 (1x, 0.738><0.738)
+  - mojo  : 0.713 (2x, 0.688><0.738)
 
 ./sudoku_specialized.rs : the simple algo, with specialized types (100grids)
-  - rust  : 0.593 (1x, 0.593><0.593)
+  - rust  : 0.568 (2x, 0.543><0.593)
 
 ./sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
-  - mojo  : 0.376 (1x, 0.376><0.376)
+  - mojo  : 0.370 (2x, 0.365><0.376)
 
 optimized/sudoku.java : the optimized algo, with strings (1956grids)
-  - java  : 92.164 (1x, 92.164><92.164)
+  - java  : 89.350 (2x, 86.536><92.164)
 
 optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
-  - mojo  : 55.584 (1x, 55.584><55.584)
+  - mojo  : 53.451 (2x, 51.318><55.584)
 
 optimized/sudoku.py : the optimized algo, with strings (1956grids)
-  - codon : 74.405 (1x, 74.405><74.405)
-  - py3   : 151.261 (1x, 151.261><151.261)
-  - pypy  : 88.126 (1x, 88.126><88.126)
+  - codon : 72.093 (2x, 69.781><74.405)
+  - py3   : 140.248 (2x, 129.234><151.261)
+  - pypy  : 83.134 (2x, 78.142><88.126)
 
 optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
-  - mojo  : 1.734 (1x, 1.734><1.734)
+  - mojo  : 1.676 (2x, 1.618><1.734)
 
 optimized/sudoku_specialized.rs : the optimized algo, with ultra-specialized types/api (1956grids)
-  - rust  : 2.576 (1x, 2.576><2.576)
+  - rust  : 2.496 (2x, 2.416><2.576)
 
 optimized/sudoku_specialized2.rs : the optimized algo, with specialized types (and readable) (1956grids)
-  - rust  : 5.780 (1x, 5.780><5.780)
+  - rust  : 5.583 (2x, 5.387><5.780)
 
 optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
-  - mojo  : 0.876 (1x, 0.876><0.876)
+  - mojo  : 0.865 (2x, 0.854><0.876)
 
 ```
