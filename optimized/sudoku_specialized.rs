@@ -1,14 +1,14 @@
 #!./make.py
-// optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
-// further optimized by https://github.com/raffimolero/
+// from @raffimolero / redstoneboi https://www.reddit.com/r/rust/comments/183ex3i/comment/kaoxj74/?context=3
 
-// INFO: the optimized algo, with ultra-specialized types/api (1956 grids)
+//INFO: the optimized algo, with specialized types (and readable) (1956grids)
 
 use std::{
     fmt::{Display, Formatter},
     fs,
     ops::{Add, AddAssign, Sub, SubAssign},
     str::FromStr,
+    iter::FromIterator
 };
 
 #[derive(Clone, Eq, PartialEq)]
