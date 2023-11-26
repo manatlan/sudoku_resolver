@@ -67,15 +67,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let content = fs::read_to_string("grids.txt")?;
     let gg: Vec<&str> = content.lines().take(100).collect();
 
-    let t = std::time::Instant::now();
     for g in gg {
         if let Some(rg) = resolv(g.as_bytes()) {
-            if rg.iter().any(|c| *c == b'.') {
-                panic!("not resolved ?!");
-            }
             println!("{}", std::str::from_utf8(&rg)?);
         }
     }
-    println!("Took: {} s", (t.elapsed().as_millis() as f32) / 1000.0);
     Ok(())
 }

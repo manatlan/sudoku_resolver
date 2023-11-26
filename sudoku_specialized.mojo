@@ -91,8 +91,6 @@ struct Grid:
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()
-    let t=now()
     for i in range(100):
         let g=Grid(buf[i*82:i*82+81])
         print( g.solve() and g.to_string() )
-    print("Took:",(now() - t)/1_000_000_000,"s")

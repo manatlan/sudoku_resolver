@@ -97,23 +97,14 @@ int main() {
         exit(EXIT_FAILURE);
 
     int nb=0;
-    clock_t startTime = clock();
     while ((read = getline(&line, &len, fp)) != -1) {
         if (strchr(line, '\n'))
              line[strcspn(line, "\n")] = '\0';
         char *solution = resolve(line, 0);
-        if (solution == NULL) {
-            printf("not resolved ?!\n");
-        } else {
-            printf("%s\n", solution);
-        }
+        printf("%s\n", solution);
         nb++;
         if(nb>99) break;
     }
-    clock_t endTime = clock();
-
-    float t=((float)endTime - (float)startTime)/1000000;
-    printf("Took: %.6fs\n", t );
 
     fclose(fp);
     if (line)

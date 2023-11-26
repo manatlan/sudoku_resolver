@@ -252,12 +252,10 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     let content = fs::read_to_string("grids.txt")?;
     let gg: Vec<&str> = content.lines().take(1956).collect();
 
-    let t = std::time::Instant::now();
     for line in gg {
         let mut grid: Grid = line.trim().parse().unwrap();
         grid.resolv();
         println!("{} ", grid);
     }
-    println!("Took: {} s", (t.elapsed().as_millis() as f32) / 1000.0);
     Ok(())
 }

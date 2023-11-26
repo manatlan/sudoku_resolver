@@ -87,12 +87,7 @@ class Sudoku {
     public static void main (String[] args) throws Exception{
         final List<String> gg=Files.readAllLines(Paths.get("grids.txt"));
 
-        final long t=System.currentTimeMillis();
-        for(String g: gg) {
-            final String rg=resolv(g);
-            if( !(rg!=null && rg.indexOf(".")<0)) throw new Exception("not resolved ?!");
-            System.out.println(rg);
-        }
-        System.out.println("Took: "+(( System.currentTimeMillis() - t)/1000.0)+"s");
+        for(String g: gg)
+            System.out.println( resolv(g) );
     }
 }

@@ -148,7 +148,7 @@ def batch(files:list, opts:"list|None") -> int:
     else:
         return 0
 
-def create_result(file,lang, output,cmd,version):
+def create_result(file,lang, time,cmd,version):
     folder,file = os.path.dirname(file) or ".",os.path.basename(file)
     dest = f"{folder}/.outputs/{file}&{lang}&0"
 
@@ -160,7 +160,7 @@ def create_result(file,lang, output,cmd,version):
         dest="&".join( [parts[0], parts[1], str( int(parts[2]) + 1)])
 
     with open(dest,"w+") as fid:
-        fid.write( json.dumps( dict(cmd=cmd,version=version,output=output), indent=4 ))
+        fid.write( json.dumps( dict(cmd=cmd,version=version,time=time), indent=4 ))
 
 def run(file:str,lang:str) -> int:
     """ run file 'file' with the defined lang 'lang'"""
@@ -169,17 +169,22 @@ def run(file:str,lang:str) -> int:
     if d:
         cmd=subcmd(d["c"],d["e"],file)
         myprint(f"[{lang}]> {cmd}")
+
+        t=time.monotonic()
         cp=subprocess.run(cmd,shell=True,text=True,capture_output=True)
+        t=time.monotonic() - t
+
         if cp.returncode==0:
-            create_result(file,lang, cp.stdout, cmd, d["v"])
-            
-            lines=cp.stdout.splitlines()
-            myprint( lines[0])
-            myprint( f"... {len(lines)} lines ...")
-            for line in lines[-3:]:
-                print( line )
-            myprint()
-            return 0
+            if check_output(cp.stdout)>=100:
+                print(f"--> OK {t}s")
+                create_result(file,lang, t, cmd, d["v"])
+                return 0
+            else:
+                lines=cp.stdout.splitlines()
+                for line in lines:
+                    print( line )
+                print("!!! BAD RESULT !!!")
+                return -1
         else:
             myprint("ERROR")
             myprint(cp.stdout)
@@ -193,12 +198,6 @@ def run(file:str,lang:str) -> int:
 #########################################################################
 ## stats methods
 #########################################################################
-def getseconds(output:str) -> float:
-    """get seconds in last line of the 'output')"""
-    last_line = output.splitlines()[-1]
-    assert last_line.lower().startswith("took")
-    return float(re.findall( r"[\d\.]+",last_line)[0])
-
 def getinfo(file:str) -> str:
     """get info from the source file 'file'"""
     contents = open(file).read().splitlines()
@@ -224,7 +223,7 @@ def stats(files:list, opts:list):
                 else:
                     _,mode,nb = result.split("&")
                 data=json.load( open(result,"r+") )
-                seconds=getseconds(data["output"])
+                seconds=data["time"]
                 if opts and (mode not in opts): continue
                 bymode.setdefault(mode,[]).append(seconds)
 
@@ -256,7 +255,7 @@ def jstats(files:list, opts:list):
                 else:
                     _,mode,nb = result.split("&")
                 data=json.load( open(result,"r+") )
-                seconds=getseconds(data["output"])
+                seconds=data["time"]
                 if opts and (mode not in opts): continue
                 bymode.setdefault(mode,[]).append(seconds)
 

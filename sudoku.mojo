@@ -41,7 +41,5 @@ fn resolv(g: String) -> String:
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()
-    let t=now()
     for i in range(100):
         print(resolv(buf[i*82:i*82+81]))
-    print("Took:",(now() - t)/1_000_000_000,"s")

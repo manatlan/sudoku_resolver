@@ -72,21 +72,9 @@ class Sudoku {
     static main(args) {
         // Read the Sudoku puzzles from the file
         const puzzles = fs.readFileSync('grids.txt', 'utf-8').split('\n').slice(0, 100);
-
-        // Start the timer
-        const startTime = Date.now();
-
         // Solve each Sudoku puzzle
-        for (const puzzle of puzzles) {
-            const solvedPuzzle = this.resolv(puzzle);
-            if (solvedPuzzle === null || solvedPuzzle.indexOf('.') >= 0) {
-                throw new Error('Sudoku puzzle not solved!');
-            }
-            console.log(solvedPuzzle);
-        }
-
-        // Stop the timer and print the elapsed time
-        console.log('Took: ' + ((Date.now() - startTime)/1000.0) + 's');
+        for (const puzzle of puzzles)
+            console.log(this.resolv(puzzle));
     }
 }
 

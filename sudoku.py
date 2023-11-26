@@ -18,14 +18,5 @@ def resolv(g):
         return g
 ###############################################
 
-import time
-
-gg = [i.strip() for i in open("grids.txt")][:100]
-
-t=time.monotonic()
-for g in gg:
-    rg=resolv(g)
-    assert rg and rg.find(".")<0, "not resolved ?!"
-    print(rg)
-
-print( "Took: ", time.monotonic() - t )
+for g in [i.strip() for i in open("grids.txt")][:100]:
+    print(resolv(g))

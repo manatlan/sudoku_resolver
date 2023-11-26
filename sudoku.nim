@@ -39,8 +39,5 @@ let gg = readFile("grids.txt").splitLines()[0..99]
 
 let t = cpuTime()
 for g in gg:
-    let rg=resolv(g)
-    assert rg!="" and rg.find(".")<0, "not resolved ?!"
-    echo rg
-echo "Took: ", cpuTime() - t
+    echo resolv(g)
 
