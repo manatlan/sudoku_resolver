@@ -10,7 +10,6 @@ which resolve the first 100 grids from g_simples.txt ... in less than 2sec
 it's a lot faster than my version ;-)
 """
 
-from time import now
 from math import sqrt
 
 
@@ -113,10 +112,8 @@ def main():
 
     let buf = open("grids.txt", "r").read()
 
-    let t=now()
     for i in range(100):
         var board = Board[9](buf[i*82:i*82+81])
         board.solve()
         print( board.to_string() )
 
-    print("Took:",(now() - t)/1_000_000_000,"s")

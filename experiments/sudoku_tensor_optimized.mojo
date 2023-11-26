@@ -1,6 +1,5 @@
 #!./make.py
 from tensor import Tensor
-from time import now
 
 #INFO: the optimizes algo, with Tensor (100grids)
 
@@ -131,8 +130,6 @@ struct Grid[dtype: DType = DType.uint8, dim: Int = 9]():
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()
-    let t=now()
     for i in range(100):
         var g=Grid(buf[i*82:i*82+81])
         print( g.solve() and g.to_string())
-    print("Took:",(now() - t)/1_000_000_000,"s")

@@ -175,8 +175,9 @@ def run(file:str,lang:str) -> int:
         t=time.monotonic() - t
 
         if cp.returncode==0:
-            if check_output(cp.stdout)>=100:
-                print(f"--> OK {t}s")
+            nb=check_output(cp.stdout)
+            if nb>=100:
+                print(f"--> OK : {t:.03f}s for {nb} grids")
                 create_result(file,lang, t, cmd, d["v"])
                 return 0
             else:
