@@ -1,131 +1,214 @@
 #!./make.py
 // optimized version by 2e71828 see https://users.rust-lang.org/u/2e71828
+// further optimized by https://github.com/raffimolero/
 
-//INFO: the optimized algo, with ultra-specialized types/api (1956grids)
+// INFO: the optimized algo, with ultra-specialized types/api (1956 grids)
 
-use std::fs;
-use std::fmt::Formatter;
-use std::str::FromStr;
-use std::fmt::Display;
-use std::ops::AddAssign;
-use std::ops::SubAssign;
-use std::ops::Sub;
-use std::ops::Add;
+use std::{
+    fmt::{Display, Formatter},
+    fs,
+    ops::{Add, AddAssign, Sub, SubAssign},
+    str::FromStr,
+};
 
-#[derive(Clone,Eq,PartialEq)]
-struct Grid([Option<u8>;81]);
+#[derive(Clone, Eq, PartialEq)]
+struct Grid {
+    data: [NumSet; 81],
+    spaces: SpaceSet,
+}
 
-#[derive(Copy,Clone,Eq,PartialEq)]
-struct CandidateSet(u16);
+#[derive(Copy, Clone, Eq, PartialEq)]
+struct NumSet(u16);
 
-impl CandidateSet {
-    fn all()->Self { CandidateSet(0x1ff) }
-    fn empty()->Self { CandidateSet(0) }
-    fn singleton(val:u8)->Self { CandidateSet(1 << val) }
-    fn from_iter(it: impl Iterator<Item=u8>)->Self {
-        let mut ret = Self::empty();
-        for i in it {
-            ret += Self::singleton(i);
-        }
-        ret
+impl NumSet {
+    const ALL: Self = Self(0b_111_111_111);
+    const EMPTY: Self = Self(0);
+
+    fn one_hot(val: u8) -> Self {
+        NumSet(1 << val)
     }
-    fn len(self)->u32 { self.0.count_ones() }
+
+    fn val(self) -> u8 {
+        self.0.trailing_zeros() as u8
+    }
+
+    fn len(self) -> u32 {
+        self.0.count_ones()
+    }
 }
 
-impl Add for CandidateSet {
+impl FromIterator<Self> for NumSet {
+    fn from_iter<T: IntoIterator<Item = Self>>(iter: T) -> Self {
+        iter.into_iter()
+            .reduce(|a, b| a + b)
+            .expect("iterator must have more than 1 value")
+    }
+}
+
+impl Add for NumSet {
     type Output = Self;
-    fn add(self, rhs: Self)->Self { CandidateSet(self.0 | rhs.0) }
+    fn add(self, rhs: Self) -> Self {
+        NumSet(self.0 | rhs.0)
+    }
 }
 
-impl AddAssign for CandidateSet {
-    fn add_assign(&mut self, rhs: Self) { *self = *self + rhs; }
+impl AddAssign for NumSet {
+    fn add_assign(&mut self, rhs: Self) {
+        *self = *self + rhs;
+    }
 }
 
-impl Sub for CandidateSet {
+impl Sub for NumSet {
     type Output = Self;
-    fn sub(self, rhs: Self)->Self { CandidateSet(self.0 & !rhs.0) }
+    fn sub(self, rhs: Self) -> Self {
+        NumSet(self.0 & !rhs.0)
+    }
 }
 
-impl SubAssign for CandidateSet {
-    fn sub_assign(&mut self, rhs: Self) { *self = *self - rhs; }
+impl SubAssign for NumSet {
+    fn sub_assign(&mut self, rhs: Self) {
+        *self = *self - rhs;
+    }
 }
 
-struct CandidateIter {
-    set: CandidateSet,
-    pos: u8
+struct NumSetIter {
+    set: NumSet,
+    mask: u16,
 }
 
-impl Iterator for CandidateIter {
-    type Item = u8;
-    fn next(&mut self)->Option<u8> {
-        for i in self.pos .. 9 {
-            if (self.set.0 & (1 << i)) != 0 {
-                self.pos = i+1;
-                return Some(i)
+impl Iterator for NumSetIter {
+    type Item = NumSet;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        while self.mask < (1 << 9) {
+            let masked = self.set.0 & self.mask;
+            self.mask <<= 1;
+            if masked != 0 {
+                return Some(NumSet(masked));
             }
         }
-        self.pos = 9;
         None
     }
 }
 
-impl IntoIterator for CandidateSet {
-    type Item = u8;
-    type IntoIter = CandidateIter;
-    fn into_iter(self)->CandidateIter { CandidateIter { set: self, pos: 0 } }
+impl IntoIterator for NumSet {
+    type Item = NumSet;
+    type IntoIter = NumSetIter;
+    fn into_iter(self) -> NumSetIter {
+        NumSetIter { set: self, mask: 1 }
+    }
 }
 
+#[derive(Clone, Eq, PartialEq)]
+struct SpaceSet {
+    data: [usize; 81],
+    len: usize,
+}
+
+impl FromIterator<usize> for SpaceSet {
+    fn from_iter<T: IntoIterator<Item = usize>>(iter: T) -> Self {
+        let mut out = Self::empty();
+        for n in iter {
+            out.insert(n);
+        }
+        out
+    }
+}
+
+impl SpaceSet {
+    fn empty() -> Self {
+        Self {
+            data: [0; 81],
+            len: 0,
+        }
+    }
+
+    fn insert(&mut self, item: usize) {
+        self.data[self.len] = item;
+        self.len += 1;
+    }
+
+    fn remove(&mut self, index: usize) {
+        self.len -= 1;
+        self.data[index] = self.data[self.len];
+    }
+
+    fn iter(&self) -> impl '_ + Iterator<Item = usize> {
+        self.data[..self.len].iter().copied()
+    }
+
+    /// creates a new SpaceSet to track all the holes in the grid
+    fn find_all(data: &[NumSet; 81]) -> Self {
+        data.iter()
+            .enumerate()
+            .filter_map(|(i, n)| (*n == NumSet::EMPTY).then_some(i))
+            .collect()
+    }
+}
 
 impl Grid {
-    fn sqr(&self, x: usize, y:usize)->CandidateSet {
-        CandidateSet::from_iter(self.0[y*9+    x..y*9+x+3].iter().filter_map(|&opt| opt)) +
-        CandidateSet::from_iter(self.0[y*9+x+ 9..y*9+x+12].iter().filter_map(|&opt| opt)) +
-        CandidateSet::from_iter(self.0[y*9+x+18..y*9+x+21].iter().filter_map(|&opt| opt))
+    fn sqr(&self, x: usize, y: usize) -> NumSet {
+        let x = (x / 3) * 3;
+        let y = (y / 3) * 3;
+        let i = y * 9 + x;
+        NumSet::from_iter(
+            self.data[i..i + 3]
+                .iter()
+                .chain(self.data[i + 9..i + 12].iter())
+                .chain(self.data[i + 18..i + 21].iter())
+                .copied(),
+        )
     }
-    
-    fn col(&self, x:usize)->CandidateSet {
-        CandidateSet::from_iter((0..9).map(|y| &self.0[x+9*y]).filter_map(|&opt| opt))
+
+    fn col(&self, x: usize) -> NumSet {
+        NumSet::from_iter((0..9).map(|y| self.data[y * 9 + x]))
     }
-    
-    fn row(&self, y:usize)->CandidateSet {
-        CandidateSet::from_iter(self.0[y*9..y*9+9].iter().filter_map(|&opt| opt))
+
+    fn row(&self, y: usize) -> NumSet {
+        NumSet::from_iter(self.data[y * 9..(y + 1) * 9].iter().copied())
     }
-    
-    fn free(&self, x:usize, y:usize)->CandidateSet {
-        CandidateSet::all() - (self.col(x) + self.row(y) + self.sqr((x/3)*3, (y/3)*3))
+
+    fn free(&self, x: usize, y: usize) -> NumSet {
+        let col = self.col(x);
+        let row = self.row(y);
+        let sqr = self.sqr(x, y);
+        NumSet::ALL - (col + row + sqr)
     }
-    
-    fn resolv(&mut self)->bool {
+
+    fn resolv(&mut self) -> bool {
         let mut ibest = None;
-        let mut cbest = CandidateSet::all();
-        for i in 0..81 {
-            if self.0[i].is_none() {
-                let c = self.free(i%9, i/9);
-                if c.len() == 0 {
-                    // unsolvable
-                    return false;
-                }
-                if c.len() < cbest.len() {
-                    ibest = Some(i);
-                    cbest = c;
-                }
-                if c.len() == 1 {
-                    // Only one candidate here; we can't do better...
-                    break;
-                }
+        let mut cbest = NumSet::ALL;
+        for (i, s) in self.spaces.iter().enumerate() {
+            let c = self.free(s % 9, s / 9);
+            if c.len() == 0 {
+                // unsolvable
+                return false;
+            }
+            if c.len() < cbest.len() {
+                ibest = Some((i, s));
+                cbest = c;
+            }
+            if c.len() == 1 {
+                // Only one candidate here; we can't do better...
+                break;
             }
         }
-        
-        let i = match ibest {
-            None => return true, // solved
-            Some(i) => i
+
+        let Some((i, s)) = ibest else {
+            // solved
+            return true;
         };
-        
+
+        self.spaces.remove(i);
         for c in cbest {
-            self.0[i] = Some(c);
-            if self.resolv() { return true; }
+            self.data[s] = c;
+            if self.resolv() {
+                return true;
+            }
         }
-        self.0[i] = None;
+        self.data[s] = NumSet::EMPTY;
+        self.spaces.insert(s);
+
         false
     }
 }
@@ -139,29 +222,33 @@ impl FromStr for Grid {
     type Err = ParseGridError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let mut grid = [None;81];
-        for (i,(g,c)) in grid.iter_mut().zip(s.chars()).enumerate() {
-            if ('1'..='9').contains(&c) { *g = Some(c as u8-'1' as u8); }
-            else if c != '.' { return Err(ParseGridError { pos: i }) }
+        let mut data = [NumSet::EMPTY; 81];
+        for (i, (g, c)) in data.iter_mut().zip(s.chars()).enumerate() {
+            match c {
+                '1'..='9' => *g = NumSet::one_hot(c as u8 - b'1'),
+                '.' => {}
+                _ => return Err(ParseGridError { pos: i }),
+            }
         }
-        Ok(Grid(grid))
+        let spaces = SpaceSet::find_all(&data);
+        Ok(Grid { data, spaces })
     }
 }
 
 impl Display for Grid {
     fn fmt(&self, f: &mut Formatter<'_>) -> Result<(), std::fmt::Error> {
-        for g in self.0 {
-            write!(f, "{}", match g {
-                Some(x) => ('1' as u8 + x) as char,
-                None => '.'
-            })?;
+        for g in self.data {
+            let c = match g {
+                NumSet::EMPTY => '.',
+                _ => (b'1' + g.val()) as char,
+            };
+            write!(f, "{c}")?;
         }
         Ok(())
     }
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
-
     let content = fs::read_to_string("grids.txt")?;
     let gg: Vec<&str> = content.lines().take(1956).collect();
 
@@ -171,6 +258,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         grid.resolv();
         println!("{} ", grid);
     }
-    println!("Took: {} s", (t.elapsed().as_millis() as f32)/1000.0);
+    println!("Took: {} s", (t.elapsed().as_millis() as f32) / 1000.0);
     Ok(())
 }
