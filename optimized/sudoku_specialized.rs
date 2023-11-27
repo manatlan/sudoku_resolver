@@ -6,9 +6,9 @@
 use std::{
     fmt::{Display, Formatter},
     fs,
+    iter::FromIterator,
     ops::{Add, AddAssign, Sub, SubAssign},
     str::FromStr,
-    iter::FromIterator
 };
 
 #[derive(Clone, Eq, PartialEq)]
@@ -22,6 +22,7 @@ struct NumSet(u16);
 
 impl NumSet {
     const ALL: Self = Self(0b_111_111_111);
+    const NIL: Self = Self(0b_111_111_111_1);
     const EMPTY: Self = Self(0);
 
     fn one_hot(val: u8) -> Self {
@@ -176,8 +177,9 @@ impl Grid {
     }
 
     fn resolv(&mut self) -> bool {
-        let mut ibest = None;
-        let mut cbest = NumSet::ALL;
+        let mut ibest = 0;
+        let mut sbest = 0;
+        let mut cbest = NumSet::NIL;
         for (i, s) in self.spaces.iter().enumerate() {
             let c = self.free(s % 9, s / 9);
             if c.len() == 0 {
@@ -185,7 +187,8 @@ impl Grid {
                 return false;
             }
             if c.len() < cbest.len() {
-                ibest = Some((i, s));
+                ibest = i;
+                sbest = s;
                 cbest = c;
             }
             if c.len() == 1 {
@@ -194,20 +197,20 @@ impl Grid {
             }
         }
 
-        let Some((i, s)) = ibest else {
+        if cbest == NumSet::NIL {
             // solved
             return true;
         };
 
-        self.spaces.remove(i);
+        self.spaces.remove(ibest);
         for c in cbest {
-            self.data[s] = c;
+            self.data[sbest] = c;
             if self.resolv() {
                 return true;
             }
         }
-        self.data[s] = NumSet::EMPTY;
-        self.spaces.insert(s);
+        self.data[sbest] = NumSet::EMPTY;
+        self.spaces.insert(sbest);
 
         false
     }
