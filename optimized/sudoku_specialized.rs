@@ -22,7 +22,6 @@ struct NumSet(u16);
 
 impl NumSet {
     const ALL: Self = Self(0b_111_111_111);
-    const NIL: Self = Self(0b_111_111_111_1);
     const EMPTY: Self = Self(0);
 
     fn one_hot(val: u8) -> Self {
@@ -177,40 +176,44 @@ impl Grid {
     }
 
     fn resolv(&mut self) -> bool {
-        let mut ibest = 0;
-        let mut sbest = 0;
-        let mut cbest = NumSet::NIL;
-        for (i, s) in self.spaces.iter().enumerate() {
-            let c = self.free(s % 9, s / 9);
-            if c.len() == 0 {
-                // unsolvable
+        let mut best_space_index = 0;
+        let mut best_space = 0;
+        let mut best_set = NumSet::ALL;
+        let mut best_set_len = 10;
+        for (i, space) in self.spaces.iter().enumerate() {
+            let free = self.free(space % 9, space / 9);
+            let set_len = free.len();
+            if set_len == 0 {
+                // Unsolvable.
                 return false;
             }
-            if c.len() < cbest.len() {
-                ibest = i;
-                sbest = s;
-                cbest = c;
+            if set_len < best_set_len {
+                // Found better candidate set, update all.
+                best_space_index = i;
+                best_space = space;
+                best_set = free;
+                best_set_len = set_len;
             }
-            if c.len() == 1 {
-                // Only one candidate here; we can't do better...
+            if set_len == 1 {
+                // Only one candidate here; we can't do better.
                 break;
             }
         }
 
-        if cbest == NumSet::NIL {
-            // solved
+        if best_set_len == 10 {
+            // Best set was never updated. Solved.
             return true;
         };
 
-        self.spaces.remove(ibest);
-        for c in cbest {
-            self.data[sbest] = c;
+        self.spaces.remove(best_space_index);
+        for c in best_set {
+            self.data[best_space] = c;
             if self.resolv() {
                 return true;
             }
         }
-        self.data[sbest] = NumSet::EMPTY;
-        self.spaces.insert(sbest);
+        self.data[best_space] = NumSet::EMPTY;
+        self.spaces.insert(best_space);
 
         false
     }
