@@ -422,7 +422,7 @@ if __name__=="__main__":
                     myprint(f"ERROR : {i} not found")
                     sys.exit(-1)
 
-        files=[os.path.relpath(i) for i in files]
+        files=[os.path.relpath(i) for i in sorted(files)]
 
         if mode=="test":
             t=time.monotonic()

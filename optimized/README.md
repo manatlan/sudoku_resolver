@@ -32,30 +32,28 @@ And now, they are resolving all the grids in `g_simples.txt` : **1956 grids** (s
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
- optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
-  - mojo  : 61.52 seconds (6x, 58.75><64.56)
+optimized/sudoku.java : the optimized algo, with strings (1956grids)
+  - java  : 104.434 seconds (5x, 96.915><106.195)
 
- optimized/sudoku.py : the optimized algo, with strings (1956grids)
-  - codon : 92.2 seconds (6x, 91.61><98.41)
-  - py311 : 135.5 seconds (6x, 124.15><140.54)
-  - py37  : 204.33 seconds (6x, 183.92><279.88)
-  - pypy  : 94.1 seconds (6x, 87.95><97.18)
+optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
+  - mojo  : 63.204 seconds (5x, 62.332><68.250)
 
- optimized/sudoku.java : the optimized algo, with strings (1956grids)
-  - java  : 103.54 seconds (6x, 99.33><122.73)
-
-
+optimized/sudoku.py : the optimized algo, with strings (1956grids)
+  - py3   : 130.611 seconds (5x, 119.809><138.367)
+  - pypy  : 88.693 seconds (5x, 86.168><92.982)
+  - codon : 95.918 seconds (5x, 94.827><108.770)
+  - py37  : 193.619 seconds (5x, 158.285><202.944)
 
 
 
- optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
-  - mojo  : 3.59 seconds (19x, 3.57><3.70)
+optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
+  - mojo  : 3.733 seconds (5x, 3.726><3.905)
 
- optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
-  - mojo  : 1.22 seconds (19x, 1.18><1.41)
+optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
+  - rust  : 1.603 seconds (5x, 1.598><2.015)
 
- optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
-  - rust  : 1.085 seconds (9x, 1.075><1.134)
+optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
+  - mojo  : 1.337 seconds (5x, 1.312><1.477)
 
 ```
 
