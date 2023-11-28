@@ -92,22 +92,15 @@ class DB:
     def __init__(self,db:"dict|None"=None):
         self._db={} if db is None else db
         
-    def add(self,filename:str,mode:str,sec:float, sign_it:bool):
-        if sign_it:
-            # we save signature in db
-            signature=sign(filename,mode) 
-
-            if filename in self._db and self._db[filename].get("sign") != signature:
-                # if current signature different from saved one
-                # we reset results
-                del self._db[filename]
-        else: # for unittests only ;-(
-            signature=None
+    def add(self,filename:str,mode:str,sec:float, signature:str):
+        if signature and filename in self._db and self._db[filename].get("sign") != signature:
+            # if current signature different from saved one
+            # we reset results
+            del self._db[filename]
 
         # save data
         self._db.setdefault(filename,{}).setdefault("tests",{}).setdefault(mode,[]).append( sec )
-        if signature:
-            self._db[filename]["sign"]=signature
+        self._db[filename]["sign"]=signature
 
     def __str__(self):
         return json.dumps(self._db)
@@ -120,7 +113,7 @@ class DB:
         for filename,data in sorted(db._db.items()):
             for mode,tests in sorted(data["tests"].items()):
                 for test in tests:
-                    self.add( filename, mode, test, "sign" in data)
+                    self.add( filename, mode, test, data.get("sign"))
         return self
 
 
@@ -133,7 +126,7 @@ class HostTest(DB):
             DB.__init__(self,{})
 
     def add(self,filename:str,mode:str,sec:float):
-        DB.add(self,filename,mode,sec, True)
+        DB.add(self,filename,mode,sec, sign(filename,mode) )
         with open(self.dbfile,"w+") as fid:
             fid.write(json.dumps(self._db,indent=2))
 
@@ -154,16 +147,16 @@ class Snapshots(DB):    # results.txt
 
 def test_DB():
     db1=DB()
-    db1.add("kiki.py","py3",12.0,False)
-    db1.add("kiki.py","py3",20.0,False)
-    db1.add("kiki2.py","node",20.0,False)
+    db1.add("kiki.py","py3",12.0,"")
+    db1.add("kiki.py","py3",20.0,"")
+    db1.add("kiki2.py","node",20.0,"")
     assert db1._db['kiki.py']["tests"]["py3"] == [12.0, 20.0]
     assert db1._db['kiki2.py']["tests"]["node"] == [20.0]
 
     db2=DB()
-    db2.add("kiki.py","py3",15.0,False)
-    db2.add("kiki.py","py2",10.0,False)
-    db2.add("kiki2.py","node",16.0,False)
+    db2.add("kiki.py","py3",15.0,"")
+    db2.add("kiki.py","py2",10.0,"")
+    db2.add("kiki2.py","node",16.0,"")
     assert db2._db['kiki.py']['tests']['py3'] == [15.0]
     assert db2._db['kiki.py']['tests']['py2'] == [10.0]
     assert db2._db['kiki2.py']['tests']['node'] == [16.0]
@@ -319,9 +312,7 @@ def run(file:str,lang:str) -> int:
                 db.add(file,lang,t)
                 return 0
             else:
-                lines=cp.stdout.splitlines()
-                for line in lines:
-                    print( line )
+                print( cp.stdout )
                 print("!!! BAD RESULT !!!")
                 return -1
         else:
@@ -347,27 +338,24 @@ def getinfo(file:str) -> str:
             return i[6:].strip()
     return "?"
 
-def stats(files:list, opts:list):
-    db=HostTest()
-    for test in db:
-        if test.filename in files:
-            tests = test.filter( opts )
+def print_stats_info(db):
+    for item in db:
+        if item.filename in files:
+            tests = item.filter( opts )
             if tests:
-                myprint(f"\n{test.filename} : {getinfo(test.filename)}")
+                myprint(f"\n{item.filename} : {getinfo(item.filename)}")
                 for mode,value,nb,vmin,vmax in tests:
                     myprint(f"  - {mode:5s} : {value:.03f} seconds ({nb}x, {vmin:.03f}><{vmax:.03f})")
 
-def print_results(files:list, opts:list):
+def stats(files:list, opts:list):
+    """ stats will displat only stats for current file that have the same signature !!!!"""
+    print_stats_info( HostTest() )
+
+def stats_results(files:list, opts:list):
+    """ stats will displat only stats for current file that have the same signature !!!!"""
     if os.path.isfile("RESULTS.TXT"):
         results=open("RESULTS.TXT","r+").read()
-        db=Snapshots(results)
-        for test in db:
-            if test.filename in files:
-                tests = test.filter( opts )
-                if tests:
-                    myprint(f"\n{test.filename} : {getinfo(test.filename)}")
-                    for mode,value,nb,vmin,vmax in tests:
-                        myprint(f"  - {mode:5s} : {value:.03f} seconds ({nb}x, {vmin:.03f}><{vmax:.03f})")
+        print_stats_info( Snapshots(results) )
 
 def snapshot() -> str:
     """used by commandline"""
@@ -441,7 +429,7 @@ if __name__=="__main__":
         elif mode=="stats":
             ret=stats(files, opts)
         elif mode=="RESULTS":
-            print_results(files, opts)
+            stats_results(files, opts)
             ret=0
 
     

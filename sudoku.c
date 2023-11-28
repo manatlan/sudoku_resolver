@@ -1,5 +1,4 @@
 //INFO: the simple algo, with strings (AI translation from java one) (100grids)
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

@@ -90,3 +90,9 @@ To output specifics stats of optimized versions:
 ```
 $ ./make.py stats optimized/
 ```
+
+## to get platform info
+
+```
+$ ./make.py info
+```
