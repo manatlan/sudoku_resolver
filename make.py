@@ -234,7 +234,7 @@ def help():
     print(get_info_host())
     print()
     print("Where <option> can be, to force a specific one:")
-    for k,v in LANGS.items():
+    for k,v in sorted(LANGS.items()):
         print(f" --{k:5s} : {v['v']}")
         print(f"           {subcmd(v['c'],v['e'],'<file>')}")
 
@@ -246,7 +246,7 @@ def check_output(stdout:str) -> int:
     return len(grids) if ok else 0
     
 def print_info_comp():
-    for k,v in LANGS.items():
+    for k,v in sorted(LANGS.items()):
         print(f"{k:5s} : {v['v']}")
         print(f"        {subcmd(v['c'],v['e'],'<file>')}")
 
