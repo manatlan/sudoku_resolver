@@ -27,7 +27,7 @@ def resolv(g):
         return g
 ```
 
-And now, they are resolving all the grids in `g_simples.txt` : **1956 grids** (some are really complex too)
+And now, they are resolving all the grids in [grids.txt](../grids.txt) : **1956 grids** (some are really complex too)
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
