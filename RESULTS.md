@@ -1,10 +1,10 @@
 
-# Results from HOST "fv-az1536-482"
+# Results from HOST "fv-az1055-892"
 
 Here are informations about the host/computer, and languages/versions used for tests:
 ```
 PLATFORM : x86_64/Linux-6.2.0-1016-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16365020 kB
 
 mojo  : mojo 0.5.0 (6e50a738)
