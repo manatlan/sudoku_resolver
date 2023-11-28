@@ -260,11 +260,12 @@ def sign(filename:str, mode:str) -> str:
        -> md5
     """
     with open(filename, 'rb') as fid:
-        computer = platform.node()  # could be better with id processor !
+        # computer = platform.node()  # could be better with id processor !
         compilator  = LANGS[mode]["v"] + LANGS[mode]["c"]
         content=fid.read()
 
-        sign=content+computer.encode()+compilator.encode()
+        # sign=content+computer.encode()+compilator.encode()
+        sign=content+compilator.encode()
         return hashlib.md5(sign).hexdigest()
 
 #########################################################################
