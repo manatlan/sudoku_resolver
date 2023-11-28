@@ -355,7 +355,7 @@ def stats_results(files:list, opts:list):
     """ stats will displat only stats for current file that have the same signature !!!!"""
     f="RESULTS.TXT"
     if os.path.isfile(f):
-        results=open(f,"r+").read()
+        results=open(f,"r+").read().strip()
         print_stats_info( Snapshots(results) )
     else:
         print(f"no {f} file !")
