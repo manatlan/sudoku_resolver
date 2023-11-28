@@ -2,11 +2,17 @@
 import subprocess,sys,platform
 
 tmpl_md="""
-# Result on %s
+# Results from HOST "%s"
 
+Here are informations about the host/computer, and languages/versions used for tests:
 ```
 %s
 ```
+
+The goal is to test two algorithm (sudoku backtracking) using different languages, to compare runtime speed.
+
+- The [first](sudoku.py) is simple, and tests only 100 grids.
+- The [second](optimized/sudoku.py) is an optimization of the first, and is a lot faster. So it can tests **all 1956 grids** !
 
 ## Simple Algo
 
