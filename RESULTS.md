@@ -1,10 +1,10 @@
 
-# Results from HOST "fv-az1055-892"
+# Results from HOST "fv-az849-910"
 
 Here are informations about the host/computer, and languages/versions used for tests:
 ```
 PLATFORM : x86_64/Linux-6.2.0-1016-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
 MEMINFO  : 16365020 kB
 
 mojo  : mojo 0.5.0 (6e50a738)
@@ -39,6 +39,38 @@ For the first 100 grids : At each iteration, they will resolve the first hole of
 (*specialized* versions use all weapons available in language, while others use string and hashset)
 ```
 
+sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
+  - gcc   : 2.930 seconds (3x, 2.909><3.251)
+
+sudoku.java : the simple algo, with strings (100grids)
+  - java  : 23.821 seconds (3x, 20.997><24.874)
+
+sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
+  - node  : 34.851 seconds (3x, 34.738><35.619)
+
+sudoku.mojo : the simple algo, with strings (100grids)
+  - mojo  : 16.419 seconds (3x, 16.384><16.437)
+
+sudoku.nim : the simple algo, with strings (100grids)
+  - nim   : 10.118 seconds (3x, 10.079><10.268)
+
+sudoku.py : the simple algo, with strings (100grids)
+  - codon : 18.145 seconds (3x, 17.994><18.166)
+  - py3   : 32.492 seconds (3x, 27.570><34.736)
+  - pypy  : 15.421 seconds (3x, 15.047><15.590)
+
+sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
+  - rust  : 9.808 seconds (3x, 9.408><12.356)
+
+sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
+  - mojo  : 2.755 seconds (3x, 2.739><2.788)
+
+sudoku_specialized.rs : the simple algo, with specialized types (100grids)
+  - rust  : 1.716 seconds (3x, 1.580><7.174)
+
+sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
+  - mojo  : 2.630 seconds (3x, 2.604><2.648)
+
 ```
 
 ## Optimized Algo
@@ -47,6 +79,26 @@ For **all 1956** grids : At each iteration, they will firstly resolve the hole, 
 (*specialized* versions use all weapons available in language, while others use string and hashset)
 
 ```
+
+optimized/sudoku.java : the optimized algo, with strings (1956grids)
+  - java  : 94.313 seconds (3x, 93.161><103.084)
+
+optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
+  - mojo  : 55.750 seconds (3x, 55.438><55.946)
+
+optimized/sudoku.py : the optimized algo, with strings (1956grids)
+  - codon : 77.239 seconds (3x, 77.171><77.274)
+  - py3   : 148.840 seconds (3x, 143.872><151.485)
+  - pypy  : 89.973 seconds (3x, 85.558><90.672)
+
+optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
+  - mojo  : 3.759 seconds (3x, 3.757><3.761)
+
+optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
+  - rust  : 1.047 seconds (3x, 1.023><1.088)
+
+optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
+  - mojo  : 2.964 seconds (3x, 2.944><2.969)
 
 ```
 
