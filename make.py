@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import subprocess,sys,os,glob,re,json,statistics,re,fnmatch,time,shutil,platform,multiprocessing,datetime
 import json,platform,statistics,os,datetime
+import hashlib
 
 """
 See doc :
@@ -72,9 +73,11 @@ class Tests:
     def __init__(self,filename:str,data:dict):
         self.filename=filename
         self._tests=data["tests"]
+        self._sign=data.get("sign",None)
 
     def __iter__(self):
         for mode,tests in self._tests.items():
+            if self._sign and self._sign != sign(self.filename,mode): continue
             yield mode,statistics.median(tests),len(tests),min(tests),max(tests)
 
     def filter(self,modes:list) -> list:
@@ -89,9 +92,22 @@ class DB:
     def __init__(self,db:"dict|None"=None):
         self._db={} if db is None else db
         
-    def add(self,filename:str,mode:str,sec:float):
-        self._db.setdefault(os.path.relpath(filename),{}).setdefault("tests",{}).setdefault(mode,[]).append( sec )
-        self._db[filename]["hash"]="md5"
+    def add(self,filename:str,mode:str,sec:float, sign_it:bool):
+        if sign_it:
+            # we save signature in db
+            signature=sign(filename,mode) 
+
+            if filename in self._db and self._db[filename].get("sign") != signature:
+                # if current signature different from saved one
+                # we reset results
+                del self._db[filename]
+        else: # for unittests only ;-(
+            signature=None
+
+        # save data
+        self._db.setdefault(filename,{}).setdefault("tests",{}).setdefault(mode,[]).append( sec )
+        if signature:
+            self._db[filename]["sign"]=signature
 
     def __str__(self):
         return json.dumps(self._db)
@@ -101,10 +117,10 @@ class DB:
             yield Tests(filename,data)
 
     def __add__(self,db):
-        for filename,info in sorted(db._db.items()):
-            for mode,tests in sorted(info["tests"].items()):
+        for filename,data in sorted(db._db.items()):
+            for mode,tests in sorted(data["tests"].items()):
                 for test in tests:
-                    self.add( filename, mode, test)
+                    self.add( filename, mode, test, "sign" in data)
         return self
 
 
@@ -117,9 +133,9 @@ class HostTest(DB):
             DB.__init__(self,{})
 
     def add(self,filename:str,mode:str,sec:float):
-        DB.add(self,filename,mode,sec)
+        DB.add(self,filename,mode,sec, True)
         with open(self.dbfile,"w+") as fid:
-            fid.write(json.dumps(self._db))
+            fid.write(json.dumps(self._db,indent=2))
 
     def snapshot(self) -> str:
         """ generate a line string, containing (timestamp,db) as json str """
@@ -138,16 +154,16 @@ class Snapshots(DB):    # results.txt
 
 def test_DB():
     db1=DB()
-    db1.add("kiki.py","py3",12.0)
-    db1.add("kiki.py","py3",20.0)
-    db1.add("kiki2.py","node",20.0)
+    db1.add("kiki.py","py3",12.0,False)
+    db1.add("kiki.py","py3",20.0,False)
+    db1.add("kiki2.py","node",20.0,False)
     assert db1._db['kiki.py']["tests"]["py3"] == [12.0, 20.0]
     assert db1._db['kiki2.py']["tests"]["node"] == [20.0]
 
     db2=DB()
-    db2.add("kiki.py","py3",15.0)
-    db2.add("kiki.py","py2",10.0)
-    db2.add("kiki2.py","node",16.0)
+    db2.add("kiki.py","py3",15.0,False)
+    db2.add("kiki.py","py2",10.0,False)
+    db2.add("kiki2.py","node",16.0,False)
     assert db2._db['kiki.py']['tests']['py3'] == [15.0]
     assert db2._db['kiki.py']['tests']['py2'] == [10.0]
     assert db2._db['kiki2.py']['tests']['node'] == [16.0]
@@ -236,6 +252,29 @@ def check_output(stdout:str) -> int:
     ok=all( [all( [i.count(x)==9 for x in "123456789"] ) for i in grids])
     return len(grids) if ok else 0
     
+def print_info_comp():
+    for k,v in LANGS.items():
+        print(f"{k:5s} : {v['v']}")
+        print(f"        {subcmd(v['c'],v['e'],'<file>')}")
+
+
+
+
+def sign(filename:str, mode:str) -> str:
+    """Create a signature for the test based on
+        - computer name
+        - compilator (cmd line + version)
+        - content of the file
+       -> md5
+    """
+    with open(filename, 'rb') as fid:
+        computer = platform.node()  # could be better with id processor !
+        compilator  = LANGS[mode]["v"] + LANGS[mode]["c"]
+        content=fid.read()
+
+        sign=content+computer.encode()+compilator.encode()
+        return hashlib.md5(sign).hexdigest()
+
 #########################################################################
 ## run/batch methods
 #########################################################################
@@ -318,15 +357,28 @@ def stats(files:list, opts:list):
                 for mode,value,nb,vmin,vmax in tests:
                     myprint(f"  - {mode:5s} : {value:.03f} seconds ({nb}x, {vmin:.03f}><{vmax:.03f})")
 
+def print_results(files:list, opts:list):
+    if os.path.isfile("RESULTS.TXT"):
+        results=open("RESULTS.TXT","r+").read()
+        db=Snapshots(results)
+        for test in db:
+            if test.filename in files:
+                tests = test.filter( opts )
+                if tests:
+                    myprint(f"\n{test.filename} : {getinfo(test.filename)}")
+                    for mode,value,nb,vmin,vmax in tests:
+                        myprint(f"  - {mode:5s} : {value:.03f} seconds ({nb}x, {vmin:.03f}><{vmax:.03f})")
+
 def snapshot() -> str:
     """used by commandline"""
-    """$ ./maky.py snapshot >> ACCUMULATE_RESULTS.txt """
+    """$ ./make.py snapshot >> ACCUMULATED_RESULTS.txt """
     db=HostTest()
     return db.snapshot()
 
 if __name__=="__main__":
     test_DB()
     update()
+
     args=sys.argv[1:]
     ret=0
 
@@ -341,6 +393,17 @@ if __name__=="__main__":
         elif args[0]=="snapshot":
             print( snapshot() )
             sys.exit(0)
+        elif args[0]=="info":
+            print( get_info_host() )
+            print()
+            print_info_comp()
+            sys.exit(0)
+        elif args[0]=="RESULTS":
+            mode="RESULTS"
+            args.pop(0)
+            if not [i for i in args if not i.startswith("--")]:
+                # not files given in input, assuming '.'
+                args.insert(0,".")
 
         elif re.match(r"(\d+)x",args[0]):
             nb=int(re.match(r"(\d+)x",args[0])[1])
@@ -377,6 +440,9 @@ if __name__=="__main__":
             myprint(f"(total time: %s seconds)" % rr(time.monotonic()-t))
         elif mode=="stats":
             ret=stats(files, opts)
+        elif mode=="RESULTS":
+            print_results(files, opts)
+            ret=0
 
     
     else:
