@@ -10,7 +10,7 @@ tmpl_md="""
 
 ## Simple Algo
 
-All theses resolve the first hole in the grid, for the first 100 grids !
+For the first 100 grids : At each iteration, they will resolve the first hole of the grid, til no holes.
 (*specialized* versions use all weapons available in language, while others use string and hashset)
 ```
 %s
@@ -18,7 +18,7 @@ All theses resolve the first hole in the grid, for the first 100 grids !
 
 ## Optimized Algo
 
-All theses resolve the hole, with minimal choices, in the grid. For **all 1956** grids !
+For **all 1956** grids : At each iteration, they will firstly resolve the hole, with minimal choices, of the grid, til no holes.
 (*specialized* versions use all weapons available in language, while others use string and hashset)
 
 ```

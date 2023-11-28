@@ -49,20 +49,22 @@ jobs:
           ./make.py 
 
       - name: tests all
+        # run: |
+        #   ./make.py . optimized
         run: |
-          ./make.py . optimized
+          ./make.py ./*.rs optimized/*.rs
 
       - name: show stats
         run: |
           ./make.py stats . optimized
 
-      - name: Append stats to results.txt
+      - name: Append stats to RESULTS.TXT (bakcuped in repo! (persistent))
         run: |
-          ./make.py jstats . optimized >> RESULTS.TXT
+          ./make.py snapshot >> RESULTS.TXT
 
       - name: Create page RESULTS.md
         run: |
-          python3 results.py > RESULTS.md
+          python3 generate_page.py RESULTS > RESULTS.md
 
       - name: Commit results
         uses: EndBug/add-and-commit@v9

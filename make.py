@@ -72,12 +72,13 @@ LANGS=dict(
 class Tests:
     def __init__(self,filename:str,data:dict):
         self.filename=filename
-        self._tests=data["tests"]
-        self._sign=data.get("sign",None)
+        self._modes=data["modes"]
 
     def __iter__(self):
-        for mode,tests in self._tests.items():
-            if self._sign and self._sign != sign(self.filename,mode): continue
+        for mode,info in self._modes.items():
+            tests=info["tests"]
+            _sign=info.get("sign",None)
+            if _sign and _sign != sign(self.filename,mode): continue
             yield mode,statistics.median(tests),len(tests),min(tests),max(tests)
 
     def filter(self,modes:list) -> list:
@@ -93,14 +94,13 @@ class DB:
         self._db={} if db is None else db
         
     def add(self,filename:str,mode:str,sec:float, signature:str):
-        if signature and filename in self._db and self._db[filename].get("sign") != signature:
-            # if current signature different from saved one
-            # we reset results
-            del self._db[filename]
+        info=self._db.setdefault(filename,{}).setdefault("modes",{}).setdefault(mode,{})
 
-        # save data
-        self._db.setdefault(filename,{}).setdefault("tests",{}).setdefault(mode,[]).append( sec )
-        self._db[filename]["sign"]=signature
+        if info.get("sign") == signature:
+            info.setdefault("tests",[]).append( sec )
+        else:
+            info["tests"]=[ sec ]
+        info["sign"]=signature
 
     def __str__(self):
         return json.dumps(self._db)
@@ -111,9 +111,9 @@ class DB:
 
     def __add__(self,db):
         for filename,data in sorted(db._db.items()):
-            for mode,tests in sorted(data["tests"].items()):
-                for test in tests:
-                    self.add( filename, mode, test, data.get("sign"))
+            for mode,info in sorted(data["modes"].items()):
+                for test in info["tests"]:
+                    self.add( filename, mode, test, info.get("sign"))
         return self
 
 
@@ -150,27 +150,27 @@ def test_DB():
     db1.add("kiki.py","py3",12.0,"")
     db1.add("kiki.py","py3",20.0,"")
     db1.add("kiki2.py","node",20.0,"")
-    assert db1._db['kiki.py']["tests"]["py3"] == [12.0, 20.0]
-    assert db1._db['kiki2.py']["tests"]["node"] == [20.0]
+    assert db1._db['kiki.py']["modes"]["py3"]["tests"] == [12.0, 20.0]
+    assert db1._db['kiki2.py']["modes"]["node"]["tests"] == [20.0]
 
     db2=DB()
     db2.add("kiki.py","py3",15.0,"")
     db2.add("kiki.py","py2",10.0,"")
     db2.add("kiki2.py","node",16.0,"")
-    assert db2._db['kiki.py']['tests']['py3'] == [15.0]
-    assert db2._db['kiki.py']['tests']['py2'] == [10.0]
-    assert db2._db['kiki2.py']['tests']['node'] == [16.0]
+    assert db2._db['kiki.py']['modes']['py3']["tests"] == [15.0]
+    assert db2._db['kiki.py']['modes']['py2']["tests"] == [10.0]
+    assert db2._db['kiki2.py']['modes']['node']["tests"] == [16.0]
 
     db3=db1+db2
     assert id(db1)==id(db3) # logic !
-    assert db3._db['kiki.py']['tests']['py3'] == [12.0, 20.0, 15.0]
-    assert db3._db['kiki.py']['tests']['py2'] == [10.0]
-    assert db3._db['kiki2.py']['tests']['node'] == [20.0, 16.0]
+    assert db3._db['kiki.py']['modes']['py3']["tests"] == [12.0, 20.0, 15.0]
+    assert db3._db['kiki.py']['modes']['py2']["tests"] == [10.0]
+    assert db3._db['kiki2.py']['modes']['node']["tests"] == [20.0, 16.0]
 
     # assert db2 is not modified
-    assert db2._db['kiki.py']['tests']['py3'] == [15.0]
-    assert db2._db['kiki.py']['tests']['py2'] == [10.0]
-    assert db2._db['kiki2.py']['tests']['node'] == [16.0]
+    assert db2._db['kiki.py']['modes']['py3']["tests"] == [15.0]
+    assert db2._db['kiki.py']['modes']['py2']["tests"] == [10.0]
+    assert db2._db['kiki2.py']['modes']['node']["tests"] == [16.0]
 
     # and control summerization of db ...
     tt=list(db3)
@@ -249,7 +249,6 @@ def print_info_comp():
     for k,v in LANGS.items():
         print(f"{k:5s} : {v['v']}")
         print(f"        {subcmd(v['c'],v['e'],'<file>')}")
-
 
 
 
@@ -353,9 +352,12 @@ def stats(files:list, opts:list):
 
 def stats_results(files:list, opts:list):
     """ stats will displat only stats for current file that have the same signature !!!!"""
-    if os.path.isfile("RESULTS.TXT"):
-        results=open("RESULTS.TXT","r+").read()
+    f="RESULTS.TXT"
+    if os.path.isfile(f):
+        results=open(f,"r+").read()
         print_stats_info( Snapshots(results) )
+    else:
+        print(f"no {f} file !")
 
 def snapshot() -> str:
     """used by commandline"""
