@@ -1,4 +1,4 @@
-# Results from HOST 'fv-az973-395'
+# Results from HOST 'fv-az659-81'
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
@@ -22,7 +22,7 @@ py3   : Python 3.10.12
         /usr/bin/python3 -uOO <file>
 pypy  : Python 3.9.18 (c5262994620471e725f57d652d78d842270649d6, Sep 27 2023, 13:43:44)
         /opt/hostedtoolcache/PyPy/3.9.18/x64/bin/pypy3 -uOO <file>
-rust  : rustc 1.74.0 (79e9716c9 2023-11-13)
+rust  : rustc 1.73.0 (cc66ad468 2023-10-03)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o exe && ./exe
 
 ```
@@ -39,36 +39,36 @@ For the first 100 grids : At each iteration, they will resolve the first hole of
 ```
 
 sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
-  - gcc   : 2.999 seconds (9x, 2.909><3.620)
+  - gcc   : 2.970 seconds (10x, 2.909><3.620)
 
 sudoku.java : the simple algo, with strings (100grids)
-  - java  : 8.021 seconds (2x, 7.097><8.945)
+  - java  : 7.339 seconds (3x, 7.097><8.945)
 
 sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
-  - node  : 7.538 seconds (2x, 6.887><8.189)
+  - node  : 6.887 seconds (3x, 6.795><8.189)
 
 sudoku.mojo : the simple algo, with strings (100grids)
-  - mojo  : 16.471 seconds (2x, 16.438><16.504)
+  - mojo  : 16.504 seconds (3x, 16.438><16.694)
 
 sudoku.nim : the simple algo, with strings (100grids)
-  - nim   : 8.091 seconds (2x, 7.978><8.203)
+  - nim   : 7.978 seconds (3x, 7.650><8.203)
 
 sudoku.py : the simple algo, with strings (100grids)
-  - codon : 5.033 seconds (2x, 5.026><5.040)
-  - py3   : 22.165 seconds (2x, 22.163><22.168)
-  - pypy  : 4.929 seconds (2x, 4.888><4.970)
+  - codon : 5.026 seconds (3x, 4.920><5.040)
+  - py3   : 22.168 seconds (3x, 22.163><22.423)
+  - pypy  : 4.921 seconds (3x, 4.888><4.970)
 
 sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
-  - rust  : 18.994 seconds (1x, 18.994><18.994)
+  - rust  : 10.032 seconds (1x, 10.032><10.032)
 
 sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
-  - mojo  : 2.760 seconds (9x, 2.739><2.882)
+  - mojo  : 2.762 seconds (10x, 2.739><2.882)
 
 sudoku_specialized.rs : the simple algo, with specialized types (100grids)
-  - rust  : 1.334 seconds (1x, 1.334><1.334)
+  - rust  : 0.911 seconds (1x, 0.911><0.911)
 
 sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
-  - mojo  : 2.610 seconds (9x, 2.489><2.679)
+  - mojo  : 2.607 seconds (10x, 2.489><2.679)
 
 ```
 
@@ -80,24 +80,24 @@ For **all 1956** grids : At each iteration, they will firstly resolve the hole, 
 ```
 
 optimized/sudoku.java : the optimized algo, with strings (1956grids)
-  - java  : 28.846 seconds (2x, 28.806><28.886)
+  - java  : 28.886 seconds (3x, 28.806><29.033)
 
 optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
-  - mojo  : 56.016 seconds (9x, 55.438><58.135)
+  - mojo  : 56.131 seconds (10x, 55.438><58.135)
 
 optimized/sudoku.py : the optimized algo, with strings (1956grids)
-  - codon : 20.877 seconds (2x, 20.831><20.923)
-  - py3   : 122.186 seconds (2x, 121.566><122.806)
-  - pypy  : 33.967 seconds (2x, 33.903><34.030)
+  - codon : 20.831 seconds (3x, 20.731><20.923)
+  - py3   : 122.806 seconds (3x, 121.566><123.043)
+  - pypy  : 33.903 seconds (3x, 33.788><34.030)
 
 optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
-  - mojo  : 3.757 seconds (9x, 3.726><3.769)
+  - mojo  : 3.758 seconds (10x, 3.726><3.771)
 
 optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
-  - rust  : 1.366 seconds (1x, 1.366><1.366)
+  - rust  : 1.014 seconds (1x, 1.014><1.014)
 
 optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
-  - mojo  : 2.955 seconds (9x, 2.926><2.971)
+  - mojo  : 2.949 seconds (10x, 2.926><2.971)
 
 ```
 
