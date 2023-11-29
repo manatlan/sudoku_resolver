@@ -6,7 +6,11 @@
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
 col   = lambda g,x:   g[x::9]
 row   = lambda g,y:   g[y*9:y*9+9]
-free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
+# free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
+def free(g,x,y):
+    t27=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
+    return "".join([c for c in "123456789" if c not in t27])
+
 
 def resolv(g):
     i=g.find(".")
