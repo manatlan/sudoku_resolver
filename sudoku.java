@@ -38,7 +38,6 @@ class Sudoku {
             if(t27.indexOf( c )<0)
                 freeset+=c;
         }
-    
         return freeset;
     }
 
