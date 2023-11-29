@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 import subprocess,sys,platform
 
-tmpl_md="""# Results from HOST '%s'
+tmpl_md="""# Results from '%s' host
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
@@ -41,7 +41,7 @@ if __name__=="__main__":
     if sys.argv[1:]==["RESULTS"]:
         # STATS from RESULTS.TXT
         print( tmpl_md % (
-            platform.node(),
+            "GITHUB",
             call_make("info"),
             call_make("RESULTS","."),
             call_make("RESULTS","optimized"),
