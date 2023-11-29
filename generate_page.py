@@ -16,7 +16,7 @@ The goal is to test two algorithms (sudoku backtracking) using different languag
 ## Simple Algo
 
 For the first 100 grids : At each iteration, they will resolve the first hole of the grid, til no holes.
-(*specialized* versions use all weapons available in language, while others use string and hashset)
+(*specialized* versions use all weapons available in language, while others use strings only)
 ```
 %s
 ```
@@ -24,7 +24,7 @@ For the first 100 grids : At each iteration, they will resolve the first hole of
 ## Optimized Algo
 
 For **all 1956** grids : At each iteration, they will firstly resolve the hole, with minimal choices, of the grid, til no holes.
-(*specialized* versions use all weapons available in language, while others use string and hashset)
+(*specialized* versions use all weapons available in language, while others use strings only)
 
 ```
 %s
