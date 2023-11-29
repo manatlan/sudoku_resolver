@@ -33,27 +33,29 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
 optimized/sudoku.java : the optimized algo, with strings (1956grids)
-  - java  : 104.434 seconds (5x, 96.915><106.195)
+  - java  : 33.022 seconds (5x, 32.402><33.822)
 
 optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
-  - mojo  : 63.204 seconds (5x, 62.332><68.250)
+  - mojo  : 64.017 seconds (10x, 62.332><68.250)
 
 optimized/sudoku.py : the optimized algo, with strings (1956grids)
-  - py3   : 130.611 seconds (5x, 119.809><138.367)
-  - pypy  : 88.693 seconds (5x, 86.168><92.982)
-  - codon : 95.918 seconds (5x, 94.827><108.770)
-  - py37  : 193.619 seconds (5x, 158.285><202.944)
+  - py3   : 96.048 seconds (4x, 95.176><100.762)
+  - pypy  : 39.315 seconds (4x, 38.107><40.982)
+  - codon : 26.791 seconds (4x, 26.008><27.569)
+  - py37  : 142.193 seconds (3x, 141.189><145.208)
+
+
 
 
 
 optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
-  - mojo  : 3.733 seconds (5x, 3.726><3.905)
+  - mojo  : 3.751 seconds (8x, 3.726><3.905)
 
 optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
-  - rust  : 1.603 seconds (5x, 1.598><2.015)
+  - rust  : 1.602 seconds (8x, 1.586><2.015)
 
 optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
-  - mojo  : 1.337 seconds (5x, 1.312><1.477)
+  - mojo  : 1.401 seconds (8x, 1.312><1.548)
 
 ```
 

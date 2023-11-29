@@ -58,29 +58,28 @@ The 1/1 implementations of the py version, in each language (using strings)
 
 ``` 
 sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
-  - gcc   : 2.488 seconds (5x, 2.479><2.583)
+  - gcc   : 2.497 seconds (12x, 2.477><2.905)
 
 sudoku.java : the simple algo, with strings (100grids)
-  - java  : 21.090 seconds (5x, 20.815><26.354)
+  - java  : 8.367 seconds (6x, 8.044><10.213)
 
 sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
-  - node  : 44.653 seconds (5x, 43.692><49.268)
+  - node  : 8.582 seconds (6x, 8.020><9.510)
 
 sudoku.mojo : the simple algo, with strings (100grids)
-  - mojo  : 16.564 seconds (5x, 16.249><18.935) <-------------------- (*)
+  - mojo  : 16.811 seconds (6x, 16.329><21.673)   <-------------------- (*)
 
 sudoku.nim : the simple algo, with strings (100grids)
-  - nim   : 9.255 seconds (5x, 9.182><9.718)
+  - nim   : 7.022 seconds (7x, 6.849><8.650)
 
 sudoku.py : the simple algo, with strings (100grids)
-  - py3   : 22.005 seconds (5x, 20.518><31.651)
-  - pypy  : 17.906 seconds (5x, 17.702><19.967)
-  - codon : 22.923 seconds (5x, 22.621><26.154)
-  - py37  : 39.988 seconds (5x, 33.920><50.226)
+  - py3   : 16.372 seconds (6x, 16.104><17.793)
+  - pypy  : 5.774 seconds (6x, 5.257><6.037)
+  - codon : 6.339 seconds (6x, 6.205><6.956)
+  - py37  : 23.893 seconds (6x, 23.735><24.852)
 
 sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
-  - rust  : 10.687 seconds (5x, 6.494><10.894)
-
+  - rust  : 10.101 seconds (9x, 6.494><10.894)
 ```
 
 (*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
@@ -91,13 +90,14 @@ The same algo, but with specialized types/structures for the language (to speed 
 
 ```
 sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
-  - mojo  : 1.102 seconds (5x, 1.064><1.196)
+  - mojo  : 1.097 seconds (11x, 1.064><1.201)
 
 sudoku_specialized.rs : the simple algo, with specialized types (100grids)
-  - rust  : 1.171 seconds (5x, 1.166><1.290)
+  - rust  : 1.206 seconds (11x, 1.166><1.738)
 
 sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
-  - mojo  : 0.493 seconds (5x, 0.484><0.567)
+  - mojo  : 0.514 seconds (11x, 0.484><0.689)
+
 ```
 
 ## If you want to tests on your own
