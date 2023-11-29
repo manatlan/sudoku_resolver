@@ -21,12 +21,12 @@ fn col(g:String,x:Int) -> String:
 fn row(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
 fn free(g:String,x:Int,y:Int) -> String:
-    let freeset=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
-    var ll = String("")
+    let t27=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
+    var freeset = String("")
     for i in range(len(ALL)):
-        if freeset.find(ALL[i])<0:
-            ll += ALL[i]
-    return ll
+        if t27.find(ALL[i])<0:
+            freeset += ALL[i]
+    return freeset
 
 fn resolv(g: String) -> String:
     let i=g.find(".")
