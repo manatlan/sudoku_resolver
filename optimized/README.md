@@ -32,19 +32,24 @@ And now, they are resolving all the grids in [grids.txt](../grids.txt) : **1956 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
+
 optimized/sudoku.java : the optimized algo, with strings (1956grids)
   - java  : 33.022 seconds (5x, 32.402><33.822)
 
+optimized/sudoku.js : the optimized algo, with strings (AI translation from java one) (1956grids)
+  - node  : 37.078 seconds (2x, 36.456><37.701)
+
 optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
   - mojo  : 64.017 seconds (10x, 62.332><68.250)
+
+optimized/sudoku.nim : the optimized algo, with strings (1956grids)
+  - nim   : 26.819 seconds (2x, 26.424><27.214)
 
 optimized/sudoku.py : the optimized algo, with strings (1956grids)
   - py3   : 96.048 seconds (4x, 95.176><100.762)
   - pypy  : 39.315 seconds (4x, 38.107><40.982)
   - codon : 26.791 seconds (4x, 26.008><27.569)
   - py37  : 142.193 seconds (3x, 141.189><145.208)
-
-
 
 
 
