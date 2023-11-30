@@ -34,11 +34,8 @@ proc resolv( g:string ): string =
         return g
 ###############################################
 import strutils
-import times
 
 let gg = readFile("grids.txt").splitLines()[0..99]
-
-let t = cpuTime()
 for g in gg:
     echo resolv(g)
 
