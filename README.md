@@ -79,7 +79,7 @@ sudoku.py : the simple algo, with strings (100grids)
   - py37  : 23.893 seconds (6x, 23.735><24.852)
 
 sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
-  - rust  : 10.101 seconds (9x, 6.494><10.894)
+  - rust  : 2.650 seconds (12x, 2.614><2.729)
 ```
 
 (*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
