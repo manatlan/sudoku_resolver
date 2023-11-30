@@ -10,7 +10,7 @@
 
 // the original with string is here "./experiments/sudoku_original_with_strings_only.rs" (~30s)
 // thanks @noamtashma for the fix !
-
+#![allow(dead_code)]
 use std::fs;
 
 fn sqr(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
@@ -33,36 +33,26 @@ fn row(g: &[u8], y: usize) -> impl Iterator<Item = u8> + '_ {
     g[y * 9..y * 9 + 9].iter().copied()
 }
 
-fn freeset(g: impl Iterator<Item = u8>) -> [bool; 9] {
-    // This is closer to the C version, but a bitset might be good to try as
-    // well. Hashing over a small dataset requires an allocation and the
-    // constant lookup for hashing only matters when the array N gets large.
-    let mut all_digits = [true; 9];
-    for digit in g {
-        if (b'1'..=b'9').contains(&digit) {
-            all_digits[(digit - b'1') as usize] = false;
+// More similar to existing implementations but allocates and does multiple passes
+fn free(g: &[u8], x: usize, y: usize) -> Vec<u8> {
+    let mut freeset = Vec::new();
+    for elem in b"123456789" {
+        // Iterators consume, so this is necessary for correctness
+        let mut t27 = row(g, y).chain(col(g, x)).chain(sqr(g, x, y));
+        if !t27.any(|c| c == *elem) {
+            freeset.push(*elem);
         }
     }
-    all_digits
-}
-
-fn free(g: &[u8], x: usize, y: usize) -> [bool; 9] {
-    let row_bytes = row(g, y);
-    let col_bytes = col(g, x);
-    let sqr_bytes = sqr(g, x, y);
-
-    freeset(row_bytes.chain(col_bytes).chain(sqr_bytes))
+    freeset
 }
 
 fn resolv(g: &[u8]) -> Option<Vec<u8>> {
     if let Some(i) = g.iter().position(|&c| c == b'.') {
-        for (k, free) in free(g, i % 9, i / 9).iter().copied().enumerate() {
-            if free {
-                let mut new_board = g.to_owned();
-                new_board[i] = k as u8 + b'1';
-                if let Some(ng) = resolv(&new_board) {
-                    return Some(ng);
-                }
+        for free_number in free(g, i % 9, i / 9) {
+            let mut new_board = g.to_owned();
+            new_board[i] = free_number;
+            if let Some(ng) = resolv(&new_board) {
+                return Some(ng);
             }
         }
         None
@@ -70,6 +60,7 @@ fn resolv(g: &[u8]) -> Option<Vec<u8>> {
         Some(g.to_owned())
     }
 }
+
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let content = fs::read_to_string("grids.txt")?;
     let gg: Vec<&str> = content.lines().take(100).collect();
