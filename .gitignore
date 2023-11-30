@@ -5,4 +5,4 @@ exe
 sudoku_optim
 sudoku_specialized
 db_*.json
-/target
+target/
