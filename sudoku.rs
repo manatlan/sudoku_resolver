@@ -47,6 +47,22 @@ fn free(g: &[u8], x: usize, y: usize) -> Vec<u8> {
     freeset
 }
 
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+// a faster way to make free(), from @sammysheep
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+// Avoids allocating by using an iterator and scans in a single pass
+fn free_faster(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
+    let numbers_found = row(g, y)
+        .chain(col(g, x))
+        .chain(sqr(g, x, y))
+        .fold(0u16, |acc, b| acc | 1u16 << (b - b'0'));
+
+    (1..10u8)
+        .filter(move |&b| 1u16 << b & numbers_found == 0)
+        .map(|b| b + b'0')
+}
+//-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+
 fn resolv(g: &[u8]) -> Option<Vec<u8>> {
     if let Some(i) = g.iter().position(|&c| c == b'.') {
         for free_number in free(g, i % 9, i / 9) {
