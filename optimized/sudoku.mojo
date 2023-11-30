@@ -1,5 +1,4 @@
 #!./make.py
-from time import now
 alias GROUP = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
 #INFO: the optimized algo, with strings (1956grids)
@@ -72,9 +71,6 @@ fn resolv(g: String) -> String:
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()
-    let t=now()
     for i in range(1956):
-        let g=resolv(buf[i*82:i*82+81])
-        print(g)
-    print("Took:",(now() - t)/1_000_000_000,"s")
+        print( resolv(buf[i*82:i*82+81]) )
 

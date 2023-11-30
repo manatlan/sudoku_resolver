@@ -16,12 +16,13 @@ proc col( g:string, x:int ): string =
 proc row( g:string, y:int ): string =
     g[y*9 .. y*9 + 8]
 
-proc freeset( sg:string) : set[char] =
-    result = {'1'..'9'}
-    for c in sg: result.excl c
-
-proc free( g:string, x:int, y:int ): set[char] =
-    freeset(row(g,y) & col(g,x) & sqr(g,x,y))
+proc free( g:string, x:int, y:int ): string =
+    let t27=row(g,y) & col(g,x) & sqr(g,x,y)
+    var freeset=""
+    for c in "123456789":
+        if t27.find(c)<0:
+            freeset = freeset & c
+    freeset    
 
 proc resolv( g:string ): string =
     let i = g.find('.')
@@ -39,8 +40,5 @@ let gg = readFile("grids.txt").splitLines()[0..99]
 
 let t = cpuTime()
 for g in gg:
-    let rg=resolv(g)
-    assert rg!="" and rg.find(".")<0, "not resolved ?!"
-    echo rg
-echo "Took: ", cpuTime() - t
+    echo resolv(g)
 

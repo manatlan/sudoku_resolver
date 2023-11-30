@@ -2,8 +2,6 @@
 
 #INFO: another algo from mojodojo.dev (100grids)
 
-import time
-
 """python version from https://mojodojo.dev/guides/benchmarks/sudoku.html """
 
 def is_valid(board, row, col, num):
@@ -47,9 +45,7 @@ if __name__=="__main__":
             board.append( [ (0 if i=="." else ord(i)-48) for i in g[x:x+9]])
         boards.append( board )
 
-    t=time.monotonic()
     for board in boards:
         solve_sudoku(board)
         print(board)
-    print( "Took: ", time.monotonic() - t )
 

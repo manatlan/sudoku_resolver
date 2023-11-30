@@ -4,9 +4,5 @@ a.out
 exe
 sudoku_optim
 sudoku_specialized
-.outputs/
-
-
-# Added by cargo
-
+db_*.json
 /target

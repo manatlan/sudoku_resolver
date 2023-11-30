@@ -7,7 +7,6 @@ from sudoku_specialized import Grid
 
 fn main() raises:
     let buf = open("grids.txt", "r").read()
-    let t=now()
 
     @parameter
     fn in_p(i:Int):
@@ -15,6 +14,5 @@ fn main() raises:
         print( g.solve() and g.to_string() )
 
     parallelize[in_p](100,100) #more workers to distribute the effort on cores
-    print("Took:",(now() - t)/1_000_000_000,"s")
     
     _=buf^ #extend lifetime of pointer

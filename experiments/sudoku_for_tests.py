@@ -135,13 +135,9 @@ class Sudoku:
 
 ###############################################
 
-import time
-
 gg = [GridDataList(i.strip()) for i in open("grids.txt")][:100]
 
-t=time.monotonic()
 for g in gg:
     a=Sudoku(g)
     a.solve(optimized=True)
     print(g)
-print( "Took: ", time.monotonic() - t)

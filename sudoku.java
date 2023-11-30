@@ -28,21 +28,25 @@ class Sudoku {
         return g.substring(ligne, ligne+9);
     }
 
-    public static Set<Character> freeset(String g) {
-        Set<Character> result = "123456789".chars().mapToObj(e->(char)e).collect(Collectors.toSet());
-        final Set<Character> s = g.chars().mapToObj(e->(char)e).collect(Collectors.toSet());
-        result.removeAll(s);
-        return result;
-    }
-
-    public static Set<Character> free(String g, int x, int y) {
-        return freeset(row(g,y) + col(g,x) + sqr(g,x,y));
+    public static String free(String g, int x, int y) {
+        final String all="123456789";
+        final String t27=row(g,y) + col(g,x) + sqr(g,x,y);
+        String freeset="";
+    
+        for (int i = 0; i < 9; i++) {
+            final char c=all.charAt(i);
+            if(t27.indexOf( c )<0)
+                freeset+=c;
+        }
+        return freeset;
     }
 
     public static String resolv(String g) {
         final int i=g.indexOf(".");
         if(i>=0) {
-            for(Character elem : free(g,i%9,(int)i/9)) {
+            String freeset=free(g,i%9,(int)i/9);
+            for(int j = 0; j < freeset.length(); j++) {
+                final char elem=freeset.charAt(j);
                 final String ng=resolv( g.substring(0,i) + elem + g.substring(i+1,g.length()) );
                 if(ng!=null)
                     return ng;
@@ -57,12 +61,7 @@ class Sudoku {
     public static void main (String[] args) throws Exception{
         final List<String> gg=Files.readAllLines(Paths.get("grids.txt")).subList(0, 100);
 
-        final long t=System.currentTimeMillis();
-        for(String g: gg) {
-            final String rg=resolv(g);
-            if( !(rg!=null && rg.indexOf(".")<0)) throw new Exception("not resolved ?!");
-            System.out.println(rg);
-        }
-        System.out.println("Took: "+(( System.currentTimeMillis() - t)/1000.0)+"s");
+        for(String g: gg)
+            System.out.println(resolv(g));
     }
 }

@@ -6,8 +6,15 @@
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
 col   = lambda g,x:   g[x::9]
 row   = lambda g,y:   g[y*9:y*9+9]
-free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
-
+# free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
+def free(g:str,x:int,y:int) -> str:
+    t27=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
+    freeset=""
+    for c in "123456789":
+        if c not in t27:
+            freeset+=c
+    return freeset
+    
 ###############################################
 # the original algo
 ###############################################
@@ -38,14 +45,6 @@ def resolv(g):
         return g
 ###############################################
 
-import time
+for g in [i.strip() for i in open("grids.txt")]:
+    print(resolv(g))
 
-gg = [i.strip() for i in open("grids.txt")]
-
-t=time.monotonic()
-for g in gg:
-    rg=resolv(g)
-    assert rg and rg.find(".")<0, "not resolved ?!"
-    print(rg)
-
-print( "Took: ", time.monotonic() - t)

@@ -4,14 +4,6 @@
 // Import the necessary modules
 const fs = require('fs');
 
-function difference(setA, setB) {
-  let _difference = new Set(setA);
-  for (let elem of setB) {
-    _difference.delete(elem);
-  }
-  return _difference;
-}
-
 // Define the Sudoku class
 class Sudoku {
 
@@ -41,16 +33,17 @@ class Sudoku {
         return g.substring(ligne, ligne + 9);
     }
 
-    // Convert the `freeset()` method to JavaScript
-    static freeset(g) {
-        const result = new Set("123456789".split(''));
-        const s = new Set(g.split(''));
-        return difference(result,s)
-    }
-
-    // Convert the `interset()` method to JavaScript
     static free(g, x, y) {
-        return this.freeset( this.row(g, y) + this.col(g, x) + this.sqr(g, x, y))
+        let t27= this.row(g, y) + this.col(g, x) + this.sqr(g, x, y);
+        let all="123456789";
+        let freeset="";
+    
+        for (let i = 0; i < 9; i++) {
+            let c=all[i];
+            if(t27.indexOf( c )<0)
+                freeset+=c;
+        }
+        return freeset;    
     }
 
     // Convert the `resolv()` method to JavaScript
@@ -72,21 +65,9 @@ class Sudoku {
     static main(args) {
         // Read the Sudoku puzzles from the file
         const puzzles = fs.readFileSync('grids.txt', 'utf-8').split('\n').slice(0, 100);
-
-        // Start the timer
-        const startTime = Date.now();
-
         // Solve each Sudoku puzzle
-        for (const puzzle of puzzles) {
-            const solvedPuzzle = this.resolv(puzzle);
-            if (solvedPuzzle === null || solvedPuzzle.indexOf('.') >= 0) {
-                throw new Error('Sudoku puzzle not solved!');
-            }
-            console.log(solvedPuzzle);
-        }
-
-        // Stop the timer and print the elapsed time
-        console.log('Took: ' + ((Date.now() - startTime)/1000.0) + 's');
+        for (const puzzle of puzzles)
+            console.log(this.resolv(puzzle));
     }
 }
 

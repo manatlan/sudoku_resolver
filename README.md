@@ -17,34 +17,38 @@ def resolv(g):
 ```
 
 
-Some grids are available in `grids.txt` (a grid by line of 81 chars, empty cases are `.`)
+Some grids are available in [grids.txt](grids.txt)  (a grid by line of 81 chars, empty cases are `.`)
 
-The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specials optimisations provided by the language itself ... and try to resolve the **first 100 grids** !!!
+The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the **first 100 grids** !!!
 
 ## Context (on my computer)
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions and command line used:
 ```
- * codon : 0.16.3
-           $ /home/manatlan/.codon/bin/codon run -release <source>
- * gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
-           $ /usr/bin/gcc <source> -o exe && ./exe
- * java  : openjdk 22-ea 2024-03-19
-           $ /usr/bin/java <source>
- * mojo  : mojo 0.5.0 (6e50a738)
-           $ /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo run <source>
- * nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
-           $ /home/manatlan/.nimble/bin/nim r -d:danger <source>
- * node  : v18.13.0
-           $ /usr/bin/node <source>
- * py311 : Python 3.11.6
-           $ /usr/bin/python3.11 -uOO <source>
- * py37  : Python 3.7.16
-           $ /usr/local/bin/python3.7 -uOO <source>
- * pypy  : Python 3.10.13 (f1607341da97ff5a1e93430b6e8c4af0ad1aa019, Sep 28 2023, 05:41:26)
-           $ /home/manatlan/Téléchargements/pypy3.10-v7.3.13-linux64/bin/pypy3 -uOO <source>
- * rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
-           $ /usr/bin/rustc -C opt-level=3 -C target-cpu=native <source> -o exe && ./exe
+PLATFORM : x86_64/Linux-6.5.0-13-generic-x86_64-with-glibc2.38 with 4 cpus
+CPUINFO  : GenuineIntel "Intel(R) N100" (1612.80 bogomips)
+MEMINFO  : 16142748 kB
+
+codon : 0.16.3
+        /home/manatlan/.codon/bin/codon run -release <file>
+gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
+        /usr/bin/gcc <file> -o exe && ./exe
+java  : openjdk 22-ea 2024-03-19
+        /usr/bin/java <file>
+mojo  : mojo 0.5.0 (6e50a738)
+        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo run <file>
+nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
+        /home/manatlan/.nimble/bin/nim r -d:danger <file>
+node  : v18.13.0
+        /usr/bin/node <file>
+py3   : Python 3.11.6
+        /usr/bin/python3 -uOO <file>
+py37  : Python 3.7.16
+        /usr/local/bin/python3.7 -uOO <file>
+pypy  : Python 3.9.17 (7.3.12+dfsg-1, Jun 16 2023, 23:19:37)
+        /usr/bin/pypy3 -uOO <file>
+rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
+        /usr/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o exe && ./exe
 ```
 
 
@@ -53,31 +57,29 @@ On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions and command lin
 The 1/1 implementations of the py version, in each language (using strings)
 
 ``` 
- ./sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
-  - gcc   : 2.46 seconds (24x, 2.29><2.93)
+sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
+  - gcc   : 2.497 seconds (12x, 2.477><2.905)
 
- ./sudoku.mojo : the simple algo, with strings (100grids)
-  - mojo  : 16.42 seconds (12x, 16.09><17.41) <-------------------- (*)
+sudoku.java : the simple algo, with strings (100grids)
+  - java  : 8.367 seconds (6x, 8.044><10.213)
 
- ./sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
-  - node  : 43.83 seconds (11x, 43.54><45.33)
+sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
+  - node  : 8.582 seconds (6x, 8.020><9.510)
 
+sudoku.mojo : the simple algo, with strings (100grids)
+  - mojo  : 16.811 seconds (6x, 16.329><21.673)   <-------------------- (*)
 
- ./sudoku.nim : the simple algo, with strings (100grids)
-  - nim   : 9.13 seconds (14x, 8.88><9.29)
+sudoku.nim : the simple algo, with strings (100grids)
+  - nim   : 7.022 seconds (7x, 6.849><8.650)
 
- ./sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
-  - rust  : 10.119 seconds (7x, 8.727><11.243)
+sudoku.py : the simple algo, with strings (100grids)
+  - py3   : 16.372 seconds (6x, 16.104><17.793)
+  - pypy  : 5.774 seconds (6x, 5.257><6.037)
+  - codon : 6.339 seconds (6x, 6.205><6.956)
+  - py37  : 23.893 seconds (6x, 23.735><24.852)
 
- ./sudoku.py : the simple algo, with strings (100grids)
-  - codon : 20.25 seconds (14x, 20.08><21.90)
-  - py311 : 26.2 seconds (14x, 23.51><35.60)
-  - py37  : 39.96 seconds (14x, 33.65><48.75)
-  - pypy  : 19.01 seconds (14x, 18.48><20.30)
-
- ./sudoku.java : the simple algo, with strings (100grids)
-  - java  : 20.83 seconds (12x, 17.25><27.68)
-
+sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
+  - rust  : 10.101 seconds (9x, 6.494><10.894)
 ```
 
 (*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
@@ -87,14 +89,14 @@ The 1/1 implementations of the py version, in each language (using strings)
 The same algo, but with specialized types/structures for the language (to speed up things)
 
 ```
-./sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
-  - mojo  : 0.915 seconds (23x, 0.911><0.963)
+sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
+  - mojo  : 1.097 seconds (11x, 1.064><1.201)
 
-./sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
-  - mojo  : 0.361 seconds (21x, 0.350><0.392)
+sudoku_specialized.rs : the simple algo, with specialized types (100grids)
+  - rust  : 1.206 seconds (11x, 1.166><1.738)
 
-./sudoku_specialized.rs : the simple algo, with specialized types (100grids)
-  - rust  : 0.688 seconds (34x, 0.681><0.785)
+sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
+  - mojo  : 0.514 seconds (11x, 0.484><0.689)
 
 ```
 

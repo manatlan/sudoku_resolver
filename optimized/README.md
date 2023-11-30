@@ -27,35 +27,35 @@ def resolv(g):
         return g
 ```
 
-And now, they are resolving all the grids in `g_simples.txt` : **1956 grids** (some are really complex too)
+And now, they are resolving all the grids in [grids.txt](../grids.txt) : **1956 grids** (some are really complex too)
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), I got :
 
 ```
- optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
-  - mojo  : 61.52 seconds (6x, 58.75><64.56)
+optimized/sudoku.java : the optimized algo, with strings (1956grids)
+  - java  : 33.022 seconds (5x, 32.402><33.822)
 
- optimized/sudoku.py : the optimized algo, with strings (1956grids)
-  - codon : 92.2 seconds (6x, 91.61><98.41)
-  - py311 : 135.5 seconds (6x, 124.15><140.54)
-  - py37  : 204.33 seconds (6x, 183.92><279.88)
-  - pypy  : 94.1 seconds (6x, 87.95><97.18)
+optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
+  - mojo  : 64.017 seconds (10x, 62.332><68.250)
 
- optimized/sudoku.java : the optimized algo, with strings (1956grids)
-  - java  : 103.54 seconds (6x, 99.33><122.73)
-
-
+optimized/sudoku.py : the optimized algo, with strings (1956grids)
+  - py3   : 96.048 seconds (4x, 95.176><100.762)
+  - pypy  : 39.315 seconds (4x, 38.107><40.982)
+  - codon : 26.791 seconds (4x, 26.008><27.569)
+  - py37  : 142.193 seconds (3x, 141.189><145.208)
 
 
 
- optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
-  - mojo  : 3.59 seconds (19x, 3.57><3.70)
 
- optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
-  - mojo  : 1.22 seconds (19x, 1.18><1.41)
 
- optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
-  - rust  : 1.085 seconds (9x, 1.075><1.134)
+optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
+  - mojo  : 3.751 seconds (8x, 3.726><3.905)
+
+optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
+  - rust  : 1.602 seconds (8x, 1.586><2.015)
+
+optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
+  - mojo  : 1.401 seconds (8x, 1.312><1.548)
 
 ```
 

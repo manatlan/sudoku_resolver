@@ -1,5 +1,8 @@
 #!/usr/bin/python3
 import subprocess,sys,os,glob,re,json,statistics,re,fnmatch,time,shutil,platform,multiprocessing,datetime
+import json,platform,statistics,os,datetime
+import hashlib
+
 """
 See doc :
 https://github.com/manatlan/sudoku_resolver/blob/master/make.md
@@ -64,6 +67,123 @@ LANGS=dict(
 )
 
 #########################################################################
+## DB
+#########################################################################
+class Tests:
+    def __init__(self,filename:str,data:dict):
+        self.filename=filename
+        self._modes=data["modes"]
+
+    def __iter__(self):
+        for mode,info in self._modes.items():
+            tests=info["tests"]
+            _sign=info.get("sign",None)
+            if _sign and _sign != sign(self.filename,mode): continue
+            yield mode,statistics.median(tests),len(tests),min(tests),max(tests)
+
+    def filter(self,modes:list) -> list:
+        ll=[]
+        for mode,v,nb,vmin,vmax in self:
+            if modes and mode not in modes: continue
+            ll.append( (mode,v,nb,vmin,vmax) )
+        return ll
+
+
+class DB:
+    def __init__(self,db:"dict|None"=None):
+        self._db={} if db is None else db
+        
+    def add(self,filename:str,mode:str,sec:float, signature:str):
+        info=self._db.setdefault(filename,{}).setdefault("modes",{}).setdefault(mode,{})
+
+        if info.get("sign") == signature:
+            info.setdefault("tests",[]).append( sec )
+        else:
+            info["tests"]=[ sec ]
+        info["sign"]=signature
+
+    def __str__(self):
+        return json.dumps(self._db)
+
+    def __iter__(self):
+        for filename,data in sorted(self._db.items()):
+            yield Tests(filename,data)
+
+    def __add__(self,db):
+        for filename,data in sorted(db._db.items()):
+            for mode,info in sorted(data["modes"].items()):
+                for test in info["tests"]:
+                    self.add( filename, mode, test, info.get("sign"))
+        return self
+
+
+class HostTest(DB):
+    def __init__(self):
+        self.dbfile=f"db_{platform.node()}.json"
+        if os.path.isfile( self.dbfile ):
+            DB.__init__(self,json.load( open(self.dbfile,"r+") ))
+        else:
+            DB.__init__(self,{})
+
+    def add(self,filename:str,mode:str,sec:float):
+        DB.add(self,filename,mode,sec, sign(filename,mode) )
+        with open(self.dbfile,"w+") as fid:
+            fid.write(json.dumps(self._db,indent=2))
+
+    def snapshot(self) -> str:
+        """ generate a line string, containing (timestamp,db) as json str """
+        """ (used to accumulate data in a file)"""
+        timestamp=datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%M%S')
+        return json.dumps( (timestamp,self._db) )
+
+
+class Snapshots(DB):    # results.txt
+    def __init__(self,lines:str):
+        DB.__init__(self)
+        for line in lines.splitlines():
+            timestamp,db=json.loads(line)
+            self += DB(db)
+        
+
+def test_DB():
+    db1=DB()
+    db1.add("kiki.py","py3",12.0,"")
+    db1.add("kiki.py","py3",20.0,"")
+    db1.add("kiki2.py","node",20.0,"")
+    assert db1._db['kiki.py']["modes"]["py3"]["tests"] == [12.0, 20.0]
+    assert db1._db['kiki2.py']["modes"]["node"]["tests"] == [20.0]
+
+    db2=DB()
+    db2.add("kiki.py","py3",15.0,"")
+    db2.add("kiki.py","py2",10.0,"")
+    db2.add("kiki2.py","node",16.0,"")
+    assert db2._db['kiki.py']['modes']['py3']["tests"] == [15.0]
+    assert db2._db['kiki.py']['modes']['py2']["tests"] == [10.0]
+    assert db2._db['kiki2.py']['modes']['node']["tests"] == [16.0]
+
+    db3=db1+db2
+    assert id(db1)==id(db3) # logic !
+    assert db3._db['kiki.py']['modes']['py3']["tests"] == [12.0, 20.0, 15.0]
+    assert db3._db['kiki.py']['modes']['py2']["tests"] == [10.0]
+    assert db3._db['kiki2.py']['modes']['node']["tests"] == [20.0, 16.0]
+
+    # assert db2 is not modified
+    assert db2._db['kiki.py']['modes']['py3']["tests"] == [15.0]
+    assert db2._db['kiki.py']['modes']['py2']["tests"] == [10.0]
+    assert db2._db['kiki2.py']['modes']['node']["tests"] == [16.0]
+
+    # and control summerization of db ...
+    tt=list(db3)
+    assert len(tt)==2
+    # ... first file
+    assert tt[0].filename == "kiki.py"
+    assert list(tt[0]) == [('py3', 15.0, 3, 12.0, 20.0), ('py2', 10.0, 1, 10.0, 10.0)]
+    # ... second file
+    assert tt[1].filename == "kiki2.py"
+    assert list(tt[1]) == [('node', 18.0, 2, 16.0, 20.0)]
+
+
+#########################################################################
 ## helpers
 #########################################################################
 rr=lambda x: round(x,3)
@@ -114,7 +234,7 @@ def help():
     print(get_info_host())
     print()
     print("Where <option> can be, to force a specific one:")
-    for k,v in LANGS.items():
+    for k,v in sorted(LANGS.items()):
         print(f" --{k:5s} : {v['v']}")
         print(f"           {subcmd(v['c'],v['e'],'<file>')}")
 
@@ -125,6 +245,29 @@ def check_output(stdout:str) -> int:
     ok=all( [all( [i.count(x)==9 for x in "123456789"] ) for i in grids])
     return len(grids) if ok else 0
     
+def print_info_comp():
+    for k,v in sorted(LANGS.items()):
+        print(f"{k:5s} : {v['v']}")
+        print(f"        {subcmd(v['c'],v['e'],'<file>')}")
+
+
+
+def sign(filename:str, mode:str) -> str:
+    """Create a signature for the test based on
+        - computer name
+        - compilator (cmd line + version)
+        - content of the file
+       -> md5
+    """
+    with open(filename, 'rb') as fid:
+        # computer = platform.node()  # could be better with id processor !
+        compilator  = LANGS[mode]["v"] + LANGS[mode]["c"]
+        content=fid.read()
+
+        # sign=content+computer.encode()+compilator.encode()
+        sign=content+compilator.encode()
+        return hashlib.md5(sign).hexdigest()
+
 #########################################################################
 ## run/batch methods
 #########################################################################
@@ -148,38 +291,30 @@ def batch(files:list, opts:"list|None") -> int:
     else:
         return 0
 
-def create_result(file,lang, output,cmd,version):
-    folder,file = os.path.dirname(file) or ".",os.path.basename(file)
-    dest = f"{folder}/.outputs/{file}&{lang}&0"
-
-    if not os.path.isdir(os.path.dirname(dest)):
-        os.makedirs(os.path.dirname(dest))
-
-    while os.path.isfile(dest):
-        parts=dest.split("&")
-        dest="&".join( [parts[0], parts[1], str( int(parts[2]) + 1)])
-
-    with open(dest,"w+") as fid:
-        fid.write( json.dumps( dict(cmd=cmd,version=version,output=output), indent=4 ))
 
 def run(file:str,lang:str) -> int:
     """ run file 'file' with the defined lang 'lang'"""
+    db=HostTest()
     file=os.path.relpath(file)
     d = LANGS.get(lang)
     if d:
         cmd=subcmd(d["c"],d["e"],file)
         myprint(f"[{lang}]> {cmd}")
+
+        t=time.monotonic()
         cp=subprocess.run(cmd,shell=True,text=True,capture_output=True)
+        t=time.monotonic() - t
+
         if cp.returncode==0:
-            create_result(file,lang, cp.stdout, cmd, d["v"])
-            
-            lines=cp.stdout.splitlines()
-            myprint( lines[0])
-            myprint( f"... {len(lines)} lines ...")
-            for line in lines[-3:]:
-                print( line )
-            myprint()
-            return 0
+            nb=check_output(cp.stdout)
+            if nb>=100:
+                print(f"--> OK : {t:.03f}s for {nb} grids")
+                db.add(file,lang,t)
+                return 0
+            else:
+                print( cp.stdout )
+                print("!!! BAD RESULT !!!")
+                return -1
         else:
             myprint("ERROR")
             myprint(cp.stdout)
@@ -193,90 +328,48 @@ def run(file:str,lang:str) -> int:
 #########################################################################
 ## stats methods
 #########################################################################
-def getseconds(output:str) -> float:
-    """get seconds in last line of the 'output')"""
-    last_line = output.splitlines()[-1]
-    assert last_line.lower().startswith("took")
-    return float(re.findall( r"[\d\.]+",last_line)[0])
-
 def getinfo(file:str) -> str:
     """get info from the source file 'file'"""
     contents = open(file).read().splitlines()
     for i in contents:
         if i.startswith("//INFO:"):
             return i[7:].strip()
-        if i.startswith("#INFO:"):
+        elif i.startswith("#INFO:"):
             return i[6:].strip()
     return "?"
 
+def print_stats_info(db):
+    for item in db:
+        if item.filename in files:
+            tests = item.filter( opts )
+            if tests:
+                myprint(f"\n{item.filename} : {getinfo(item.filename)}")
+                for mode,value,nb,vmin,vmax in tests:
+                    myprint(f"  - {mode:5s} : {value:.03f} seconds ({nb}x, {vmin:.03f}><{vmax:.03f})")
+
 def stats(files:list, opts:list):
-    total=0.0
-    for file in files:
-        folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
-        results = sorted(glob.glob(f"{folder}/.outputs/{filename}*"))
-        if results:
+    """ stats will displat only stats for current file that have the same signature !!!!"""
+    print_stats_info( HostTest() )
 
-            bymode={}
-            for result in results:
-                if "|" in result:
-                    # ensure compatibility with previous "make.py"
-                    _,mode,nb = result.split("|")
-                else:
-                    _,mode,nb = result.split("&")
-                data=json.load( open(result,"r+") )
-                seconds=getseconds(data["output"])
-                if opts and (mode not in opts): continue
-                bymode.setdefault(mode,[]).append(seconds)
+def stats_results(files:list, opts:list):
+    """ stats will displat only stats for current file that have the same signature !!!!"""
+    f="RESULTS.TXT"
+    if os.path.isfile(f):
+        results=open(f,"r+").read().strip()
+        print_stats_info( Snapshots(results) )
+    else:
+        print(f"no {f} file !")
 
-            if opts and not bymode: continue
-            myprint(f"\n{file} : {getinfo(file)}")
-
-            for mode, tests in bymode.items():
-                moy= rr( statistics.median(tests) )
-                myprint(f"  - {mode:5s} : {moy:.03f} seconds ({len(tests)}x, {rr(min(tests)):.03f}><{rr(max(tests)):.03f})")
-                total += moy
-
-    if total:
-        myprint(f"\n(total time: {total:.03f} seconds)")
-
-
-
-def jstats(files:list, opts:list):
-    stats={}
-    for file in files:
-        folder,filename = os.path.dirname(file) or ".",os.path.basename(file)
-        results = sorted(glob.glob(f"{folder}/.outputs/{filename}*"))
-        if results:
-
-            bymode={}
-            for result in results:
-                if "|" in result:
-                    # ensure compatibility with previous "make.py"
-                    _,mode,nb = result.split("|")
-                else:
-                    _,mode,nb = result.split("&")
-                data=json.load( open(result,"r+") )
-                seconds=getseconds(data["output"])
-                if opts and (mode not in opts): continue
-                bymode.setdefault(mode,[]).append(seconds)
-
-            if opts and not bymode: continue
-
-            for mode, tests in bymode.items():
-                moy= rr( statistics.median(tests) )
-                d=LANGS[mode]
-                stats.setdefault(file,{})[mode]=dict(
-                    info=getinfo(file),
-                    seconds=moy,
-                    cmd=subcmd(d["c"],d["e"],file),
-                    version=d["v"],
-                )
-
-    now=datetime.datetime.strftime(datetime.datetime.now(),'%Y%m%d%H%M%S')
-    return json.dumps( (now,stats) )
+def snapshot() -> str:
+    """used by commandline"""
+    """$ ./make.py snapshot >> ACCUMULATED_RESULTS.txt """
+    db=HostTest()
+    return db.snapshot()
 
 if __name__=="__main__":
+    test_DB()
     update()
+
     args=sys.argv[1:]
     ret=0
 
@@ -288,8 +381,16 @@ if __name__=="__main__":
             if not [i for i in args if not i.startswith("--")]:
                 # not files given in input, assuming '.'
                 args.insert(0,".")
-        elif args[0]=="jstats":
-            mode="jstats"
+        elif args[0]=="snapshot":
+            print( snapshot() )
+            sys.exit(0)
+        elif args[0]=="info":
+            print( get_info_host() )
+            print()
+            print_info_comp()
+            sys.exit(0)
+        elif args[0]=="RESULTS":
+            mode="RESULTS"
             args.pop(0)
             if not [i for i in args if not i.startswith("--")]:
                 # not files given in input, assuming '.'
@@ -321,6 +422,8 @@ if __name__=="__main__":
                     myprint(f"ERROR : {i} not found")
                     sys.exit(-1)
 
+        files=[os.path.relpath(i) for i in sorted(files)]
+
         if mode=="test":
             t=time.monotonic()
             for i in range(nb):
@@ -328,9 +431,9 @@ if __name__=="__main__":
             myprint(f"(total time: %s seconds)" % rr(time.monotonic()-t))
         elif mode=="stats":
             ret=stats(files, opts)
-        elif mode=="jstats":
-            out=jstats(files, opts)
-            print(out)
+        elif mode=="RESULTS":
+            stats_results(files, opts)
+            ret=0
 
     
     else:
