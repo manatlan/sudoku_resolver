@@ -35,16 +35,12 @@ fn row(g: &[u8], y: usize) -> impl Iterator<Item = u8> + '_ {
 }
 
 // More similar to existing implementations but allocates and does multiple passes
-fn free(g: &[u8], x: usize, y: usize) -> Vec<u8> {
-    let mut freeset = Vec::new();
-    for elem in b"123456789" {
+fn free(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
+    b"123456789".iter().copied().filter(move |elem| {
         // Iterators consume, so this is necessary for correctness
         let mut t27 = row(g, y).chain(col(g, x)).chain(sqr(g, x, y));
-        if !t27.any(|c| c == *elem) {
-            freeset.push(*elem);
-        }
-    }
-    freeset
+        !t27.any(|c| c == *elem)
+    })
 }
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
