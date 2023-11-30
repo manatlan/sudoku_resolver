@@ -39,36 +39,36 @@ For the first 100 grids : At each iteration, they will resolve the first hole of
 ```
 
 sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
-  - gcc   : 2.940 seconds (15x, 2.872><3.620)
+  - gcc   : 2.950 seconds (16x, 2.872><3.620)
 
 sudoku.java : the simple algo, with strings (100grids)
-  - java  : 7.373 seconds (8x, 7.064><8.945)
+  - java  : 7.406 seconds (9x, 7.064><8.945)
 
 sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
-  - node  : 6.878 seconds (8x, 6.794><8.189)
+  - node  : 6.870 seconds (9x, 6.794><8.189)
 
 sudoku.mojo : the simple algo, with strings (100grids)
-  - mojo  : 16.531 seconds (8x, 16.438><16.868)
+  - mojo  : 16.504 seconds (9x, 16.427><16.868)
 
 sudoku.nim : the simple algo, with strings (100grids)
-  - nim   : 7.439 seconds (1x, 7.439><7.439)
+  - nim   : 7.580 seconds (2x, 7.439><7.721)
 
 sudoku.py : the simple algo, with strings (100grids)
-  - codon : 4.883 seconds (8x, 4.800><5.040)
-  - py3   : 22.229 seconds (8x, 21.968><22.601)
-  - pypy  : 4.852 seconds (8x, 4.386><4.999)
+  - codon : 4.859 seconds (9x, 4.800><5.040)
+  - py3   : 22.249 seconds (9x, 21.968><22.601)
+  - pypy  : 4.888 seconds (9x, 4.386><5.177)
 
 sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
-  - rust  : 3.772 seconds (2x, 3.137><4.408)
+  - rust  : 4.408 seconds (3x, 3.137><16.481)
 
 sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
-  - mojo  : 2.765 seconds (15x, 2.724><2.882)
+  - mojo  : 2.762 seconds (16x, 2.724><2.882)
 
 sudoku_specialized.rs : the simple algo, with specialized types (100grids)
-  - rust  : 0.952 seconds (6x, 0.911><1.115)
+  - rust  : 0.955 seconds (7x, 0.911><1.606)
 
 sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
-  - mojo  : 2.555 seconds (15x, 2.471><2.679)
+  - mojo  : 2.550 seconds (16x, 2.471><2.679)
 
 ```
 
@@ -80,30 +80,30 @@ For **all 1956** grids : At each iteration, they will firstly resolve the hole, 
 ```
 
 optimized/sudoku.java : the optimized algo, with strings (1956grids)
-  - java  : 28.775 seconds (8x, 27.687><29.469)
+  - java  : 28.806 seconds (9x, 27.687><29.469)
 
 optimized/sudoku.js : the optimized algo, with strings (AI translation from java one) (1956grids)
-  - node  : 28.865 seconds (1x, 28.865><28.865)
+  - node  : 28.836 seconds (2x, 28.807><28.865)
 
 optimized/sudoku.mojo : the optimized algo, with strings (1956grids)
-  - mojo  : 55.946 seconds (15x, 55.438><58.135)
+  - mojo  : 55.937 seconds (16x, 55.438><58.135)
 
 optimized/sudoku.nim : the optimized algo, with strings (1956grids)
-  - nim   : 25.604 seconds (1x, 25.604><25.604)
+  - nim   : 25.662 seconds (2x, 25.604><25.719)
 
 optimized/sudoku.py : the optimized algo, with strings (1956grids)
-  - codon : 20.813 seconds (8x, 20.719><21.095)
-  - py3   : 122.529 seconds (8x, 121.566><123.468)
-  - pypy  : 33.867 seconds (8x, 33.619><34.057)
+  - codon : 20.831 seconds (9x, 20.719><21.095)
+  - py3   : 122.712 seconds (9x, 121.566><123.468)
+  - pypy  : 33.830 seconds (9x, 33.619><34.057)
 
 optimized/sudoku_specialized.mojo : optimized algo, with specialized types (1956grids)
-  - mojo  : 3.759 seconds (15x, 3.726><3.790)
+  - mojo  : 3.758 seconds (16x, 3.726><3.790)
 
 optimized/sudoku_specialized.rs : the optimized algo, with specialized types (and readable) (1956grids)
-  - rust  : 1.019 seconds (6x, 1.003><1.067)
+  - rust  : 1.024 seconds (7x, 1.003><1.443)
 
 optimized/sudoku_specialized_parallel.mojo : optimized algo, with specialized types & parallelization (1956grids)
-  - mojo  : 2.938 seconds (15x, 2.907><2.972)
+  - mojo  : 2.937 seconds (16x, 2.907><2.972)
 
 ```
 
