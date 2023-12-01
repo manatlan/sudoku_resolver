@@ -7,7 +7,7 @@ CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
 MEMINFO  : 16365020 kB
 
 codon : 0.16.3
-        /home/runner/.codon/bin/codon build -release <file> -o ./exe && ./exe < grids.txt
+        /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 java  : openjdk 11.0.21 2023-10-17
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
 mojo  : mojo 0.5.0 (6e50a738)
@@ -34,24 +34,24 @@ All implementations use same bases types (string)
 ```
 
 sudoku.java : algo with strings
-  - java  : 22.615 seconds (3x, 22.365><22.674)
+  - java  : 22.136 seconds (1x, 22.136><22.136)
 
 sudoku.js : algo with strings
-  - node  : 29.989 seconds (3x, 29.804><30.246)
+  - node  : 29.611 seconds (1x, 29.611><29.611)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 59.801 seconds (2x, 59.794><59.809)
+  - mojo  : 82.272 seconds (1x, 82.272><82.272)
 
 sudoku.nim : algo with strings
-  - nim   : 23.966 seconds (3x, 23.324><24.309)
+  - nim   : 23.887 seconds (1x, 23.887><23.887)
 
 sudoku.py : algo with strings
-  - codon : 17.653 seconds (3x, 17.616><17.811)
-  - py3   : 122.762 seconds (3x, 122.421><122.779)
-  - pypy  : 33.746 seconds (3x, 33.743><33.828)
+  - codon : 17.630 seconds (1x, 17.630><17.630)
+  - py3   : 123.134 seconds (1x, 123.134><123.134)
+  - pypy  : 34.668 seconds (1x, 34.668><34.668)
 
 sudoku.rs : algo with Strings (as byte[]) !!!! NOT OPTIMAL !!!!
-  - rust  : 13.138 seconds (3x, 13.116><13.245)
+  - rust  : 13.353 seconds (1x, 13.353><13.353)
 
 ```
 
@@ -62,10 +62,10 @@ It's the same algorithm, but use weapons (types/apis) from the languages, to be 
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.747 seconds (2x, 1.746><1.747)
+  - mojo  : 1.738 seconds (1x, 1.738><1.738)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.622 seconds (3x, 0.617><0.625)
+  - rust  : 0.616 seconds (1x, 0.616><0.616)
 
 ```
 
