@@ -50,11 +50,11 @@ jobs:
 
       - name: tests all
         run: |
-          ./make.py . optimized
+          ./make.py . specialized
 
       - name: show stats
         run: |
-          ./make.py stats . optimized
+          ./make.py stats . specialized
 
       - name: Append stats to RESULTS.TXT (backuped in repo! (persistent))
         run: |
