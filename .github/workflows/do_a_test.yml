@@ -45,7 +45,6 @@ jobs:
 
           python3 -c 'import sysconfig; print(sysconfig.get_config_var("LIBDIR"))'
           ls $(python3 -c 'import sysconfig; print(sysconfig.get_config_var("LIBDIR"))') | grep libpython
-          export MOJO_PYTHON_LIBRARY="/usr/lib/x86_64-linux-gnu/libpython3.10.so"
 
       - name: test make help
         run: |
@@ -54,7 +53,7 @@ jobs:
 
       - name: tests all
         run: |
-          ./make.py . specialized
+          MOJO_PYTHON_LIBRARY="/usr/lib/x86_64-linux-gnu/libpython3.10.so" ./make.py . specialized
 
       - name: show stats
         run: |
