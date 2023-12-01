@@ -254,7 +254,9 @@ def update():
             cmd=os.path.expanduser(v['e'])
         else:
             # guess executable
-            cmd=shutil.which(v['e']).removesuffix(".exe")
+            cmd=shutil.which(v['e'])
+            if cmd: 
+                cmd=cmd.removesuffix(".exe")
         if cmd:
             # store the executable for this host
             LANGS[k]['e']=cmd.strip()
