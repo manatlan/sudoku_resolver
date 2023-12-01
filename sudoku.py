@@ -1,4 +1,4 @@
-#!./make.py --10
+#!./make.py
 
 #INFO: algo with strings
 
@@ -16,15 +16,24 @@ def free(g:str,x:int,y:int) -> str:
     return freeset
     
 def resolv(g):
-    holes={}
+    ibest=-1
+    cbest="123456789"
     for i in range(81):
         if g[i]==".":
-            holes[i]=free(g,i % 9, i // 9)
-            if len(holes[i])==1: break
-    if len(holes)>0: 
-        i,avails = sorted( holes.items() , key=lambda x: len(x[1])).pop(0)
-        for c in avails:
-            ng = resolv( g[:i] + c + g[i+1:] )
+            avails=free(g,i%9,i//9)
+            if not avails:
+                return ""
+            else:
+                if len(avails) < len(cbest):
+                    ibest=i
+                    cbest=avails
+                    
+                    if len(avails)==1:
+                        break
+
+    if ibest != -1:
+        for c in cbest:
+            ng = resolv( g[:ibest] + c + g[ibest+1:] )
             if ng: return ng
     else:
         return g
