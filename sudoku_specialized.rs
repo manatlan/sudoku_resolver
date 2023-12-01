@@ -2,34 +2,22 @@
 //INFO: the simple algo, with specialized types (100grids)
 
 // from @raffimolero / redstoneboi https://www.reddit.com/r/rust/comments/183ex3i/comment/kaoxj74/?context=3
-#![feature(portable_simd)]
 use std::convert::TryFrom;
-use std::{fmt::Display, fs, ops::SubAssign, str::FromStr};
+use std::{fmt::Display, fs, str::FromStr};
 
-struct NumSet([bool; 9]);
+struct NumSet(u16);
 
 impl NumSet {
     fn all() -> Self {
-        Self([true; 9])
+        Self(0b0000_0011_1111_1111)
     }
 
     fn iter(&self) -> impl '_ + Iterator<Item = u8> {
-        self.0
-            .iter()
-            .enumerate()
-            .filter(|(_, &v)| v)
-            .map(|(i, _)| i as u8)
+        (1..10u8).filter(move |&b| (1u16 << b) & self.0 > 0)
     }
-}
 
-impl<T: IntoIterator<Item = u8>> SubAssign<T> for NumSet {
-    fn sub_assign(&mut self, rhs: T) {
-        for n in rhs {
-            if n == EMPTY {
-                continue;
-            }
-            self.0[n as usize] = false;
-        }
+    fn difference(&self, other: &Self) -> Self {
+        NumSet(self.0 & !other.0)
     }
 }
 
@@ -43,10 +31,7 @@ impl FromStr for Grid {
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut data = <[u8; 81]>::try_from(s.as_bytes()).map_err(|_| ())?;
         for c in data.iter_mut() {
-            *c = match c {
-                b'.' => EMPTY,
-                _ => *c - ZERO_IDX,
-            };
+            *c = c.saturating_sub(ZERO_IDX)
         }
         Ok(Self { data })
     }
@@ -65,8 +50,8 @@ impl Display for Grid {
     }
 }
 
-const EMPTY: u8 = 255;
-const ZERO_IDX: u8 = b'1';
+const EMPTY: u8 = 0;
+const ZERO_IDX: u8 = b'0';
 
 impl Grid {
     fn sqr(&self, x: usize, y: usize) -> impl '_ + Iterator<Item = u8> {
@@ -89,11 +74,14 @@ impl Grid {
     }
 
     fn free(&self, x: usize, y: usize) -> NumSet {
-        let mut all_chars: NumSet = NumSet::all();
-        all_chars -= self.row(y);
-        all_chars -= self.col(x);
-        all_chars -= self.sqr(x, y);
-        all_chars
+        let numbers_found = NumSet(
+            self.row(y)
+                .chain(self.col(x))
+                .chain(self.sqr(x, y))
+                .fold(0u16, |acc, b| acc | 1u16 << (b - b'0')),
+        );
+
+        NumSet::all().difference(&numbers_found)
     }
 
     fn resolv_inner(&mut self, pos: usize) -> bool {
