@@ -2,9 +2,9 @@
 //INFO: the simple algo, with specialized types (100grids)
 
 // from @raffimolero / redstoneboi https://www.reddit.com/r/rust/comments/183ex3i/comment/kaoxj74/?context=3
-
-use std::{fmt::Display, fs, ops::SubAssign, str::FromStr};
+#![feature(portable_simd)]
 use std::convert::TryFrom;
+use std::{fmt::Display, fs, ops::SubAssign, str::FromStr};
 
 struct NumSet([bool; 9]);
 
@@ -13,11 +13,12 @@ impl NumSet {
         Self([true; 9])
     }
 
-    fn iter<'a>(&'a self) -> impl 'a + Iterator<Item = u8> {
+    fn iter(&self) -> impl '_ + Iterator<Item = u8> {
         self.0
             .iter()
             .enumerate()
-            .filter_map(|(i, v)| v.then(|| i as u8))
+            .filter(|(_, &v)| v)
+            .map(|(i, _)| i as u8)
     }
 }
 
@@ -68,7 +69,7 @@ const EMPTY: u8 = 255;
 const ZERO_IDX: u8 = b'1';
 
 impl Grid {
-    fn sqr<'a>(&'a self, x: usize, y: usize) -> impl 'a + Iterator<Item = u8> {
+    fn sqr(&self, x: usize, y: usize) -> impl '_ + Iterator<Item = u8> {
         let x = (x / 3) * 3;
         let y = (y / 3) * 3;
         let i = y * 9 + x;
@@ -79,11 +80,11 @@ impl Grid {
             .copied()
     }
 
-    fn col<'a>(&'a self, x: usize) -> impl 'a + Iterator<Item = u8> {
+    fn col(&self, x: usize) -> impl '_ + Iterator<Item = u8> {
         (0..9).map(move |y| self.data[x + y * 9])
     }
 
-    fn row<'a>(&'a self, y: usize) -> impl 'a + Iterator<Item = u8> {
+    fn row(&self, y: usize) -> impl '_ + Iterator<Item = u8> {
         self.data[y * 9..y * 9 + 9].iter().copied()
     }
 
