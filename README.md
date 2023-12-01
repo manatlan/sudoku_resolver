@@ -1,5 +1,7 @@
 Here is the **simplest|minimal|readable** python3 resolver (naive backtracking recursive):
 
+The idea of the repo, is to compare the runtime speed of differents languages. Currently, there a py/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the 1956 grids of [grids.txt](grids.txt) !!!
+
 ```python
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
 col   = lambda g,x:   g[x::9]
@@ -20,9 +22,8 @@ def resolv(g):
     else:
         return g
 ```
-**note** : all implementions use a string mechanism to not use a `set` type, in `free()` method (because it's not available in all languages)
+**note** : all implementions use a string mechanism to not use a `set` type, in the `free()` method (because it's not available in all languages)
 
-The idea of the repo, is to compare differents languages at "run times". Currently, there a py/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the 1956 grids of [grids.txt](grids.txt) !!!
 
 ## Context (on my computer)
 
