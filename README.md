@@ -69,10 +69,10 @@ sudoku.nim : algo with strings
   - nim   : 27.555 seconds (2x, 27.019><28.090)
 
 sudoku.py : algo with strings
-  - py3   : 110.163 seconds (2x, 109.707><110.618)
-  - pypy  : 44.628 seconds (2x, 44.309><44.947)
-  - codon : 23.229 seconds (2x, 22.692><23.765)
-  - py37  : 162.684 seconds (2x, 162.381><162.987)
+  - py3   : 88.972 seconds (3x, 88.880><90.797)
+  - pypy  : 29.358 seconds (3x, 28.443><31.244)
+  - codon : 17.128 seconds (3x, 16.191><17.806)
+  - py37  : 138.129 seconds (2x, 137.556><138.701)
 
 sudoku.rs : algo with Strings (as byte[]) !!!! NOT OPTIMAL !!!!
   - rust  : 12.868 seconds (2x, 12.533><13.204)
