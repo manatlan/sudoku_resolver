@@ -34,23 +34,23 @@ CPUINFO  : GenuineIntel "Intel(R) N100" (1612.80 bogomips)
 MEMINFO  : 16142748 kB
 
 codon : 0.16.3
-        /home/manatlan/.codon/bin/codon run -release <file>
+        /home/manatlan/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 java  : openjdk 22-ea 2024-03-19
-        /usr/bin/java <file>
+        /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
 mojo  : mojo 0.5.0 (6e50a738)
-        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo run <file>
+        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
-        /home/manatlan/.nimble/bin/nim r -d:danger <file>
+        /home/manatlan/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
 node  : v18.13.0
-        /usr/bin/node <file>
+        /usr/bin/node <file> < grids.txt
 py3   : Python 3.11.6
-        /usr/bin/python3 -uOO <file>
+        /usr/bin/python3 -uOO <file> < grids.txt
 py37  : Python 3.7.16
-        /usr/local/bin/python3.7 -uOO <file>
+        /usr/local/bin/python3.7 -uOO <file> < grids.txt
 pypy  : Python 3.9.17 (7.3.12+dfsg-1, Jun 16 2023, 23:19:37)
-        /usr/bin/pypy3 -uOO <file>
+        /usr/bin/pypy3 -uOO <file> < grids.txt
 rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
-        /usr/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o exe && ./exe
+        /usr/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 ```
 
 ## Results

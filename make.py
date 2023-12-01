@@ -54,7 +54,7 @@ LANGS=dict(
     #specifics ......................................................
     codon=dict(	
         e="~/.codon/bin/codon",
-    	c=("$0 build -release $1 -o ./exe","./exe"),
+    	c=("$0 build -release $1 -o ./sudoku","./sudoku"),
         ext="py",
     ),
     py37=dict(
