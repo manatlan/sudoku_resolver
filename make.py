@@ -285,11 +285,11 @@ def print_info_comp(prefix=""):
     for k,v in sorted(LANGS.items()):
         cmd_build,cmd_run = get_commandlines(v,'<file>')
         print(f"{prefix}{k:5s} : {v['v']}")
-        prefix=" "*len(prefix)
+        sprefix=" "*len(prefix)
         if cmd_build:
-            print(f"{prefix}        {cmd_build} && {cmd_run} < grids.txt")
+            print(f"{sprefix}        {cmd_build} && {cmd_run} < grids.txt")
         else:
-            print(f"{prefix}        {cmd_run} < grids.txt")
+            print(f"{sprefix}        {cmd_run} < grids.txt")
 
 
 
