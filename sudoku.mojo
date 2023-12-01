@@ -1,47 +1,22 @@
-#!./make.py --10
+#!./make.py --100
 #INFO: algo with strings (use python to read stdin)
 
-alias GROUP = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
+alias ALL = StringRef("123456789")
 
-fn sqr(g:String,x:Int,y:Int) -> GROUP:
-    let off=y*9+x
-    var group=GROUP().splat(0)
-    @unroll
-    for i in range(3):
-        group[i]=ord(g[off+i])
-        group[i+3]=ord(g[off+i+9])
-        group[i+6]=ord(g[off+i+18])
-    return group
-
-fn col(g:String,x:Int) -> GROUP:
-    var group=GROUP().splat(0)
-    @unroll
-    for i in range(9):
-        group[i]=ord(g[i*9+x])
-    return group
-
-fn row(g:String,y:Int) -> GROUP:
-    let off=y*9
-    var group=GROUP().splat(0)
-    @unroll
-    for i in range(9):
-        group[i]=ord(g[off+i])
-    return group
+fn sqr(g:String,x:Int,y:Int) -> String:
+    return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
+fn col(g:String,x:Int) -> String:
+    return g[x::9]
+fn row(g:String,y:Int) -> String:
+    return g[y*9:y*9+9]
 
 fn free(g:String,x:Int,y:Int) -> String:
-    "Returns a string of numbers that can be fit at (x,y)."
-    let _s = sqr(g,(x//3)*3,(y//3)*3)
-    let _c = col(g,x)
-    let _r = row(g,y)
-
-    var avails=String()
-    @unroll
-    for c in range(49,49+9):
-        if (not (_s==c).reduce_or()) and (not (_c==c).reduce_or()) and (not (_r==c).reduce_or()):
-            # no C in row/col/sqr
-            avails+= chr(c)[0]
-    return avails
-
+    let t27=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
+    var freeset = String("")
+    for i in range(len(ALL)):
+        if t27.find(ALL[i])<0:
+            freeset += ALL[i]
+    return freeset
 
 fn resolv(g: String) -> String:
     var ibest:Int=-1

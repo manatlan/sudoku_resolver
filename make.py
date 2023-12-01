@@ -302,7 +302,7 @@ def sign(filename:str, mode:str, once:str) -> str:
     """
     with open(filename, 'rb') as fid:
         compilator  = str(LANGS[mode]["v"]) + str(LANGS[mode]["c"])
-        content=str( [i for i in fid if not i.strip().startswith( (b"#",b"//") ) ] )    # remove shebang/comments ;-)
+        content=str( [i for i in fid if i.strip() and not i.strip().startswith( (b"#",b"//") ) ] )    # remove shebang/comments ;-)
 
         sign=content+compilator+once
         return hashlib.md5(sign.encode()).hexdigest()

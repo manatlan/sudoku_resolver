@@ -63,7 +63,7 @@ sudoku.js : algo with strings
   - node  : 41.311 seconds (2x, 39.991><42.631)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 70.138 seconds (2x, 69.869><70.408)
+  - mojo  : 100.543 seconds (2x, 99.030><102.057)
 
 sudoku.nim : algo with strings
   - nim   : 27.555 seconds (2x, 27.019><28.090)
