@@ -1,5 +1,5 @@
-#!./make.py --10
-//INFO: algo with Strings (as byte[]) !!!! NOT OPTIMAL !!!!
+#!./make.py
+//INFO: the simple algo, with Strings (as byte[]) (100grids)
 
 // This version doesn't use "Strings", but "byte[]", because :
 // The weapons are not the same because other languages do not have UTF-8 encoded
@@ -12,7 +12,7 @@
 // https://github.com/manatlan/sudoku_resolver/pull/11
 // thanks @noamtashma & @sammysheep for the fix !
 
-use std::io;
+use std::fs;
 
 fn sqr(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
     let x = (x / 3) * 3;
@@ -47,85 +47,41 @@ fn free(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
 // a faster way to make free(), from @sammysheep
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 // Avoids allocating by using an iterator and scans in a single pass
-// fn free_faster(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
-//     let numbers_found = row(g, y)
-//         .chain(col(g, x))
-//         .chain(sqr(g, x, y))
-//         .fold(0u16, |acc, b| acc | 1u16 << (b - b'0'));
+fn free_faster(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
+    let numbers_found = row(g, y)
+        .chain(col(g, x))
+        .chain(sqr(g, x, y))
+        .fold(0u16, |acc, b| acc | 1u16 << (b - b'0'));
 
-//     (1..10u8)
-//         .filter(move |&b| 1u16 << b & numbers_found == 0)
-//         .map(|b| b + b'0')
-// }
+    (1..10u8)
+        .filter(move |&b| 1u16 << b & numbers_found == 0)
+        .map(|b| b + b'0')
+}
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 
 fn resolv(g: &[u8]) -> Option<Vec<u8>> {
-
-    let mut ibest=99;
-
-    //TODO: here I can't find a way to init an list of b"123456789"
-    let mut cbest=free(b".................................................................................", 0, 0);
-
-    let mut nb_choices=9;
-    for i in 0..81 {
-        if g[i]==b'.' {
-            let choices=free(g, i % 9, i / 9);
-
-            //TODO: here I can't find a way to compute the nb of items in choices
-            let nbc=free(g, i % 9, i / 9).count();
-
-            if nbc == 0 {
-                // unsolvable
-                return None;
-            }
-            if nbc < nb_choices {
-                ibest = i;
-                cbest = choices;
-                nb_choices=nbc;
-            }
-            if nbc == 1 {
-                // Only one candidate here; we can't do better...
-                break;
-            }            
-        }
-    }
-
-    if ibest<99 {
-        for elem in cbest {
+    if let Some(i) = g.iter().position(|&c| c == b'.') {
+        for free_number in free(g, i % 9, i / 9) {
             let mut new_board = g.to_owned();
-            new_board[ibest] = elem;
+            new_board[i] = free_number;
             if let Some(ng) = resolv(&new_board) {
                 return Some(ng);
             }
         }
-        return None;
-    }
-    else {
+        None
+    } else {
         Some(g.to_owned())
     }
 }
 
+fn main() -> Result<(), Box<dyn std::error::Error>> {
+    let content = fs::read_to_string("grids.txt")?;
+    let gg: Vec<&str> = content.lines().take(100).collect();
 
-// use std::fs;
-// fn main() -> Result<(), Box<dyn std::error::Error>> {
-//     let content = fs::read_to_string("grids.txt")?;
-//     let gg: Vec<&str> = content.lines().take(100).collect();
-
-//     for g in gg {
-//         if let Some(rg) = resolv(g.as_bytes()) {
-//             println!("{}", std::str::from_utf8(&rg)?);
-//         }
-//     }
-//     Ok(())
-// }
-
-
-fn main() {
-    for line in io::stdin().lines() {
-        let grid = line.unwrap();
-        if let Some(rg) = resolv(grid.as_bytes()) {
-            //TODO: here it prints 'Ok("...")', can't find a way to remove Ok() ?!?
-            println!("{:?}", std::str::from_utf8(&rg)); 
+    for g in gg {
+        if let Some(rg) = resolv(g.as_bytes()) {
+            println!("{}", std::str::from_utf8(&rg)?);
         }
     }
+    Ok(())
 }

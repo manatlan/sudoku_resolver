@@ -1,4 +1,4 @@
-Here is the **simplest|minimal|readable** python3 resolver (naive backtracking, recursive):
+Here is the **simplest|minimal|readable** python3 resolver (naive backtracking recursive):
 
 ```python
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
@@ -7,19 +7,22 @@ row   = lambda g,y:   g[y*9:y*9+9]
 free  = lambda g,x,y: set("123456789") - set(col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3))
 
 def resolv(g):
-    i=g.find(".")
-    if i>=0:
-        for elem in free(g,i%9,i//9):
-            ng=resolv( g[:i] + elem + g[i+1:] )
+    holes={}
+    for i in range(81):
+        if g[i]==".":
+            holes[i]=free(g,i % 9, i // 9)
+            if len(holes[i])==1: break
+    if holes: 
+        idx,avails = sorted( holes.items() , key=lambda x: len(x[1])).pop(0)
+        for c in avails:
+            ng = resolv( g[:idx] + c + g[idx+1:] )
             if ng: return ng
     else:
         return g
 ```
+**note** : all implementions use a string mechanism to not use a `set` type, in `free()` method (because it's not available in all languages)
 
-
-Some grids are available in [grids.txt](grids.txt)  (a grid by line of 81 chars, empty cases are `.`)
-
-The idea of the repo, is to compare differents languages at "run times". Currently, there a c/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the **first 100 grids** !!!
+The idea of the repo, is to compare differents languages at "run times". Currently, there a py/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the 1956 grids of [grids.txt](grids.txt) !!!
 
 ## Context (on my computer)
 
@@ -31,8 +34,6 @@ MEMINFO  : 16142748 kB
 
 codon : 0.16.3
         /home/manatlan/.codon/bin/codon run -release <file>
-gcc   : gcc (Ubuntu 13.2.0-4ubuntu3) 13.2.0
-        /usr/bin/gcc <file> -o exe && ./exe
 java  : openjdk 22-ea 2024-03-19
         /usr/bin/java <file>
 mojo  : mojo 0.5.0 (6e50a738)
@@ -52,9 +53,7 @@ rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
 ```
 
 
-## Simple version, results
-
-The 1/1 implementations of the py version, in each language (using strings)
+## Results
 
 ``` 
 sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
@@ -84,7 +83,7 @@ sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
 
 (*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
 
-## SPECIALIZED versions, results
+## SPECIALIZED results
 
 The same algo, but with specialized types/structures for the language (to speed up things)
 
@@ -118,12 +117,3 @@ see command line [make.py](make.md)
 ## Auto tests on github host
 
 All nights: a github's action automatize the tests, and produce results in [Results Page](RESULTS.md).
-
-## OPTIMIZED algo
-
-See results on [an optimized algo](optimized) versions. (a better algo)
-
-## EXPERIMENTS results:
-
-See [experimentals](experiments) versions. (just for tests purposes)
-

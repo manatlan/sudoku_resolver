@@ -1,6 +1,6 @@
-#!./make.py
+#!./make.py --10
 
-#INFO: optimized algo, with specialized types (1956grids)
+#INFO: algo with specialized types (use python to read stdin)
 
 
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
@@ -105,8 +105,16 @@ struct Grid:
             str+= chr(48+c)[0] if c else "."
         return str           
 
-fn main() raises:
-    let buf = open("grids.txt", "r").read()
-    for i in range(1956):
-        let g=Grid(buf[i*82:i*82+81])
+# fn main() raises:
+#     let buf = open("grids.txt", "r").read()
+#     for i in range(1956):
+#         let g=Grid(buf[i*82:i*82+81])
+#         print( g.solve() and g.to_string() )
+
+from python import Python
+def main():
+    let sys = Python.import_module("sys")
+    var py = Python()
+    for line in sys.stdin:
+        let g=Grid(py.__str__(line))
         print( g.solve() and g.to_string() )

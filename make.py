@@ -2,28 +2,27 @@
 import subprocess,sys,os,glob,re,json,statistics,re,fnmatch,time,shutil,platform,multiprocessing,datetime
 import json,platform,statistics,os,datetime
 import hashlib
+import logging
 
 """
 See doc :
 https://github.com/manatlan/sudoku_resolver/blob/master/make.md
 """
 
-TESTFILES="sudoku*.*"   # pattern for tested files
-
 LANGS=dict(
     mojo=dict(	
         e="mojo",
-    	c="$0 run $1",
+    	c=("$0 build $1 -o ./sudoku","./sudoku"),
         ext="mojo",
     ),
     nim=dict(	
         e="nim",
-    	c="$0 r -d:danger $1",
+    	c=("$0 compile -d:danger $1", "./sudoku"),
         ext="nim",
     ),
     java=dict(
         e="java",
-    	c="$0 $1",
+    	c=("$0c $1","$0 Sudoku"),
         ext="java",
     ),
     node=dict(	
@@ -38,14 +37,14 @@ LANGS=dict(
     ),
     rust=dict(	
         e="rustc",
-    	c="$0 -C opt-level=3 -C target-cpu=native $1 -o exe && ./exe",
+    	c=("$0 -C opt-level=3 -C target-cpu=native $1 -o ./sudoku","./sudoku"),
         ext="rs",
     ),
-    gcc=dict(	
-        e="gcc",
-    	c="$0 $1 -o exe && ./exe",
-        ext="c",
-    ),
+    # gcc=dict(	
+    #     e="gcc",
+    # 	c="$0 $1 -o sudoku && ./sudoku",
+    #     ext="c",
+    # ),
     pypy=dict(	
         e="pypy3",
     	c="$0 -uOO $1",
@@ -55,7 +54,7 @@ LANGS=dict(
     #specifics ......................................................
     codon=dict(	
         e="~/.codon/bin/codon",
-    	c="$0 run -release $1",
+    	c=("$0 build -release $1 -o ./exe","./exe"),
         ext="py",
     ),
     py37=dict(
@@ -65,6 +64,43 @@ LANGS=dict(
     ),
 
 )
+
+#########################################################################
+## Specific for tests here (about sudoku)
+#########################################################################
+NB_GRIDS=1956
+
+TESTFILES="sudoku*.*"   # pattern for tested files
+
+def do_the_test(lang,d,file,nb_grids=None) -> "float|None":
+    grids=[i.strip() for i in open("grids.txt")][:nb_grids or NB_GRIDS]
+
+    myprint()
+    cmd_build,cmd_run = get_commandlines(d,file)
+    if cmd_build:
+        myprint(f"[{lang}]> {cmd_build} && {cmd_run} < grids.txt ({len(grids)})")
+    else:
+        myprint(f"[{lang}]> {cmd_run} < grids.txt ({len(grids)})")
+
+    try:
+        t,output=runcmd( "\n".join(grids), cmd_run, cmd_build )
+
+        # clean fs by removing build outputs
+        for i in ["sudoku","Sudoku.class"]:
+            if os.path.isfile(i):
+                os.unlink(i)
+
+        results=[all( [i.count(x)==9 for x in "123456789"] ) for i in re.findall(r"[1-9]{81}",output)]
+
+        if len(results)==len(grids) and all(results):
+            print(f"--> OK : {t:.03f}s for {len(grids)} grids")
+            return t
+        else:
+            print( output )
+            print("!!! BAD RESULT !!!")
+    except Exception as e:
+        print("ERROR",e)
+    return None
 
 #########################################################################
 ## DB
@@ -78,7 +114,7 @@ class Tests:
         for mode,info in self._modes.items():
             tests=info["tests"]
             _sign=info.get("sign",None)
-            if _sign and _sign != sign(self.filename,mode): continue
+            if _sign and _sign != sign(self.filename,mode,str(NB_GRIDS)): continue
             yield mode,statistics.median(tests),len(tests),min(tests),max(tests)
 
     def filter(self,modes:list) -> list:
@@ -125,8 +161,8 @@ class HostTest(DB):
         else:
             DB.__init__(self,{})
 
-    def add(self,filename:str,mode:str,sec:float):
-        DB.add(self,filename,mode,sec, sign(filename,mode) )
+    def add(self,filename:str,mode:str,sec:float, once:str):
+        DB.add(self,filename,mode,sec, sign(filename,mode,once) )
         with open(self.dbfile,"w+") as fid:
             fid.write(json.dumps(self._db,indent=2))
 
@@ -190,7 +226,6 @@ rr=lambda x: round(x,3)
 
 todict = lambda x: dict( [[i.strip() for i in line.split(":",1) if ":" in line] for line in x.splitlines() if line.strip()] )
 
-subcmd = lambda cmd,p0,p1: cmd.replace('$0',p0).replace('$1',p1)
 
 def myprint(*a,**k):
     k["flush"]=True
@@ -215,12 +250,19 @@ def update():
     """ update the global dict LANGS, to current supported lang of the host"""
     for k,v in list(LANGS.items()):
         if os.path.isfile(os.path.expanduser(v['e'])):
+            # specific executable
             cmd=os.path.expanduser(v['e'])
         else:
-            cmd=shutil.which(v['e'])
+            # guess executable
+            cmd=shutil.which(v['e']).removesuffix(".exe")
         if cmd:
+            # store the executable for this host
             LANGS[k]['e']=cmd.strip()
+
+            # guess version
             cp=subprocess.run([LANGS[k]['e'],"--version"],text=True,capture_output=True)
+
+            # store the version for this host
             LANGS[k]['v']=cp.stdout.splitlines()[0]
         else:
             print(f"*WARNING* no {k} lang (you can install '{v['e']}')!",file=sys.stderr)   # not in stdin !
@@ -234,57 +276,72 @@ def help():
     print(get_info_host())
     print()
     print("Where <option> can be, to force a specific one:")
-    for k,v in sorted(LANGS.items()):
-        print(f" --{k:5s} : {v['v']}")
-        print(f"           {subcmd(v['c'],v['e'],'<file>')}")
 
-
-def check_output(stdout:str) -> int:
-    """return the nb of valid grid found, if all ok"""
-    grids=re.findall(r"[1-9]{81}",stdout)
-    ok=all( [all( [i.count(x)==9 for x in "123456789"] ) for i in grids])
-    return len(grids) if ok else 0
+    print_info_comp("  --")
     
-def print_info_comp():
+def print_info_comp(prefix=""):
     for k,v in sorted(LANGS.items()):
-        print(f"{k:5s} : {v['v']}")
-        print(f"        {subcmd(v['c'],v['e'],'<file>')}")
+        cmd_build,cmd_run = get_commandlines(v,'<file>')
+        print(f"{prefix}{k:5s} : {v['v']}")
+        prefix=" "*len(prefix)
+        if cmd_build:
+            print(f"{prefix}        {cmd_build} && {cmd_run} < grids.txt")
+        else:
+            print(f"{prefix}        {cmd_run} < grids.txt")
 
 
 
-def sign(filename:str, mode:str) -> str:
+def sign(filename:str, mode:str, once:str) -> str:
     """Create a signature for the test based on
-        - computer name
         - compilator (cmd line + version)
         - content of the file
-       -> md5
+        - and once
+       -----------------------> md5
     """
     with open(filename, 'rb') as fid:
-        # computer = platform.node()  # could be better with id processor !
-        compilator  = LANGS[mode]["v"] + LANGS[mode]["c"]
-        content=fid.read()
+        compilator  = str(LANGS[mode]["v"]) + str(LANGS[mode]["c"])
+        content=str( [i for i in fid if not i.strip().startswith( (b"#",b"//") ) ] )    # remove shebang/comments ;-)
 
-        # sign=content+computer.encode()+compilator.encode()
-        sign=content+compilator.encode()
-        return hashlib.md5(sign).hexdigest()
+        sign=content+compilator+once
+        return hashlib.md5(sign.encode()).hexdigest()
+
+
+
+def runcmd(input:str, cmd, pre_cmd=None, ):
+    """ inject input in stdin of the command 'cmd' """
+    """ in bash, could be : $ `cmd` < echo input """
+    """ execute `pre_cmd` if defined (build phase)"""
+    if pre_cmd:
+        cp = subprocess.run(pre_cmd,shell=True,text=True,capture_output=True)
+        logging.info("runcmd: %s -> %s (pre cmd)",pre_cmd,cp.returncode)
+        if cp.returncode!=0:
+            raise Exception(f"ERROR runcmd: '{pre_cmd}'\n{cp.stderr}\n{cp.stdout}")
+        
+    t = time.monotonic()
+    cp = subprocess.run(cmd,shell=True,text=True,input=input,capture_output=True)
+    t = time.monotonic() - t
+    logging.info("runcmd: %s -> %s (time:%s)",cmd,cp.returncode,t)
+    if cp.returncode!=0:
+        raise Exception(f"ERROR runcmd: '{cmd}'\n{cp.stderr}\n{cp.stdout}")
+    return (t,cp.stdout)
 
 #########################################################################
 ## run/batch methods
 #########################################################################
 
-def batch(files:list, opts:"list|None") -> int:
+def batch(files:list, opts:"list|None", nb_grids:int) -> int:
     """execute files, and if opts, restrict to lang from 'opts'"""
     file="?"
     found=False
     for file in files:
         if fnmatch.fnmatch(os.path.basename(file),TESTFILES):
             ext=file.split(".")[-1]
-            for k,v in LANGS.items():
-                if v.get("ext") == ext:
-                    if opts and k not in opts:
+            for mode,langinfo in LANGS.items():
+                if langinfo.get("ext") == ext:
+                    if opts and mode not in opts:
                         continue
                     found=True
-                    run( file,k )        
+                    run( file,mode,nb_grids )        
     if not found:
         myprint(f"ERROR: didn't found a compiler for {file}")
         return -1
@@ -292,35 +349,35 @@ def batch(files:list, opts:"list|None") -> int:
         return 0
 
 
-def run(file:str,lang:str) -> int:
+def get_commandlines(d:dict,file:str) -> tuple:
+    subcmd = lambda cmd,p0,p1: cmd.replace('$0',p0).replace('$1',p1)
+
+    if isinstance(d["c"],tuple):
+        cmd_build,cmd_run=d["c"]
+    else:
+        cmd_build=None
+        cmd_run=d["c"]
+
+    if cmd_build: cmd_build=subcmd(cmd_build,d["e"],file)
+    if cmd_run:   cmd_run=subcmd(cmd_run,d["e"],file)
+
+    return cmd_build,cmd_run
+
+def run(file:str,lang:str, nb_grids:int) -> int:
     """ run file 'file' with the defined lang 'lang'"""
     db=HostTest()
     file=os.path.relpath(file)
     d = LANGS.get(lang)
     if d:
-        cmd=subcmd(d["c"],d["e"],file)
-        myprint(f"[{lang}]> {cmd}")
-
-        t=time.monotonic()
-        cp=subprocess.run(cmd,shell=True,text=True,capture_output=True)
-        t=time.monotonic() - t
-
-        if cp.returncode==0:
-            nb=check_output(cp.stdout)
-            if nb>=100:
-                print(f"--> OK : {t:.03f}s for {nb} grids")
-                db.add(file,lang,t)
-                return 0
-            else:
-                print( cp.stdout )
-                print("!!! BAD RESULT !!!")
-                return -1
+        t=do_the_test(lang,d,file, nb_grids)
+        if t is None:
+            return -1
         else:
-            myprint("ERROR")
-            myprint(cp.stdout)
-            myprint(cp.stderr)
-            return cp.returncode
-        return 0
+            if nb_grids==NB_GRIDS:
+                db.add(file,lang,t,str(NB_GRIDS))
+            else:
+                print("NOT SAVED")
+            return 0
     else:
         help()
         return -1
@@ -369,6 +426,7 @@ def snapshot() -> str:
 if __name__=="__main__":
     test_DB()
     update()
+    nb_grids=NB_GRIDS
 
     args=sys.argv[1:]
     ret=0
@@ -408,11 +466,14 @@ if __name__=="__main__":
         for i in args:
             if i.startswith("--"):
                 opt=i[2:].lower()
-                if opt not in LANGS.keys():
-                    myprint(f"ERROR : --{opt} is not in {list(LANGS.keys())}")
-                    sys.exit(-1)
+                if opt.isnumeric():
+                    nb_grids = int(opt)
                 else:
-                    opts.append(opt)
+                    if opt not in LANGS.keys():
+                        myprint(f"ERROR : --{opt} is not in {list(LANGS.keys())}")
+                        sys.exit(-1)
+                    else:
+                        opts.append(opt)
             else:
                 if os.path.isdir(i):
                     files.extend( glob.glob( os.path.join(i,TESTFILES) ) )
@@ -425,17 +486,13 @@ if __name__=="__main__":
         files=[os.path.relpath(i) for i in sorted(files)]
 
         if mode=="test":
-            t=time.monotonic()
             for i in range(nb):
-                ret=batch(files, opts )
-            myprint(f"(total time: %s seconds)" % rr(time.monotonic()-t))
+                ret=batch(files, opts , nb_grids)
         elif mode=="stats":
             ret=stats(files, opts)
         elif mode=="RESULTS":
             stats_results(files, opts)
             ret=0
-
-    
     else:
         help()
     sys.exit(ret)

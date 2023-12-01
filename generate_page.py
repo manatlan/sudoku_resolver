@@ -8,23 +8,19 @@ Here are informations about the host/computer, and languages/versions/cmdline us
 %s
 ```
 
-The goal is to test two algorithms (sudoku backtracking) using different languages, to compare runtime speed.
+The goal is to compare runtime speed of a same algo, in differents implementations/languages.
 
-- The [first](sudoku.py) is a **simple algo**, and solves only 100 grids.
-- The [second](optimized/sudoku.py) is an **optimized algo** and is a lot faster. So it can solve **all 1956 grids** !
+## Results
 
-## Simple Algo
+All implementations use the same base types (a grid is a line of 81 chars).
 
-For the first 100 grids : At each iteration, they will resolve the first hole of the grid, til no holes.
-(*specialized* versions use all weapons available in language, while others use strings only)
 ```
 %s
 ```
 
-## Optimized Algo
+## Specialized
 
-For **all 1956** grids : At each iteration, they will firstly resolve the hole, with minimal choices, of the grid, til no holes.
-(*specialized* versions use all weapons available in language, while others use strings only)
+It's the same algorithm, but use weapons (types/apis) from the languages, to be as faster as possible.
 
 ```
 %s
@@ -44,7 +40,7 @@ if __name__=="__main__":
             "GITHUB",
             call_make("info"),
             call_make("RESULTS","."),
-            call_make("RESULTS","optimized"),
+            call_make("RESULTS","specialized"),
         ))
     else:
         # STATS from live db
@@ -52,5 +48,5 @@ if __name__=="__main__":
             platform.node(),
             call_make("info"),
             call_make("stats","."),
-            call_make("stats","optimized"),
+            call_make("stats","specialized"),
         ))

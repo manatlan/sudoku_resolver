@@ -1,11 +1,11 @@
-#!./make.py
+#!./make.py --10
 // from @raffimolero / redstoneboi https://www.reddit.com/r/rust/comments/183ex3i/comment/kaoxj74/?context=3
 
-//INFO: the optimized algo, with specialized types (and readable) (1956grids)
+//INFO: algo with specialized types
 
 use std::{
+    io,
     fmt::{Display, Formatter},
-    fs,
     ops::{Add, AddAssign, Sub, SubAssign},
     str::FromStr,
     iter::FromIterator
@@ -248,14 +248,24 @@ impl Display for Grid {
     }
 }
 
-fn main() -> Result<(), Box<dyn std::error::Error>> {
-    let content = fs::read_to_string("grids.txt")?;
-    let gg: Vec<&str> = content.lines().take(1956).collect();
+// fn main() -> Result<(), Box<dyn std::error::Error>> {
+//     let content = fs::read_to_string("grids.txt")?;
+//     let gg: Vec<&str> = content.lines().take(1956).collect();
 
-    for line in gg {
-        let mut grid: Grid = line.trim().parse().unwrap();
+//     for line in gg {
+//         let mut grid: Grid = line.trim().parse().unwrap();
+//         grid.resolv();
+//         println!("{} ", grid);
+//     }
+//     Ok(())
+// }
+
+
+fn main() {
+    // Iterate over the lines in io::stdin()
+    for line in io::stdin().lines() {
+        let mut grid: Grid = line.unwrap().trim().parse().unwrap();
         grid.resolv();
         println!("{} ", grid);
     }
-    Ok(())
 }

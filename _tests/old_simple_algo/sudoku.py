@@ -1,6 +1,6 @@
-#!./make.py --10
+#!./make.py
 
-#INFO: algo with strings
+#INFO: the simple algo, with strings (100grids)
 
 ############################################### my resolver ;-) (backtracking)
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
@@ -14,25 +14,17 @@ def free(g:str,x:int,y:int) -> str:
         if c not in t27:
             freeset+=c
     return freeset
-    
+
+
 def resolv(g):
-    holes={}
-    for i in range(81):
-        if g[i]==".":
-            holes[i]=free(g,i % 9, i // 9)
-            if len(holes[i])==1: break
-    if len(holes)>0: 
-        i,avails = sorted( holes.items() , key=lambda x: len(x[1])).pop(0)
-        for c in avails:
-            ng = resolv( g[:i] + c + g[i+1:] )
+    i=g.find(".")
+    if i>=0:
+        for elem in free(g,i%9,i//9):
+            ng=resolv( g[:i] + elem + g[i+1:] )
             if ng: return ng
     else:
         return g
 ###############################################
 
-import sys
-
-for g in sys.stdin:
-# for g in [i.strip() for i in open("grids.txt")]:
-    print(resolv(g.strip()))
-
+for g in [i.strip() for i in open("grids.txt")][:100]:
+    print(resolv(g))

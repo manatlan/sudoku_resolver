@@ -1,5 +1,6 @@
 #!./make.py
-#INFO: the optimized algo, with strings (1956grids)
+#INFO: the simple algo, with strings (100grids)
+
 
 ############################################### my resolver ;-) (backtracking)
 proc sqr( g:string, x:int, y:int ): string =
@@ -23,33 +24,18 @@ proc free( g:string, x:int, y:int ): string =
             freeset = freeset & c
     freeset    
 
-proc resolv(g: string): string =
-    var ibest = -1
-    var cbest = "123456789"
-
-    for i in 0 ..< 81:
-        if g[i] == '.':
-            let c = free(g, i mod 9, i div 9)
-            if c.len == 0:
-                return ""
-            if c.len < cbest.len:
-                ibest = i
-                cbest = c
-            if c.len == 1:
-                break
-
-    if ibest >= 0:
-        for elem in cbest:
-            let ng = resolv(g[0 .. ibest-1] & elem & g[ibest + 1 .. 80])
-            if ng!="": return ng
-        return ""
+proc resolv( g:string ): string =
+    let i = g.find('.')
+    if i>=0:
+        for elem in free(g, i mod 9, i div 9):
+            let ng = resolv( g[0..i-1] & elem & g[i+1..80] )
+            if ng != "": return ng
     else:
         return g
-
 ###############################################
 import strutils
 
-let gg = readFile("grids.txt").splitLines()[0..<1956]
+let gg = readFile("grids.txt").splitLines()[0..99]
 for g in gg:
     echo resolv(g)
 

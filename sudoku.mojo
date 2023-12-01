@@ -1,45 +1,82 @@
-#!./make.py
-from time import now
-"""
-this is "the simple algo, with strings" ... adapted for mojo 0.5 features (str.find).
+#!./make.py --10
+#INFO: algo with strings (use python to read stdin)
 
-If you are looking for mojo issue #1216 (https://github.com/modularml/mojo/issues/1216)
+alias GROUP = SIMD[DType.uint8, 16]   # ideal is 9, but should be a **2 .. so 16 !
 
-the old code (dev for mojo0.4) is here:
-https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo
-(this [^^] was a lot faster (10x) using mojo0.4 than mojo0.5 !!!!)
-(and this [^^] is faster (2x) than this code [vv] with mojo0.5.0)
-"""
+fn sqr(g:String,x:Int,y:Int) -> GROUP:
+    let off=y*9+x
+    var group=GROUP().splat(0)
+    @unroll
+    for i in range(3):
+        group[i]=ord(g[off+i])
+        group[i+3]=ord(g[off+i+9])
+        group[i+6]=ord(g[off+i+18])
+    return group
 
-#INFO: the simple algo, with strings (100grids)
-alias ALL = StringRef("123456789")
+fn col(g:String,x:Int) -> GROUP:
+    var group=GROUP().splat(0)
+    @unroll
+    for i in range(9):
+        group[i]=ord(g[i*9+x])
+    return group
 
-fn sqr(g:String,x:Int,y:Int) -> String:
-    return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
-fn col(g:String,x:Int) -> String:
-    return g[x::9]
-fn row(g:String,y:Int) -> String:
-    return g[y*9:y*9+9]
+fn row(g:String,y:Int) -> GROUP:
+    let off=y*9
+    var group=GROUP().splat(0)
+    @unroll
+    for i in range(9):
+        group[i]=ord(g[off+i])
+    return group
+
 fn free(g:String,x:Int,y:Int) -> String:
-    let t27=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
-    var freeset = String("")
-    for i in range(len(ALL)):
-        if t27.find(ALL[i])<0:
-            freeset += ALL[i]
-    return freeset
+    "Returns a string of numbers that can be fit at (x,y)."
+    let _s = sqr(g,(x//3)*3,(y//3)*3)
+    let _c = col(g,x)
+    let _r = row(g,y)
+
+    var avails=String()
+    @unroll
+    for c in range(49,49+9):
+        if (not (_s==c).reduce_or()) and (not (_c==c).reduce_or()) and (not (_r==c).reduce_or()):
+            # no C in row/col/sqr
+            avails+= chr(c)[0]
+    return avails
+
 
 fn resolv(g: String) -> String:
-    let i=g.find(".")
-    if i>=0:
-        let x=free(g,i%9,i//9)
-        for idx in range(len(x)):
-            let ng=resolv( g[:i] + x[idx] + g[i+1:] )
+    var ibest:Int=-1
+    var cbest=String("123456789")
+    
+    for i in range(81):
+        if g[i]==".":
+            let avails=free(g,i%9,i//9)
+            if not avails:
+                return ""
+            else:
+                if len(avails) < len(cbest):
+                    ibest=i
+                    cbest=avails
+                    
+                    if len(avails)==1:
+                        break
+        
+    if ibest != -1:
+        for idx in range(len(cbest)):
+            let ng=resolv( g[:ibest] + cbest[idx] + g[ibest+1:] )
             if ng: return ng
         return ""
     else:
         return g
 
-fn main() raises:
-    let buf = open("grids.txt", "r").read()
-    for i in range(100):
-        print(resolv(buf[i*82:i*82+81]))
+# fn main() raises:
+#     let buf = open("grids.txt", "r").read()
+#     for i in range(50):
+#         print( resolv(buf[i*82:i*82+81]) )
+
+from python import Python
+def main():
+    let sys = Python.import_module("sys")
+    var py = Python()
+    for g in sys.stdin:
+        print(resolv(py.__str__(g)))
+
