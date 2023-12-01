@@ -52,51 +52,42 @@ rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
         /usr/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o exe && ./exe
 ```
 
-
 ## Results
 
 ``` 
-sudoku.c : the simple algo, with strings (AI translation from java one) (100grids)
-  - gcc   : 2.497 seconds (12x, 2.477><2.905)
+sudoku.java : algo with strings
+  - java  : 39.656 seconds (2x, 39.409><39.902)
 
-sudoku.java : the simple algo, with strings (100grids)
-  - java  : 8.367 seconds (6x, 8.044><10.213)
+sudoku.js : algo with strings
+  - node  : 41.311 seconds (2x, 39.991><42.631)
 
-sudoku.js : the simple algo, with strings (AI translation from java one) (100grids)
-  - node  : 8.582 seconds (6x, 8.020><9.510)
+sudoku.mojo : algo with strings (use python to read stdin)
+  - mojo  : 70.138 seconds (2x, 69.869><70.408)
 
-sudoku.mojo : the simple algo, with strings (100grids)
-  - mojo  : 16.811 seconds (6x, 16.329><21.673)   <-------------------- (*)
+sudoku.nim : algo with strings
+  - nim   : 27.555 seconds (2x, 27.019><28.090)
 
-sudoku.nim : the simple algo, with strings (100grids)
-  - nim   : 7.022 seconds (7x, 6.849><8.650)
+sudoku.py : algo with strings
+  - py3   : 110.163 seconds (2x, 109.707><110.618)
+  - pypy  : 44.628 seconds (2x, 44.309><44.947)
+  - codon : 23.229 seconds (2x, 22.692><23.765)
+  - py37  : 162.684 seconds (2x, 162.381><162.987)
 
-sudoku.py : the simple algo, with strings (100grids)
-  - py3   : 16.372 seconds (6x, 16.104><17.793)
-  - pypy  : 5.774 seconds (6x, 5.257><6.037)
-  - codon : 6.339 seconds (6x, 6.205><6.956)
-  - py37  : 23.893 seconds (6x, 23.735><24.852)
-
-sudoku.rs : the simple algo, with Strings (as byte[]) (100grids)
-  - rust  : 2.650 seconds (12x, 2.614><2.729)
+sudoku.rs : algo with Strings (as byte[]) !!!! NOT OPTIMAL !!!!
+  - rust  : 12.868 seconds (2x, 12.533><13.204)
 ```
 
-(*) : was 6.65s with `mojo 0.4.0 (9e33b013)` and [source_for_0.4.0](https://github.com/manatlan/sudoku_resolver/blob/mojo_0.4.0/sudoku.mojo), [perf issue](https://github.com/modularml/mojo/issues/1216)
 
 ## SPECIALIZED results
 
 The same algo, but with specialized types/structures for the language (to speed up things)
 
 ```
-sudoku_specialized.mojo : the simple algo, with specialized types (100grids)
-  - mojo  : 1.097 seconds (11x, 1.064><1.201)
+specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
+  - mojo  : 3.963 seconds (2x, 3.880><4.045)
 
-sudoku_specialized.rs : the simple algo, with specialized types (100grids)
-  - rust  : 1.206 seconds (11x, 1.166><1.738)
-
-sudoku_specialized_parallel.mojo : the simple algo, with specialized types & parallelization (100grids)
-  - mojo  : 0.514 seconds (11x, 0.484><0.689)
-
+specialized/sudoku.rs : algo with specialized types
+  - rust  : 1.188 seconds (2x, 1.146><1.231)
 ```
 
 ## If you want to tests on your own

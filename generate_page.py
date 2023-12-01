@@ -8,11 +8,11 @@ Here are informations about the host/computer, and languages/versions/cmdline us
 %s
 ```
 
-The goal is to compare runtime speed of a same algo, in differents implementations/languages.
+The goal is to compare runtime speed of a same algo, in differents implementations/languages, while injecting the 1956 grids of [grids.txt](grids.txt)
 
 ## Results
 
-All implementations use the same base types (a grid is a line of 81 chars).
+All implementations use same bases types (string)
 
 ```
 %s
