@@ -1,5 +1,5 @@
 #!./make.py --10
-//INFO: algo with Strings (as byte[]) !!!! NOT OPTIMAL !!!!
+//INFO: algo with Strings (as byte[])
 
 // This version doesn't use "Strings", but "byte[]", because :
 // The weapons are not the same because other languages do not have UTF-8 encoded

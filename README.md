@@ -24,6 +24,44 @@ def resolv(g):
 ```
 **note** : all implementions use a string mechanism to not use a `set` type, in the `free()` method (because it's not available in all languages)
 
+## Results
+
+``` 
+sudoku.java : algo with strings
+  - java  : 39.656 seconds (2x, 39.409><39.902)
+
+sudoku.js : algo with strings
+  - node  : 41.311 seconds (2x, 39.991><42.631)
+
+sudoku.mojo : algo with strings (use python to read stdin)
+  - mojo  : 100.543 seconds (2x, 99.030><102.057)
+
+sudoku.nim : algo with strings
+  - nim   : 27.555 seconds (2x, 27.019><28.090)
+
+sudoku.py : algo with strings
+  - py3   : 88.972 seconds (3x, 88.880><90.797)
+  - pypy  : 29.358 seconds (3x, 28.443><31.244)
+  - codon : 17.128 seconds (3x, 16.191><17.806)
+  - py37  : 138.129 seconds (2x, 137.556><138.701)
+
+sudoku.rs : algo with Strings (as byte[])
+  - rust  : 10.357 seconds (4x, 10.197><10.710)
+```
+
+
+## SPECIALIZED results
+
+The same algo, but with specialized types/structures for the language (to speed up things)
+
+```
+specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
+  - mojo  : 3.963 seconds (2x, 3.880><4.045)
+
+specialized/sudoku.rs : algo with specialized types
+  - rust  : 1.188 seconds (2x, 1.146><1.231)
+```
+
 
 ## Context (on my computer)
 
@@ -53,43 +91,6 @@ rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
         /usr/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 ```
 
-## Results
-
-``` 
-sudoku.java : algo with strings
-  - java  : 39.656 seconds (2x, 39.409><39.902)
-
-sudoku.js : algo with strings
-  - node  : 41.311 seconds (2x, 39.991><42.631)
-
-sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 100.543 seconds (2x, 99.030><102.057)
-
-sudoku.nim : algo with strings
-  - nim   : 27.555 seconds (2x, 27.019><28.090)
-
-sudoku.py : algo with strings
-  - py3   : 88.972 seconds (3x, 88.880><90.797)
-  - pypy  : 29.358 seconds (3x, 28.443><31.244)
-  - codon : 17.128 seconds (3x, 16.191><17.806)
-  - py37  : 138.129 seconds (2x, 137.556><138.701)
-
-sudoku.rs : algo with Strings (as byte[]) !!!! NOT OPTIMAL !!!!
-  - rust  : 12.868 seconds (2x, 12.533><13.204)
-```
-
-
-## SPECIALIZED results
-
-The same algo, but with specialized types/structures for the language (to speed up things)
-
-```
-specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 3.963 seconds (2x, 3.880><4.045)
-
-specialized/sudoku.rs : algo with specialized types
-  - rust  : 1.188 seconds (2x, 1.146><1.231)
-```
 
 ## If you want to tests on your own
 
