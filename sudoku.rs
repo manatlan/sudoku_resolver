@@ -60,19 +60,17 @@ fn free(g: &[u8], x: usize, y: usize) -> impl Iterator<Item = u8> + '_ {
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
 
 fn resolv(g: &[u8]) -> Option<Vec<u8>> {
+    let mut ibest = 99;
 
-    let mut ibest=99;
+    let mut cbest = b"123456789".to_vec();
+    let mut choices = Vec::with_capacity(9);
+    let mut nb_choices = 9;
 
-    //TODO: here I can't find a way to init an list of b"123456789"
-    let mut cbest=free(b".................................................................................", 0, 0);
-
-    let mut nb_choices=9;
     for i in 0..81 {
-        if g[i]==b'.' {
-            let choices=free(g, i % 9, i / 9);
+        if g[i] == b'.' {
+            choices.extend(free(g, i % 9, i / 9));
 
-            //TODO: here I can't find a way to compute the nb of items in choices
-            let nbc=free(g, i % 9, i / 9).count();
+            let nbc = choices.len();
 
             if nbc == 0 {
                 // unsolvable
@@ -80,17 +78,19 @@ fn resolv(g: &[u8]) -> Option<Vec<u8>> {
             }
             if nbc < nb_choices {
                 ibest = i;
-                cbest = choices;
-                nb_choices=nbc;
+                cbest.clear();
+                cbest.extend(&choices);
+                nb_choices = nbc;
             }
             if nbc == 1 {
                 // Only one candidate here; we can't do better...
                 break;
-            }            
+            }
+            choices.clear();
         }
     }
 
-    if ibest<99 {
+    if ibest < 99 {
         for elem in cbest {
             let mut new_board = g.to_owned();
             new_board[ibest] = elem;
@@ -98,13 +98,11 @@ fn resolv(g: &[u8]) -> Option<Vec<u8>> {
                 return Some(ng);
             }
         }
-        return None;
-    }
-    else {
+        None
+    } else {
         Some(g.to_owned())
     }
 }
-
 
 // use std::fs;
 // fn main() -> Result<(), Box<dyn std::error::Error>> {
@@ -119,13 +117,11 @@ fn resolv(g: &[u8]) -> Option<Vec<u8>> {
 //     Ok(())
 // }
 
-
 fn main() {
     for line in io::stdin().lines() {
         let grid = line.unwrap();
         if let Some(rg) = resolv(grid.as_bytes()) {
-            //TODO: here it prints 'Ok("...")', can't find a way to remove Ok() ?!?
-            println!("{:?}", std::str::from_utf8(&rg)); 
+            println!("{}", String::from_utf8_lossy(&rg));
         }
     }
 }
