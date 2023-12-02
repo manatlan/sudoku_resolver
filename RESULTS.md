@@ -3,8 +3,8 @@
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.2.0-1016-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
-MEMINFO  : 16365024 kB
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+MEMINFO  : 16365020 kB
 
 codon : 0.16.3
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
@@ -34,24 +34,24 @@ All implementations use same bases types (string)
 ```
 
 sudoku.java : algo with strings
-  - java  : 22.550 seconds (8x, 22.136><22.790)
+  - java  : 22.583 seconds (9x, 22.136><22.790)
 
 sudoku.js : algo with strings
-  - node  : 29.627 seconds (8x, 29.531><29.952)
+  - node  : 29.643 seconds (9x, 29.531><30.638)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 83.459 seconds (8x, 81.576><84.931)
+  - mojo  : 83.838 seconds (9x, 81.576><84.931)
 
 sudoku.nim : algo with strings
-  - nim   : 23.784 seconds (8x, 23.524><24.119)
+  - nim   : 23.752 seconds (9x, 23.325><24.119)
 
 sudoku.py : algo with strings
-  - codon : 12.210 seconds (6x, 12.163><12.353)
-  - py3   : 103.605 seconds (6x, 102.521><104.085)
-  - pypy  : 19.727 seconds (6x, 19.396><19.963)
+  - codon : 12.204 seconds (7x, 12.163><12.353)
+  - py3   : 103.345 seconds (7x, 102.520><104.085)
+  - pypy  : 19.712 seconds (7x, 19.177><19.963)
 
-sudoku.rs : algo with Strings (as byte[]) !!!! NOT OPTIMAL !!!!
-  - rust  : 13.275 seconds (8x, 13.164><13.353)
+sudoku.rs : algo with Strings (as byte[])
+  - rust  : 8.845 seconds (1x, 8.845><8.845)
 
 ```
 
@@ -62,10 +62,10 @@ It's the same algorithm, but use weapons (types/apis) from the languages, to be 
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.735 seconds (8x, 1.713><1.762)
+  - mojo  : 1.732 seconds (9x, 1.713><1.762)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.620 seconds (8x, 0.616><0.624)
+  - rust  : 0.623 seconds (9x, 0.616><0.624)
 
 ```
 
