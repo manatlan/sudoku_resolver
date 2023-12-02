@@ -3,11 +3,6 @@ import subprocess,sys,platform
 
 tmpl_md="""# Results from '%s' host
 
-Here are informations about the host/computer, and languages/versions/cmdline used for tests:
-```
-%s
-```
-
 The goal is to compare runtime speed of a same algo, in differents implementations/languages, while injecting the 1956 grids of [grids.txt](grids.txt)
 
 ## Results
@@ -18,10 +13,16 @@ All implementations use same bases types (string)
 %s
 ```
 
-## Specialized
+## SPECIALIZED Results
 
 It's the same algorithm, but use weapons (types/apis) from the languages, to be as faster as possible.
 
+```
+%s
+```
+## Context
+
+Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 %s
 ```
@@ -38,15 +39,15 @@ if __name__=="__main__":
         # STATS from RESULTS.TXT
         print( tmpl_md % (
             "GITHUB",
-            call_make("info"),
             call_make("RESULTS","."),
             call_make("RESULTS","specialized"),
+            call_make("info"),
         ))
     else:
         # STATS from live db
         print( tmpl_md % (
             platform.node(),
-            call_make("info"),
             call_make("stats","."),
             call_make("stats","specialized"),
+            call_make("info"),
         ))
