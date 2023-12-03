@@ -34,7 +34,7 @@ sudoku.js : algo with strings
   - node  : 41.311 seconds (2x, 39.991><42.631)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 100.543 seconds (2x, 99.030><102.057)
+  - mojo  : 94.440 seconds (3x, 91.777><94.962)
 
 sudoku.nim : algo with strings
   - nim   : 27.555 seconds (2x, 27.019><28.090)
@@ -75,7 +75,7 @@ codon : 0.16.3
         /home/manatlan/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 java  : openjdk 22-ea 2024-03-19
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 0.5.0 (6e50a738)
+mojo  : mojo 0.5.1 (6e50a738)
         /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
         /home/manatlan/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
