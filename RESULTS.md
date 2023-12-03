@@ -1,6 +1,6 @@
 # Results from 'GITHUB' host
 
-The goal is to compare runtime speed of a same algo, in differents implementations/languages, while injecting the 1956 grids of [grids.txt](grids.txt)
+The goal is to compare runtime speed of a same algo (sudoku resolver), in differents implementations/languages, while injecting the 1956 grids of [grids.txt](grids.txt)
 
 ## Results
 
@@ -9,24 +9,24 @@ All implementations use same bases types (string)
 ```
 
 sudoku.java : algo with strings
-  - java  : 22.417 seconds (16x, 22.136><22.790)
+  - java  : 22.406 seconds (17x, 22.136><22.790)
 
 sudoku.js : algo with strings
-  - node  : 29.695 seconds (16x, 29.531><31.323)
+  - node  : 29.712 seconds (17x, 29.531><31.323)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 84.669 seconds (3x, 82.337><84.673)
+  - mojo  : 84.589 seconds (4x, 82.337><84.673)
 
 sudoku.nim : algo with strings
-  - nim   : 23.784 seconds (16x, 23.325><25.014)
+  - nim   : 23.815 seconds (17x, 23.325><25.014)
 
 sudoku.py : algo with strings
-  - codon : 12.206 seconds (14x, 12.101><12.353)
-  - py3   : 103.472 seconds (14x, 101.887><104.749)
-  - pypy  : 19.604 seconds (14x, 19.177><20.424)
+  - codon : 12.204 seconds (15x, 12.101><12.353)
+  - py3   : 103.345 seconds (15x, 101.887><104.749)
+  - pypy  : 19.589 seconds (15x, 19.177><20.424)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.729 seconds (8x, 8.692><8.845)
+  - rust  : 8.739 seconds (9x, 8.692><8.881)
 
 ```
 
@@ -37,10 +37,10 @@ It's the same algorithm, but use weapons (types/apis) from the languages, to be 
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.731 seconds (3x, 1.728><1.747)
+  - mojo  : 1.730 seconds (4x, 1.728><1.747)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.623 seconds (16x, 0.616><0.627)
+  - rust  : 0.623 seconds (17x, 0.616><0.627)
 
 ```
 ## Context
@@ -48,7 +48,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.2.0-1016-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
 MEMINFO  : 16365020 kB
 
 codon : 0.16.3
