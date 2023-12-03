@@ -49,7 +49,7 @@ sudoku.rs : algo with Strings (as byte[])
   - rust  : 10.357 seconds (4x, 10.197><10.710)
 ```
 
-(Since mojo 0.5.0, mojo a lot slower : [issue](https://github.com/modularml/mojo/issues/1216) ... it was a lot faster with 0.4.0)
+(Since v0.5.0, mojo is a lot slower : [issue](https://github.com/modularml/mojo/issues/1216) ... it was a lot faster with 0.4.0)
 
 ## SPECIALIZED results
 
