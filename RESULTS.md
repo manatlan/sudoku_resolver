@@ -2,48 +2,45 @@
 
 The goal is to compare runtime speed of a same algo (sudoku resolver), in differents implementations/languages, while injecting the 1956 grids of [grids.txt](grids.txt)
 
-## Results
+## Regular Results
 
 All implementations use same bases types (string)
 
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.230 seconds (3x, 15.180><15.296)
+  - go    : 15.244 seconds (4x, 15.180><15.296)
 
 sudoku.java : algo with strings
-  - java  : 22.417 seconds (22x, 22.136><22.790)
+  - java  : 22.427 seconds (23x, 22.136><22.790)
 
 sudoku.js : algo with strings
-  - node  : 29.733 seconds (22x, 29.531><31.323)
+  - node  : 29.747 seconds (23x, 29.531><31.323)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 82.479 seconds (9x, 81.830><84.673)
+  - mojo  : 48.743 seconds (1x, 48.743><48.743)
 
 sudoku.nim : algo with strings
-  - nim   : 23.796 seconds (22x, 23.325><25.014)
+  - nim   : 23.776 seconds (23x, 23.325><25.014)
 
 sudoku.py : algo with strings
-  - codon : 12.185 seconds (20x, 12.094><12.353)
-  - py3   : 103.641 seconds (20x, 101.887><107.829)
-  - pypy  : 19.604 seconds (20x, 19.177><20.424)
+  - codon : 12.177 seconds (21x, 12.094><12.353)
+  - py3   : 103.636 seconds (21x, 101.887><107.829)
+  - pypy  : 19.620 seconds (21x, 19.177><20.424)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.725 seconds (14x, 8.692><8.881)
+  - rust  : 8.723 seconds (15x, 8.692><8.881)
 
 ```
 
-## SPECIALIZED Results
+## Specialized Results
 
-It's the same algorithm, but use weapons (types/apis) from the languages, to be as faster as possible.
+It's the same algorithm, but use specialized weapons (types/apis) from the languages, to be as faster as possible.
 
 ```
-
-specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.741 seconds (9x, 1.717><1.748)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.623 seconds (22x, 0.616><0.627)
+  - rust  : 0.623 seconds (23x, 0.616><0.627)
 
 ```
 ## Context
@@ -60,7 +57,7 @@ go    : go version go1.18.1 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
 java  : openjdk 11.0.21 2023-10-17
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 0.5.1 (6e50a738)
+mojo  : mojo 0.6.0 (d55c0025)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
