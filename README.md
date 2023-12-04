@@ -106,7 +106,7 @@ rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
 ## If you want to tests on your own
 
 You will need, at least, python3 ;-) (it will autodetect compilers/interpreters on your host)
-```
+```bash
 $ git clone https://github.com/manatlan/sudoku_resolver.git
 $ cd sudoku_resolver
 $ chmod +x make.py
