@@ -1,4 +1,4 @@
-#!./make.py --100
+#!./make.py 
 #INFO: algo with strings (use python to read stdin)
 
 alias ALL = StringRef("123456789")

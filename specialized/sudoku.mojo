@@ -1,7 +1,7 @@
-#!./make.py --10
+#!./make.py
 
 #INFO: algo with specialized types (use python to read stdin)
-
+from utils.vector import InlinedFixedVector
 
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
