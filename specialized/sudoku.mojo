@@ -1,11 +1,11 @@
-#!./make.py
+#!./make.py --10
 
 #INFO: algo with specialized types (use python to read stdin)
 from utils.vector import InlinedFixedVector
 
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
-struct Grid:
+struct Grid(Stringable):
     var data: Buffer[81, DType.uint8]
 
     fn __init__(inout self:Grid, g:String) -> None:
@@ -96,7 +96,7 @@ struct Grid:
         else:
             return True
 
-    fn to_string(self:Grid) -> String:
+    fn __str__(self:Grid) -> String:
         "Returns a string of 81chars of the grid."
         var str=String("")
         @unroll
@@ -117,4 +117,5 @@ def main():
     var py = Python()
     for line in sys.stdin:
         let g=Grid(py.__str__(line))
-        print( g.solve() and g.to_string() )
+        if g.solve():
+            print( g )
