@@ -1,6 +1,6 @@
 Here is the **simplest|minimal|readable** python3 resolver (naive backtracking recursive):
 
-The idea of the repo, is to compare the runtime speed of differents languages. Currently, there a py/mojo/nim/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the 1956 grids of [grids.txt](grids.txt) !!!
+The idea of the repo, is to compare the runtime speed of differents languages. Currently, there a py/mojo/nim/go/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the 1956 grids of [grids.txt](grids.txt) !!!
 
 ```python
 sqr   = lambda g,x,y: g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
@@ -27,6 +27,9 @@ def resolv(g):
 ## Results
 
 ``` 
+sudoku.go : algo with strings
+  - go    : 17.166 seconds (4x, 16.710><17.240)
+  
 sudoku.java : algo with strings
   - java  : 39.656 seconds (2x, 39.409><39.902)
 
@@ -74,6 +77,8 @@ MEMINFO  : 16142748 kB
 
 codon : 0.16.3
         /home/manatlan/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
+go    : go version go1.21.1 linux/amd64
+        /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
 java  : openjdk 22-ea 2024-03-19
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
 mojo  : mojo 0.5.1 (6e50a738)

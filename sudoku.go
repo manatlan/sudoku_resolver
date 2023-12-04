@@ -1,8 +1,8 @@
+//INFO: algo with strings
 package main
 
 import (
 	"fmt"
-	"os"
 	"strings"
 )
 
@@ -37,7 +37,7 @@ func free(g string, x, y int) string {
 
 	for i := 0; i < 9; i++ {
 		c := all[i]
-		if strings.IndexRune(t27, c) < 0 {
+		if strings.IndexByte(t27,c) < 0 {
 			freeset.WriteByte(c)
 		}
 	}
@@ -80,27 +80,6 @@ func resolv(g string) string {
 }
 
 func main() {
-	// Uncomment the following lines to read grids from a file
-	// content, err := os.ReadFile("grids.txt")
-	// if err != nil {
-	// 	fmt.Println("Error reading file:", err)
-	// 	return
-	// }
-	// grids := strings.Split(string(content), "\n")
-
-	// Uncomment the following line to read grids from standard input
-	// scanner := bufio.NewScanner(os.Stdin)
-
-	// for _, g := range grids {
-	// 	fmt.Println(resolv(g))
-	// }
-
-	// Uncomment the following lines to read grids from standard input
-	// for scanner.Scan() {
-	// 	fmt.Println(resolv(scanner.Text()))
-	// }
-
-	// Uncomment the following line to read a single grid from standard input
 	var input string
 	for {
 		_, err := fmt.Scanln(&input)

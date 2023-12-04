@@ -10,6 +10,11 @@ https://github.com/manatlan/sudoku_resolver/blob/master/make.md
 """
 
 LANGS=dict(
+    go=dict(	
+        e="go",
+    	c=("$0 build -o ./sudoku $1 ","./sudoku"),
+        ext="go",
+    ),
     mojo=dict(	
         e="mojo",
     	c=("$0 build $1 -o ./sudoku","./sudoku"),
@@ -261,11 +266,22 @@ def update():
             # store the executable for this host
             LANGS[k]['e']=cmd.strip()
 
-            # guess version
-            cp=subprocess.run([LANGS[k]['e'],"--version"],text=True,capture_output=True)
+            try:
+                # guess version
+                cp=subprocess.run([LANGS[k]['e'],"--version"],text=True,capture_output=True)
 
-            # store the version for this host
-            LANGS[k]['v']=cp.stdout.splitlines()[0]
+                # store the version for this host
+                LANGS[k]['v']=cp.stdout.splitlines()[0]
+            except:
+                try: # for go ;-(
+                    # guess version
+                    cp=subprocess.run([LANGS[k]['e'],"version"],text=True,capture_output=True)
+
+                    # store the version for this host
+                    LANGS[k]['v']=cp.stdout.splitlines()[0]
+                except:
+                    LANGS[k]['v']="???"
+
         else:
             print(f"*WARNING* no {k} lang (you can install '{v['e']}')!",file=sys.stderr)   # not in stdin !
             del LANGS[k]
@@ -314,11 +330,13 @@ def runcmd(input:str, cmd, pre_cmd=None, ):
     """ in bash, could be : $ `cmd` < echo input """
     """ execute `pre_cmd` if defined (build phase)"""
     if pre_cmd:
+        print("[build]",pre_cmd)
         cp = subprocess.run(pre_cmd,shell=True,text=True,capture_output=True)
         logging.info("runcmd: %s -> %s (pre cmd)",pre_cmd,cp.returncode)
         if cp.returncode!=0:
             raise Exception(f"ERROR runcmd: '{pre_cmd}'\n{cp.stderr}\n{cp.stdout}")
         
+    print("[run]",cmd)
     t = time.monotonic()
     cp = subprocess.run(cmd,shell=True,text=True,input=input,capture_output=True)
     t = time.monotonic() - t
