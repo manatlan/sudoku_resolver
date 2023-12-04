@@ -29,7 +29,7 @@ def resolv(g):
 ```
 **note** : all `free()` method implem; use a string mechanism to not use a `set` type (because it's not available in all languages (_same weapons_))
 
-## Results
+## Regular Results
 
 ``` 
 sudoku.go : algo with strings
@@ -59,9 +59,9 @@ sudoku.rs : algo with Strings (as byte[])
 
 (Since v0.5.0, mojo is a lot slower : [issue](https://github.com/modularml/mojo/issues/1216) ... it was a lot faster with 0.4.0)
 
-## SPECIALIZED results
+## Specialized results
 
-The same algo, but with specialized types/apis for the language (to speed up things)
+It's the same algorithm, but use specialized weapons (types/apis) from the languages, to be as faster as possible.
 
 ```
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)

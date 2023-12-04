@@ -5,7 +5,7 @@ tmpl_md="""# Results from '%s' host
 
 The goal is to compare runtime speed of a same algo (sudoku resolver), in differents implementations/languages, while injecting the 1956 grids of [grids.txt](grids.txt)
 
-## Results
+## Regular Results
 
 All implementations use same bases types (string)
 
@@ -13,9 +13,9 @@ All implementations use same bases types (string)
 %s
 ```
 
-## SPECIALIZED Results
+## Specialized Results
 
-It's the same algorithm, but use weapons (types/apis) from the languages, to be as faster as possible.
+It's the same algorithm, but use specialized weapons (types/apis) from the languages, to be as faster as possible.
 
 ```
 %s
