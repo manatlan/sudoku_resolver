@@ -117,8 +117,12 @@ impl From<usize> for Space {
         let y = value / 9;
         let bx = x / 3 * 3;
         let by = y / 3 * 3;
-        let b = by * 9 + bx;
-        Self { i: value, x, y, b }
+        Self {
+            i: value,
+            x,
+            y: y * 9,
+            b: by * 9 + bx,
+        }
     }
 }
 
@@ -136,16 +140,6 @@ struct SpaceSet {
     len: usize,
 }
 
-impl FromIterator<usize> for SpaceSet {
-    fn from_iter<T: IntoIterator<Item = usize>>(iter: T) -> Self {
-        let mut out = Self::empty();
-        for n in iter {
-            out.insert(n);
-        }
-        out
-    }
-}
-
 impl SpaceSet {
     fn empty() -> Self {
         Self {
@@ -154,8 +148,8 @@ impl SpaceSet {
         }
     }
 
-    fn insert(&mut self, item: usize) {
-        self.data[self.len] = item.into();
+    fn insert(&mut self, item: Space) {
+        self.data[self.len] = item;
         self.len += 1;
     }
 
@@ -166,14 +160,6 @@ impl SpaceSet {
 
     fn iter(&self) -> impl '_ + Iterator<Item = Space> {
         self.data[..self.len].iter().copied()
-    }
-
-    /// creates a new SpaceSet to track all the holes in the grid
-    fn find_all(data: &[NumSet; 81]) -> Self {
-        data.iter()
-            .enumerate()
-            .filter_map(|(i, n)| (*n == NumSet::EMPTY).then_some(i))
-            .collect()
     }
 }
 
@@ -193,7 +179,7 @@ impl Grid {
     }
 
     fn row(&self, y: usize) -> NumSet {
-        NumSet::from_iter(self.data[y * 9..(y + 1) * 9].iter().copied())
+        NumSet::from_iter(self.data[y..y + 9].iter().copied())
     }
 
     fn free(&self, space: Space) -> NumSet {
@@ -241,7 +227,7 @@ impl Grid {
             }
         }
         self.data[best_space.i] = NumSet::EMPTY;
-        self.spaces.insert(best_space.i);
+        self.spaces.insert(best_space);
 
         false
     }
@@ -257,14 +243,14 @@ impl FromStr for Grid {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         let mut data = [NumSet::EMPTY; 81];
+        let mut spaces = SpaceSet::empty();
         for (i, (g, c)) in data.iter_mut().zip(s.chars()).enumerate() {
             match c {
                 '1'..='9' => *g = NumSet::one_hot(c as u8 - b'1'),
-                '.' => {}
+                '.' => spaces.insert(i.into()),
                 _ => return Err(ParseGridError { pos: i }),
             }
         }
-        let spaces = SpaceSet::find_all(&data);
         Ok(Grid { data, spaces })
     }
 }
