@@ -5,13 +5,12 @@
 
 use std::{
     fmt::{Display, Formatter},
-    fs,
+    io,
     iter::FromIterator,
     ops::{Add, AddAssign, Sub, SubAssign},
     str::FromStr,
 };
 
-#[derive(Clone, Eq, PartialEq)]
 struct Grid {
     data: [NumSet; 81],
     spaces: SpaceSet,
@@ -104,9 +103,36 @@ impl IntoIterator for NumSet {
     }
 }
 
-#[derive(Clone, Eq, PartialEq)]
+#[derive(Clone, Copy)]
+struct Space {
+    i: usize,
+    x: usize,
+    y: usize,
+    b: usize,
+}
+
+impl From<usize> for Space {
+    fn from(value: usize) -> Self {
+        let x = value % 9;
+        let y = value / 9;
+        let bx = x / 3 * 3;
+        let by = y / 3 * 3;
+        let b = by * 9 + bx;
+        Self { i: value, x, y, b }
+    }
+}
+
+impl Space {
+    const DEFAULT: Self = Self {
+        i: 0,
+        x: 0,
+        y: 0,
+        b: 0,
+    };
+}
+
 struct SpaceSet {
-    data: [usize; 81],
+    data: [Space; 81],
     len: usize,
 }
 
@@ -123,13 +149,13 @@ impl FromIterator<usize> for SpaceSet {
 impl SpaceSet {
     fn empty() -> Self {
         Self {
-            data: [0; 81],
+            data: [Space::DEFAULT; 81],
             len: 0,
         }
     }
 
     fn insert(&mut self, item: usize) {
-        self.data[self.len] = item;
+        self.data[self.len] = item.into();
         self.len += 1;
     }
 
@@ -138,7 +164,7 @@ impl SpaceSet {
         self.data[index] = self.data[self.len];
     }
 
-    fn iter(&self) -> impl '_ + Iterator<Item = usize> {
+    fn iter(&self) -> impl '_ + Iterator<Item = Space> {
         self.data[..self.len].iter().copied()
     }
 
@@ -152,15 +178,12 @@ impl SpaceSet {
 }
 
 impl Grid {
-    fn sqr(&self, x: usize, y: usize) -> NumSet {
-        let x = (x / 3) * 3;
-        let y = (y / 3) * 3;
-        let i = y * 9 + x;
+    fn sqr(&self, b: usize) -> NumSet {
         NumSet::from_iter(
-            self.data[i..i + 3]
+            self.data[b..b + 3]
                 .iter()
-                .chain(&self.data[i + 9..i + 12])
-                .chain(&self.data[i + 18..i + 21])
+                .chain(&self.data[b + 9..b + 12])
+                .chain(&self.data[b + 18..b + 21])
                 .copied(),
         )
     }
@@ -173,20 +196,20 @@ impl Grid {
         NumSet::from_iter(self.data[y * 9..(y + 1) * 9].iter().copied())
     }
 
-    fn free(&self, x: usize, y: usize) -> NumSet {
-        let col = self.col(x);
-        let row = self.row(y);
-        let sqr = self.sqr(x, y);
+    fn free(&self, space: Space) -> NumSet {
+        let col = self.col(space.x);
+        let row = self.row(space.y);
+        let sqr = self.sqr(space.b);
         NumSet::ALL - (col + row + sqr)
     }
 
     fn resolv(&mut self) -> bool {
         let mut best_space_index = 0;
-        let mut best_space = 0;
+        let mut best_space = Space::DEFAULT;
         let mut best_set = NumSet::ALL;
         let mut best_set_len = 10;
         for (i, space) in self.spaces.iter().enumerate() {
-            let free = self.free(space % 9, space / 9);
+            let free = self.free(space);
             let set_len = free.len();
             if set_len == 0 {
                 // Unsolvable.
@@ -212,13 +235,13 @@ impl Grid {
 
         self.spaces.remove(best_space_index);
         for c in best_set {
-            self.data[best_space] = c;
+            self.data[best_space.i] = c;
             if self.resolv() {
                 return true;
             }
         }
-        self.data[best_space] = NumSet::EMPTY;
-        self.spaces.insert(best_space);
+        self.data[best_space.i] = NumSet::EMPTY;
+        self.spaces.insert(best_space.i);
 
         false
     }
