@@ -4,11 +4,11 @@
 //INFO: algo with specialized types
 
 use std::{
-    io,
     fmt::{Display, Formatter},
+    fs,
+    iter::FromIterator,
     ops::{Add, AddAssign, Sub, SubAssign},
     str::FromStr,
-    iter::FromIterator
 };
 
 #[derive(Clone, Eq, PartialEq)]
@@ -25,7 +25,7 @@ impl NumSet {
     const EMPTY: Self = Self(0);
 
     fn one_hot(val: u8) -> Self {
-        NumSet(1 << val)
+        Self(1 << val)
     }
 
     fn val(self) -> u8 {
@@ -80,14 +80,16 @@ impl Iterator for NumSetIter {
     type Item = NumSet;
 
     fn next(&mut self) -> Option<Self::Item> {
-        while self.mask < (1 << 9) {
+        loop {
+            self.mask >>= 1;
+            if self.mask == 0 {
+                return None;
+            }
             let masked = self.set.0 & self.mask;
-            self.mask <<= 1;
             if masked != 0 {
                 return Some(NumSet(masked));
             }
         }
-        None
     }
 }
 
@@ -95,7 +97,10 @@ impl IntoIterator for NumSet {
     type Item = NumSet;
     type IntoIter = NumSetIter;
     fn into_iter(self) -> NumSetIter {
-        NumSetIter { set: self, mask: 1 }
+        NumSetIter {
+            set: self,
+            mask: 1 << 9,
+        }
     }
 }
 
@@ -154,8 +159,8 @@ impl Grid {
         NumSet::from_iter(
             self.data[i..i + 3]
                 .iter()
-                .chain(self.data[i + 9..i + 12].iter())
-                .chain(self.data[i + 18..i + 21].iter())
+                .chain(&self.data[i + 9..i + 12])
+                .chain(&self.data[i + 18..i + 21])
                 .copied(),
         )
     }
@@ -176,38 +181,44 @@ impl Grid {
     }
 
     fn resolv(&mut self) -> bool {
-        let mut ibest = None;
-        let mut cbest = NumSet::ALL;
-        for (i, s) in self.spaces.iter().enumerate() {
-            let c = self.free(s % 9, s / 9);
-            if c.len() == 0 {
-                // unsolvable
+        let mut best_space_index = 0;
+        let mut best_space = 0;
+        let mut best_set = NumSet::ALL;
+        let mut best_set_len = 10;
+        for (i, space) in self.spaces.iter().enumerate() {
+            let free = self.free(space % 9, space / 9);
+            let set_len = free.len();
+            if set_len == 0 {
+                // Unsolvable.
                 return false;
             }
-            if c.len() < cbest.len() {
-                ibest = Some((i, s));
-                cbest = c;
+            if set_len < best_set_len {
+                // Found better candidate set, update all.
+                best_space_index = i;
+                best_space = space;
+                best_set = free;
+                best_set_len = set_len;
             }
-            if c.len() == 1 {
-                // Only one candidate here; we can't do better...
+            if set_len == 1 {
+                // Only one candidate here; we can't do better.
                 break;
             }
         }
 
-        let Some((i, s)) = ibest else {
-            // solved
+        if best_set_len == 10 {
+            // Best set was never updated. Solved.
             return true;
         };
 
-        self.spaces.remove(i);
-        for c in cbest {
-            self.data[s] = c;
+        self.spaces.remove(best_space_index);
+        for c in best_set {
+            self.data[best_space] = c;
             if self.resolv() {
                 return true;
             }
         }
-        self.data[s] = NumSet::EMPTY;
-        self.spaces.insert(s);
+        self.data[best_space] = NumSet::EMPTY;
+        self.spaces.insert(best_space);
 
         false
     }
@@ -259,7 +270,6 @@ impl Display for Grid {
 //     }
 //     Ok(())
 // }
-
 
 fn main() {
     // Iterate over the lines in io::stdin()
