@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.272 seconds (10x, 15.180><16.178)
+  - go    : 15.273 seconds (11x, 15.180><16.178)
 
 sudoku.java : algo with strings
-  - java  : 22.427 seconds (29x, 22.136><23.224)
+  - java  : 22.453 seconds (30x, 22.136><23.224)
 
 sudoku.js : algo with strings
-  - node  : 29.747 seconds (29x, 29.531><31.323)
+  - node  : 31.368 seconds (1x, 31.368><31.368)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 48.927 seconds (7x, 48.420><50.728)
+  - mojo  : 48.835 seconds (8x, 48.420><50.728)
 
 sudoku.nim : algo with strings
-  - nim   : 23.776 seconds (29x, 23.195><25.014)
+  - nim   : 23.796 seconds (30x, 23.195><25.014)
 
 sudoku.py : algo with strings
-  - codon : 12.193 seconds (27x, 12.094><12.610)
-  - py3   : 103.600 seconds (27x, 101.887><107.829)
-  - pypy  : 19.620 seconds (27x, 19.177><20.650)
+  - codon : 12.185 seconds (28x, 12.094><12.610)
+  - py3   : 103.618 seconds (28x, 101.887><107.829)
+  - pypy  : 19.604 seconds (28x, 19.177><20.650)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.723 seconds (21x, 8.679><9.078)
+  - rust  : 8.725 seconds (22x, 8.679><9.078)
 
 ```
 
@@ -40,19 +40,19 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.740 seconds (5x, 1.727><1.759)
+  - mojo  : 1.740 seconds (6x, 1.727><1.759)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.622 seconds (29x, 0.616><0.627)
+  - rust  : 0.622 seconds (30x, 0.616><0.627)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.2.0-1016-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
-MEMINFO  : 16365020 kB
+PLATFORM : x86_64/Linux-6.2.0-1018-azure-x86_64-with-glibc2.35 with 4 cpus
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+MEMINFO  : 16365028 kB
 
 codon : 0.16.3
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
@@ -64,7 +64,7 @@ mojo  : mojo 0.6.0 (d55c0025)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
-node  : v18.18.2
+node  : v18.19.0
         /usr/local/bin/node <file> < grids.txt
 py3   : Python 3.10.12
         /usr/bin/python3 -uOO <file> < grids.txt
