@@ -42,7 +42,7 @@ sudoku.js : algo with strings
   - node  : 41.311 seconds (2x, 39.991><42.631)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 75.238 seconds (2x, 74.766><75.710)
+  - mojo  : 73.747 seconds (3x, 73.099><75.554)
 
 sudoku.nim : algo with strings
   - nim   : 27.555 seconds (2x, 27.019><28.090)
@@ -65,7 +65,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 
 ```
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 3.681 seconds (3x, 3.594><3.733)
+  - mojo  : 3.641 seconds (4x, 3.605><3.668)
 
 specialized/sudoku.rs : algo with specialized types
   - rust  : 1.188 seconds (2x, 1.146><1.231)
@@ -86,7 +86,7 @@ go    : go version go1.21.1 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
 java  : openjdk 22-ea 2024-03-19
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 0.6.0 (d55c0025)
+mojo  : mojo 0.6.1 (876ded2e)
         /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
         /home/manatlan/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
