@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.224 seconds (34x, 15.130><16.178)
+  - go    : 15.225 seconds (35x, 15.130><16.178)
 
 sudoku.java : algo with strings
-  - java  : 22.427 seconds (53x, 21.454><23.456)
+  - java  : 22.417 seconds (54x, 21.454><23.456)
 
 sudoku.js : algo with strings
-  - node  : 30.438 seconds (24x, 29.672><31.631)
+  - node  : 30.443 seconds (25x, 29.672><31.631)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 49.438 seconds (13x, 49.301><49.922)
+  - mojo  : 49.426 seconds (14x, 49.301><49.922)
 
 sudoku.nim : algo with strings
-  - nim   : 21.249 seconds (13x, 21.160><21.625)
+  - nim   : 21.254 seconds (14x, 21.160><22.358)
 
 sudoku.py : algo with strings
-  - codon : 12.158 seconds (51x, 12.067><12.610)
-  - py3   : 104.278 seconds (51x, 101.887><107.829)
-  - pypy  : 19.620 seconds (51x, 19.095><20.650)
+  - codon : 12.161 seconds (52x, 12.067><12.610)
+  - py3   : 104.297 seconds (52x, 101.887><107.829)
+  - pypy  : 19.622 seconds (52x, 19.095><20.650)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.728 seconds (17x, 8.678><9.072)
+  - rust  : 8.727 seconds (18x, 8.678><9.072)
 
 ```
 
@@ -40,10 +40,10 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.748 seconds (11x, 1.731><1.812)
+  - mojo  : 1.749 seconds (12x, 1.731><1.812)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.622 seconds (17x, 0.616><0.628)
+  - rust  : 0.622 seconds (18x, 0.616><0.630)
 
 ```
 ## Context
@@ -52,7 +52,7 @@ Here are informations about the host/computer, and languages/versions/cmdline us
 ```
 PLATFORM : x86_64/Linux-6.2.0-1018-azure-x86_64-with-glibc2.35 with 4 cpus
 CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
-MEMINFO  : 16365028 kB
+MEMINFO  : 16365024 kB
 
 codon : 0.16.3
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
