@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.225 seconds (45x, 15.130><16.178)
+  - go    : 15.224 seconds (46x, 15.130><16.178)
 
 sudoku.java : algo with strings
-  - java  : 22.446 seconds (64x, 21.454><23.575)
+  - java  : 22.446 seconds (65x, 21.454><23.575)
 
 sudoku.js : algo with strings
-  - node  : 30.427 seconds (35x, 29.672><32.098)
+  - node  : 30.402 seconds (36x, 29.647><32.098)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 49.440 seconds (24x, 49.156><51.143)
+  - mojo  : 49.442 seconds (25x, 49.156><51.143)
 
 sudoku.nim : algo with strings
-  - nim   : 21.288 seconds (24x, 21.160><22.358)
+  - nim   : 21.316 seconds (25x, 21.160><22.358)
 
 sudoku.py : algo with strings
-  - codon : 12.156 seconds (62x, 12.067><12.610)
-  - py3   : 104.505 seconds (62x, 101.887><107.829)
-  - pypy  : 19.656 seconds (62x, 19.095><20.650)
+  - codon : 12.154 seconds (63x, 12.067><12.610)
+  - py3   : 104.527 seconds (63x, 101.887><107.829)
+  - pypy  : 20.150 seconds (1x, 20.150><20.150)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.731 seconds (28x, 8.662><9.072)
+  - rust  : 8.682 seconds (1x, 8.682><8.682)
 
 ```
 
@@ -40,10 +40,10 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.746 seconds (22x, 1.726><1.812)
+  - mojo  : 1.745 seconds (23x, 1.726><1.812)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.620 seconds (28x, 0.615><0.630)
+  - rust  : 0.914 seconds (1x, 0.914><0.914)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.2.0-1018-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16365028 kB
 
 codon : 0.16.3
@@ -68,9 +68,9 @@ node  : v18.19.0
         /usr/local/bin/node <file> < grids.txt
 py3   : Python 3.10.12
         /usr/bin/python3 -uOO <file> < grids.txt
-pypy  : Python 3.9.18 (c5262994620471e725f57d652d78d842270649d6, Sep 27 2023, 13:43:44)
+pypy  : Python 3.9.18 (3ef7dff0dd829c0622d61504fd522ed918ea3483, Dec 24 2023, 20:20:13)
         /opt/hostedtoolcache/PyPy/3.9.18/x64/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.74.1 (a28077b28 2023-12-04)
+rust  : rustc 1.75.0 (82e1608df 2023-12-21)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 
 ```
