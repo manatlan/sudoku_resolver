@@ -42,7 +42,7 @@ sudoku.js : algo with strings
   - node  : 41.311 seconds (2x, 39.991><42.631)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 73.747 seconds (3x, 73.099><75.554)
+  - mojo  : 55.622 seconds (3x, 55.247><56.471)
 
 sudoku.nim : algo with strings
   - nim   : 27.555 seconds (2x, 27.019><28.090)
@@ -58,6 +58,7 @@ sudoku.rs : algo with Strings (as byte[])
 ```
 
 (Since v0.5.0, mojo is a lot slower : [issue](https://github.com/modularml/mojo/issues/1216) ... it was a lot faster with 0.4.0)
+(mojo v0.6.1 was 73.747 seconds ... so v0.7.0 is a little bit speedier)
 
 ## Specialized Results
 
@@ -65,7 +66,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 
 ```
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 3.641 seconds (4x, 3.605><3.668)
+  - mojo  : 3.577 seconds (3x, 3.569><3.646)
 
 specialized/sudoku.rs : algo with specialized types
   - rust  : 1.188 seconds (2x, 1.146><1.231)
@@ -86,8 +87,8 @@ go    : go version go1.21.1 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
 java  : openjdk 22-ea 2024-03-19
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 0.6.1 (876ded2e)
-        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
+mojo  : mojo 0.7.0 (af002202)
+        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt        
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
         /home/manatlan/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
 node  : v18.13.0
