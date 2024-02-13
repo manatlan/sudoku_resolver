@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.223 seconds (75x, 14.506><16.178)
+  - go    : 15.222 seconds (76x, 14.506><16.178)
 
 sudoku.java : algo with strings
-  - java  : 22.379 seconds (12x, 22.124><22.594)
+  - java  : 22.384 seconds (13x, 22.124><22.594)
 
 sudoku.js : algo with strings
-  - node  : 30.427 seconds (65x, 28.896><32.098)
+  - node  : 30.431 seconds (66x, 28.896><32.098)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 49.233 seconds (18x, 48.860><49.539)
+  - mojo  : 49.231 seconds (19x, 48.860><49.539)
 
 sudoku.nim : algo with strings
-  - nim   : 21.285 seconds (54x, 20.252><22.670)
+  - nim   : 21.284 seconds (55x, 20.252><22.670)
 
 sudoku.py : algo with strings
-  - codon : 12.167 seconds (92x, 11.579><12.610)
-  - py3   : 104.749 seconds (92x, 100.134><107.829)
-  - pypy  : 19.939 seconds (23x, 18.433><20.638)
+  - codon : 12.170 seconds (93x, 11.579><12.610)
+  - py3   : 104.749 seconds (93x, 100.134><107.829)
+  - pypy  : 19.921 seconds (24x, 18.433><20.638)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.661 seconds (30x, 8.224><8.928)
+  - rust  : 8.470 seconds (1x, 8.470><8.470)
 
 ```
 
@@ -40,10 +40,10 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.737 seconds (18x, 1.723><1.776)
+  - mojo  : 1.738 seconds (19x, 1.723><1.776)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.909 seconds (30x, 0.899><0.934)
+  - rust  : 0.907 seconds (1x, 0.907><0.907)
 
 ```
 ## Context
@@ -70,7 +70,7 @@ py3   : Python 3.10.12
         /usr/bin/python3 -uOO <file> < grids.txt
 pypy  : Python 3.9.18 (9c4f8ef178b6, Jan 14 2024, 11:28:13)
         /opt/hostedtoolcache/PyPy/3.9.18/x64/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.75.0 (82e1608df 2023-12-21)
+rust  : rustc 1.76.0 (07dca489a 2024-02-04)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 
 ```
