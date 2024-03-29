@@ -9,27 +9,24 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.220 seconds (119x, 14.506><16.178)
+  - go    : 15.220 seconds (120x, 14.506><16.178)
 
 sudoku.java : algo with strings
-  - java  : 22.375 seconds (56x, 21.663><22.891)
+  - java  : 22.377 seconds (57x, 21.663><22.939)
 
 sudoku.js : algo with strings
-  - node  : 30.156 seconds (35x, 29.746><32.387)
-
-sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 82.321 seconds (10x, 80.742><83.583)
+  - node  : 30.161 seconds (36x, 29.746><32.387)
 
 sudoku.nim : algo with strings
-  - nim   : 21.257 seconds (98x, 20.252><22.670)
+  - nim   : 21.254 seconds (99x, 20.252><22.670)
 
 sudoku.py : algo with strings
-  - codon : 12.176 seconds (136x, 11.579><12.877)
-  - py3   : 104.896 seconds (136x, 100.134><110.190)
-  - pypy  : 19.889 seconds (67x, 18.433><20.859)
+  - codon : 12.176 seconds (137x, 11.579><12.877)
+  - py3   : 104.897 seconds (137x, 100.134><110.190)
+  - pypy  : 19.884 seconds (68x, 18.433><20.859)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.525 seconds (1x, 8.525><8.525)
+  - rust  : 8.519 seconds (2x, 8.513><8.525)
 
 ```
 
@@ -40,7 +37,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.880 seconds (1x, 0.880><0.880)
+  - rust  : 0.879 seconds (2x, 0.878><0.880)
 
 ```
 ## Context
@@ -57,7 +54,7 @@ go    : go version go1.18.1 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
 java  : openjdk 11.0.22 2024-01-16
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 24.1.1 (0ab415f7)
+mojo  : mojo 24.2.0 (c2427bc5)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.2 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
