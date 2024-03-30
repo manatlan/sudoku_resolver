@@ -83,9 +83,9 @@ def do_the_test(lang,d,file,nb_grids=None) -> "float|None":
     myprint()
     cmd_build,cmd_run = get_commandlines(d,file)
     if cmd_build:
-        myprint(f"[{lang}]> {cmd_build} && {cmd_run} < grids.txt ({len(grids)})")
+        myprint(f"[{lang}]> {cmd_build} && {cmd_run} < grids.txt #({len(grids)})")
     else:
-        myprint(f"[{lang}]> {cmd_run} < grids.txt ({len(grids)})")
+        myprint(f"[{lang}]> {cmd_run} < grids.txt #({len(grids)})")
 
     try:
         t,output=runcmd( "\n".join(grids), cmd_run, cmd_build )

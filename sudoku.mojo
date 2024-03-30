@@ -11,7 +11,7 @@ fn row(g:String,y:Int) -> String:
     return g[y*9:y*9+9]
 
 fn free(g:String,x:Int,y:Int) -> String:
-    let t27=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
+    var t27=col(g,x) + row(g,y) + sqr(g,(x//3)*3,(y//3)*3)
     var freeset = String("")
     for i in range(len(ALL)):
         if t27.find(ALL[i])<0:
@@ -24,7 +24,7 @@ fn resolv(g: String) -> String:
     
     for i in range(81):
         if g[i]==".":
-            let avails=free(g,i%9,i//9)
+            var avails=free(g,i%9,i//9)
             if not avails:
                 return ""
             else:
@@ -37,7 +37,7 @@ fn resolv(g: String) -> String:
         
     if ibest != -1:
         for idx in range(len(cbest)):
-            let ng=resolv( g[:ibest] + cbest[idx] + g[ibest+1:] )
+            var ng=resolv( g[:ibest] + cbest[idx] + g[ibest+1:] )
             if ng: return ng
         return ""
     else:
@@ -50,7 +50,7 @@ fn resolv(g: String) -> String:
 
 from python import Python
 def main():
-    let sys = Python.import_module("sys")
+    var sys = Python.import_module("sys")
     var py = Python()
     for g in sys.stdin:
         print(resolv(py.__str__(g)))

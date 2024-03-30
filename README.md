@@ -42,7 +42,7 @@ sudoku.js : algo with strings
   - node  : 41.311 seconds (2x, 39.991><42.631)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 55.622 seconds (3x, 55.247><56.471)
+  - mojo  : 89.145 seconds (6x, 83.489><95.430)
 
 sudoku.nim : algo with strings
   - nim   : 27.555 seconds (2x, 27.019><28.090)
@@ -58,7 +58,7 @@ sudoku.rs : algo with Strings (as byte[])
 ```
 
 (Since v0.5.0, mojo is a lot slower : [issue](https://github.com/modularml/mojo/issues/1216) ... it was a lot faster with 0.4.0)
-(mojo v0.6.1 was 73.747 seconds ... so v0.7.0 is a little bit speedier)
+(mojo v0.6.1 was 73.747 seconds ... so v0.7.0 is a little bit speedier ... but the v24.x are slower ;-( )
 
 ## Specialized Results
 
@@ -66,7 +66,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 
 ```
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 3.577 seconds (3x, 3.569><3.646)
+  - mojo  : 2.681 seconds (7x, 2.664><2.701)
 
 specialized/sudoku.rs : algo with specialized types
   - rust  : 1.188 seconds (2x, 1.146><1.231)
@@ -87,8 +87,8 @@ go    : go version go1.21.1 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
 java  : openjdk 22-ea 2024-03-19
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 0.7.0 (af002202)
-        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt        
+mojo  : mojo 24.2.0 (c2427bc5)
+        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
         /home/manatlan/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
 node  : v18.13.0
@@ -99,8 +99,9 @@ py37  : Python 3.7.16
         /usr/local/bin/python3.7 -uOO <file> < grids.txt
 pypy  : Python 3.9.17 (7.3.12+dfsg-1, Jun 16 2023, 23:19:37)
         /usr/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.71.1 (eb26296b5 2023-08-03) (built from a source tarball)
+rust  : rustc 1.75.0 (82e1608df 2023-12-21) (built from a source tarball)
         /usr/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
+
 ```
 
 

@@ -2,16 +2,16 @@
 
 #INFO: algo with specialized types (use python to read stdin)
 from collections.vector import InlinedFixedVector
-
+from buffer import Buffer
 alias GROUP = SIMD[DType.uint8, 16]   # reality is 9, but should be a **2 .. so 16 !
 
 struct Grid(Stringable):
-    var data: Buffer[81, DType.uint8]
+    var data: Buffer[DType.uint8,81]
 
     fn __init__(inout self:Grid, g:String) -> None:
         "Create from a string (of 81 chars)."
-        let dtp = DTypePointer[DType.uint8].alloc(81)
-        self.data = Buffer[81, DType.uint8](dtp)
+        var dtp = DTypePointer[DType.uint8].alloc(81)
+        self.data = Buffer[ DType.uint8, 81](dtp)
         
         @unroll
         for idx in range(81):
@@ -19,7 +19,7 @@ struct Grid(Stringable):
 
     fn sqr(self:Grid,x:Int,y:Int) -> GROUP:
         'Returns a group of 9 values, of the square at x,y.'
-        let off=y*9+x
+        var off=y*9+x
         var group=GROUP().splat(0)
         @unroll
         for i in range(3):
@@ -38,7 +38,7 @@ struct Grid(Stringable):
 
     fn row(self:Grid,y:Int) -> GROUP:
         'Returns a group of 9 values, of the row y.'
-        let off=y*9
+        var off=y*9
         var group=GROUP().splat(0)
         @unroll
         for i in range(9):
@@ -48,9 +48,9 @@ struct Grid(Stringable):
     fn free(self: Grid, x: Int, y: Int) -> InlinedFixedVector[UInt8]:
         "Returns a list of available values that can be fit in (x,y)."
         "(this thing is a bit tricky coz it uses simd operation, to be as fast as possible)"
-        let _s = self.sqr((x // 3) * 3, (y // 3) * 3)
-        let _c = self.col(x)
-        let _r = self.row(y)
+        var _s = self.sqr((x // 3) * 3, (y // 3) * 3)
+        var _c = self.col(x)
+        var _r = self.row(y)
 
         var avails = InlinedFixedVector[UInt8](9)
 
@@ -76,7 +76,7 @@ struct Grid(Stringable):
         
         for i in range(81):
             if self.data[i]==0:
-                let avails=self.free(i%9,i//9)
+                var avails=self.free(i%9,i//9)
                 if len(avails)==0:
                     return False
                 else:
@@ -101,7 +101,7 @@ struct Grid(Stringable):
         var str=String("")
         @unroll
         for i in range(81):
-            let c = self.data[i].__int__()
+            var c = self.data[i].__int__()
             str+= chr(48+c)[0] if c else "."
         return str           
 
@@ -113,9 +113,9 @@ struct Grid(Stringable):
 
 from python import Python
 def main():
-    let sys = Python.import_module("sys")
+    var sys = Python.import_module("sys")
     var py = Python()
     for line in sys.stdin:
-        let g=Grid(py.__str__(line))
+        var g=Grid(py.__str__(line))
         if g.solve():
             print( g )
