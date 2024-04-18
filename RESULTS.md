@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.220 seconds (141x, 14.506><16.690)
+  - go    : 15.220 seconds (142x, 14.506><16.690)
 
 sudoku.java : algo with strings
-  - java  : 22.378 seconds (78x, 21.663><23.928)
+  - java  : 22.379 seconds (79x, 21.663><23.928)
 
 sudoku.js : algo with strings
-  - node  : 29.933 seconds (9x, 29.318><31.486)
+  - node  : 29.572 seconds (1x, 29.572><29.572)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 79.350 seconds (5x, 78.299><80.735)
+  - mojo  : 79.596 seconds (6x, 78.299><80.735)
 
 sudoku.nim : algo with strings
-  - nim   : 21.157 seconds (1x, 21.157><21.157)
+  - nim   : 21.149 seconds (2x, 21.141><21.157)
 
 sudoku.py : algo with strings
-  - codon : 12.180 seconds (158x, 11.579><13.244)
-  - py3   : 104.990 seconds (158x, 100.134><113.932)
-  - pypy  : 19.889 seconds (89x, 18.433><21.656)
+  - codon : 12.180 seconds (159x, 11.579><13.244)
+  - py3   : 105.004 seconds (159x, 100.134><113.932)
+  - pypy  : 19.896 seconds (90x, 18.433><21.656)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.571 seconds (12x, 8.509><8.801)
+  - rust  : 8.528 seconds (1x, 8.528><8.528)
 
 ```
 
@@ -40,19 +40,19 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 1.628 seconds (5x, 1.618><1.641)
+  - mojo  : 1.627 seconds (6x, 1.617><1.641)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.891 seconds (12x, 0.878><0.934)
+  - rust  : 0.890 seconds (1x, 0.890><0.890)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.5.0-1017-azure-x86_64-with-glibc2.35 with 4 cpus
+PLATFORM : x86_64/Linux-6.5.0-1018-azure-x86_64-with-glibc2.35 with 4 cpus
 CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
-MEMINFO  : 16364600 kB
+MEMINFO  : 16364596 kB
 
 codon : 0.16.3
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
@@ -64,13 +64,13 @@ mojo  : mojo 24.2.1 (2f0dcf11)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.4 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
-node  : v18.20.1
+node  : v18.20.2
         /usr/local/bin/node <file> < grids.txt
 py3   : Python 3.10.12
         /usr/bin/python3 -uOO <file> < grids.txt
 pypy  : Python 3.9.18 (9c4f8ef178b6, Jan 14 2024, 11:28:13)
         /opt/hostedtoolcache/PyPy/3.9.18/x64/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.77.1 (7cf61ebde 2024-03-27)
+rust  : rustc 1.77.2 (25ef9e3d8 2024-04-09)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 
 ```
