@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.219 seconds (166x, 14.506><16.690)
+  - go    : 15.219 seconds (167x, 14.506><16.690)
 
 sudoku.java : algo with strings
-  - java  : 22.379 seconds (103x, 21.019><23.928)
+  - java  : 22.378 seconds (104x, 21.019><23.928)
 
 sudoku.js : algo with strings
-  - node  : 29.758 seconds (25x, 29.078><32.049)
+  - node  : 29.782 seconds (26x, 29.078><32.116)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 78.563 seconds (10x, 78.504><78.849)
+  - mojo  : 78.567 seconds (11x, 78.504><78.849)
 
 sudoku.nim : algo with strings
-  - nim   : 21.328 seconds (26x, 21.083><22.407)
+  - nim   : 21.333 seconds (27x, 21.083><22.407)
 
 sudoku.py : algo with strings
-  - codon : 12.184 seconds (183x, 11.579><13.244)
-  - py3   : 105.172 seconds (183x, 100.134><113.932)
-  - pypy  : 19.908 seconds (114x, 18.433><21.656)
+  - codon : 12.184 seconds (184x, 11.579><13.244)
+  - py3   : 105.174 seconds (184x, 100.134><113.932)
+  - pypy  : 19.912 seconds (115x, 18.433><21.656)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.544 seconds (25x, 8.505><8.780)
+  - rust  : 8.546 seconds (26x, 8.505><8.780)
 
 ```
 
@@ -40,10 +40,10 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 2.234 seconds (10x, 2.208><2.291)
+  - mojo  : 2.235 seconds (11x, 2.208><2.291)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.889 seconds (25x, 0.877><0.897)
+  - rust  : 0.890 seconds (26x, 0.877><0.897)
 
 ```
 ## Context
@@ -51,8 +51,8 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.5.0-1018-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
-MEMINFO  : 16364592 kB
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+MEMINFO  : 16364596 kB
 
 codon : 0.16.3
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
