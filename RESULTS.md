@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.219 seconds (171x, 14.506><16.690)
+  - go    : 15.219 seconds (172x, 14.506><16.690)
 
 sudoku.java : algo with strings
-  - java  : 22.605 seconds (2x, 22.566><22.644)
+  - java  : 22.566 seconds (3x, 22.564><22.644)
 
 sudoku.js : algo with strings
-  - node  : 29.757 seconds (30x, 29.078><32.116)
+  - node  : 29.758 seconds (31x, 29.078><32.116)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 78.571 seconds (15x, 78.396><79.446)
+  - mojo  : 78.569 seconds (16x, 78.396><79.446)
 
 sudoku.nim : algo with strings
-  - nim   : 21.323 seconds (31x, 21.083><22.407)
+  - nim   : 21.328 seconds (32x, 21.083><22.407)
 
 sudoku.py : algo with strings
-  - codon : 12.184 seconds (188x, 11.579><13.244)
-  - py3   : 105.174 seconds (188x, 100.134><113.932)
-  - pypy  : 18.932 seconds (2x, 18.863><19.001)
+  - codon : 12.184 seconds (189x, 11.579><13.244)
+  - py3   : 105.177 seconds (189x, 100.134><113.932)
+  - pypy  : 19.001 seconds (3x, 18.863><19.119)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.680 seconds (2x, 8.601><8.759)
+  - rust  : 8.601 seconds (3x, 8.584><8.759)
 
 ```
 
@@ -40,10 +40,10 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 2.235 seconds (15x, 2.208><2.291)
+  - mojo  : 2.234 seconds (16x, 2.208><2.291)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.897 seconds (2x, 0.892><0.902)
+  - rust  : 0.893 seconds (3x, 0.892><0.902)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.5.0-1021-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16364604 kB
 
 codon : 0.16.3
