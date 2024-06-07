@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.220 seconds (191x, 14.506><16.690)
+  - go    : 15.220 seconds (192x, 14.506><16.690)
 
 sudoku.java : algo with strings
-  - java  : 22.462 seconds (22x, 22.154><24.016)
+  - java  : 22.503 seconds (23x, 22.154><24.016)
 
 sudoku.js : algo with strings
-  - node  : 30.248 seconds (9x, 29.045><31.315)
+  - node  : 29.793 seconds (10x, 29.045><31.315)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 78.657 seconds (35x, 78.396><80.264)
+  - mojo  : 80.740 seconds (1x, 80.740><80.740)
 
 sudoku.nim : algo with strings
-  - nim   : 21.339 seconds (51x, 21.079><22.407)
+  - nim   : 21.345 seconds (52x, 21.079><22.407)
 
 sudoku.py : algo with strings
-  - codon : 12.186 seconds (208x, 11.579><13.244)
-  - py3   : 105.223 seconds (208x, 100.134><113.932)
-  - pypy  : 19.105 seconds (22x, 18.353><19.957)
+  - codon : 12.185 seconds (209x, 11.579><13.244)
+  - py3   : 105.225 seconds (209x, 100.134><113.932)
+  - pypy  : 19.119 seconds (23x, 18.353><19.957)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.619 seconds (22x, 8.584><8.841)
+  - rust  : 8.619 seconds (23x, 8.584><8.841)
 
 ```
 
@@ -39,11 +39,8 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 
 ```
 
-specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 2.234 seconds (35x, 2.208><2.291)
-
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.901 seconds (22x, 0.892><0.912)
+  - rust  : 0.902 seconds (23x, 0.892><0.912)
 
 ```
 ## Context
@@ -60,7 +57,7 @@ go    : go version go1.18.1 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
 java  : openjdk 11.0.23 2024-04-16
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 24.3.0 (9882e19d)
+mojo  : mojo 24.4.0 (2cb57382)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.4 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
