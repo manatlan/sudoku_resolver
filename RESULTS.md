@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.223 seconds (246x, 14.506><16.847)
+  - go    : 15.223 seconds (247x, 14.506><16.847)
 
 sudoku.java : algo with strings
-  - java  : 22.418 seconds (77x, 21.327><24.308)
+  - java  : 22.257 seconds (1x, 22.257><22.257)
 
 sudoku.js : algo with strings
-  - node  : 29.268 seconds (14x, 29.007><30.034)
+  - node  : 29.280 seconds (15x, 29.007><30.034)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 80.706 seconds (55x, 78.375><86.289)
+  - mojo  : 80.705 seconds (56x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 20.913 seconds (28x, 20.593><22.520)
+  - nim   : 20.918 seconds (29x, 20.593><22.520)
 
 sudoku.py : algo with strings
-  - codon : 12.193 seconds (263x, 11.579><13.356)
-  - py3   : 105.172 seconds (263x, 100.134><113.932)
-  - pypy  : 19.080 seconds (77x, 18.263><20.663)
+  - codon : 12.193 seconds (264x, 11.579><13.356)
+  - py3   : 105.172 seconds (264x, 100.134><113.932)
+  - pypy  : 19.068 seconds (78x, 18.263><20.663)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 13.142 seconds (42x, 13.040><13.950)
+  - rust  : 12.487 seconds (1x, 12.487><12.487)
 
 ```
 
@@ -40,22 +40,22 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.893 seconds (42x, 0.883><0.936)
+  - rust  : 0.789 seconds (1x, 0.789><0.789)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.5.0-1024-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+PLATFORM : x86_64/Linux-6.5.0-1025-azure-x86_64-with-glibc2.35 with 4 cpus
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.87 bogomips)
 MEMINFO  : 16364592 kB
 
 codon : 0.16.3
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 go    : go version go1.18.1 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
-java  : openjdk 11.0.23 2024-04-16
+java  : openjdk 11.0.24 2024-07-16
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
 mojo  : mojo 24.4.0 (2cb57382)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
@@ -67,7 +67,7 @@ py3   : Python 3.10.12
         /usr/bin/python3 -uOO <file> < grids.txt
 pypy  : Python 3.9.19 (a2113ea87262, Apr 21 2024, 05:40:24)
         /opt/hostedtoolcache/PyPy/3.9.19/x64/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.79.0 (129f3b996 2024-06-10)
+rust  : rustc 1.80.0 (051478957 2024-07-21)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 
 ```
