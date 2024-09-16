@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.225 seconds (289x, 14.506><16.847)
+  - go    : 15.225 seconds (290x, 14.506><16.847)
 
 sudoku.java : algo with strings
-  - java  : 22.375 seconds (43x, 22.072><24.129)
+  - java  : 22.376 seconds (44x, 22.072><24.129)
 
 sudoku.js : algo with strings
-  - node  : 29.305 seconds (57x, 28.966><31.392)
+  - node  : 29.312 seconds (58x, 28.966><31.392)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 80.732 seconds (98x, 78.375><86.289)
+  - mojo  : 80.740 seconds (99x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 20.883 seconds (71x, 20.593><22.520)
+  - nim   : 20.883 seconds (72x, 20.593><22.520)
 
 sudoku.py : algo with strings
-  - codon : 12.349 seconds (23x, 12.272><12.589)
-  - py3   : 104.951 seconds (306x, 100.134><113.932)
-  - pypy  : 19.033 seconds (120x, 18.240><36.082)
+  - codon : 12.352 seconds (24x, 12.272><12.589)
+  - py3   : 104.950 seconds (307x, 100.134><113.932)
+  - pypy  : 19.040 seconds (121x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 6.229 seconds (5x, 6.216><6.248)
+  - rust  : 6.230 seconds (6x, 6.216><6.248)
 
 ```
 
@@ -40,7 +40,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.782 seconds (5x, 0.780><0.796)
+  - rust  : 0.784 seconds (6x, 0.780><0.796)
 
 ```
 ## Context
@@ -48,8 +48,8 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.5.0-1025-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
-MEMINFO  : 16364592 kB
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+MEMINFO  : 16364584 kB
 
 codon : 0.17.0
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
