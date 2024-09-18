@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.225 seconds (291x, 14.506><16.847)
+  - go    : 15.225 seconds (292x, 14.506><16.847)
 
 sudoku.java : algo with strings
-  - java  : 22.375 seconds (45x, 22.072><24.129)
+  - java  : 22.376 seconds (46x, 22.072><24.129)
 
 sudoku.js : algo with strings
-  - node  : 29.305 seconds (59x, 28.966><31.392)
+  - node  : 29.302 seconds (60x, 28.966><31.392)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 80.754 seconds (100x, 78.375><86.289)
+  - mojo  : 80.740 seconds (101x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 20.882 seconds (73x, 20.593><22.520)
+  - nim   : 20.883 seconds (74x, 20.593><22.520)
 
 sudoku.py : algo with strings
-  - codon : 12.349 seconds (25x, 12.272><12.589)
-  - py3   : 104.937 seconds (308x, 100.134><113.932)
-  - pypy  : 19.047 seconds (122x, 18.240><36.082)
+  - codon : 12.346 seconds (26x, 12.272><12.589)
+  - py3   : 104.924 seconds (309x, 100.134><113.932)
+  - pypy  : 19.054 seconds (123x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 6.231 seconds (7x, 6.216><6.251)
+  - rust  : 6.230 seconds (8x, 6.216><6.251)
 
 ```
 
@@ -40,7 +40,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.786 seconds (7x, 0.780><0.796)
+  - rust  : 0.788 seconds (8x, 0.780><0.796)
 
 ```
 ## Context
@@ -48,7 +48,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.5.0-1025-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16364592 kB
 
 codon : 0.17.0
