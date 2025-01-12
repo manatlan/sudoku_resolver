@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 15.242 seconds (401x, 14.506><16.847)
+  - go    : 16.695 seconds (1x, 16.695><16.695)
 
 sudoku.java : algo with strings
-  - java  : 22.409 seconds (61x, 21.218><24.423)
+  - java  : 26.912 seconds (1x, 26.912><26.912)
 
 sudoku.js : algo with strings
-  - node  : 29.367 seconds (51x, 28.999><33.129)
+  - node  : 30.438 seconds (1x, 30.438><30.438)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 22.539 seconds (18x, 22.279><23.025)
+  - nim   : 22.568 seconds (19x, 22.279><23.515)
 
 sudoku.py : algo with strings
-  - codon : 12.354 seconds (135x, 12.255><12.589)
-  - py3   : 104.878 seconds (418x, 100.134><113.932)
-  - pypy  : 19.075 seconds (232x, 18.240><36.082)
+  - codon : 12.354 seconds (136x, 12.255><12.780)
+  - py3   : 89.045 seconds (1x, 89.045><89.045)
+  - pypy  : 19.070 seconds (233x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 12.876 seconds (38x, 12.781><13.288)
+  - rust  : 12.878 seconds (39x, 12.781><13.288)
 
 ```
 
@@ -40,30 +40,30 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.638 seconds (38x, 0.633><0.653)
+  - rust  : 0.637 seconds (39x, 0.633><0.653)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.5.0-1025-azure-x86_64-with-glibc2.35 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.87 bogomips)
-MEMINFO  : 16364588 kB
+PLATFORM : x86_64/Linux-6.8.0-1017-azure-x86_64-with-glibc2.39 with 4 cpus
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+MEMINFO  : 16373808 kB
 
 codon : 0.17.0
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
-go    : go version go1.18.1 linux/amd64
+go    : go version go1.22.2 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
-java  : openjdk 11.0.25 2024-10-15
+java  : openjdk 17.0.13 2024-10-15
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
 mojo  : mojo 24.4.0 (2cb57382)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.14 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
-node  : v18.20.5
+node  : v20.18.1
         /usr/local/bin/node <file> < grids.txt
-py3   : Python 3.10.12
+py3   : Python 3.12.3
         /usr/bin/python3 -uOO <file> < grids.txt
 pypy  : Python 3.9.19 (a2113ea87262, Apr 21 2024, 05:40:24)
         /opt/hostedtoolcache/PyPy/3.9.19/x64/bin/pypy3 -uOO <file> < grids.txt
