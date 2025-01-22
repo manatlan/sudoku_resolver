@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.677 seconds (10x, 16.604><16.717)
+  - go    : 16.681 seconds (11x, 16.604><16.759)
 
 sudoku.java : algo with strings
-  - java  : 26.969 seconds (10x, 26.810><29.042)
+  - java  : 26.981 seconds (11x, 26.810><29.042)
 
 sudoku.js : algo with strings
-  - node  : 30.368 seconds (10x, 30.054><34.379)
+  - node  : 30.382 seconds (11x, 30.054><34.379)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 22.674 seconds (28x, 22.279><23.515)
+  - nim   : 22.695 seconds (29x, 22.279><23.821)
 
 sudoku.py : algo with strings
-  - codon : 12.359 seconds (145x, 12.255><12.829)
-  - py3   : 89.077 seconds (10x, 88.262><93.035)
-  - pypy  : 19.093 seconds (242x, 18.240><36.082)
+  - codon : 12.359 seconds (146x, 12.255><12.829)
+  - py3   : 89.083 seconds (11x, 88.262><93.035)
+  - pypy  : 19.091 seconds (243x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 12.881 seconds (48x, 12.772><13.288)
+  - rust  : 12.878 seconds (49x, 12.772><13.288)
 
 ```
 
@@ -40,7 +40,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.639 seconds (48x, 0.633><0.653)
+  - rust  : 0.639 seconds (49x, 0.633><0.653)
 
 ```
 ## Context
@@ -48,8 +48,8 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.8.0-1017-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
-MEMINFO  : 16373808 kB
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
+MEMINFO  : 16373804 kB
 
 codon : 0.17.0
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
