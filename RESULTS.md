@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.668 seconds (30x, 16.604><16.759)
+  - go    : 16.672 seconds (31x, 16.604><16.759)
 
 sudoku.java : algo with strings
-  - java  : 27.009 seconds (12x, 26.595><27.451)
+  - java  : 27.049 seconds (13x, 26.595><27.966)
 
 sudoku.js : algo with strings
-  - node  : 30.296 seconds (12x, 30.001><30.680)
+  - node  : 30.295 seconds (13x, 30.001><30.680)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.217 seconds (48x, 22.279><23.950)
+  - nim   : 23.222 seconds (49x, 22.279><24.479)
 
 sudoku.py : algo with strings
-  - codon : 13.501 seconds (12x, 13.421><13.721)
-  - py3   : 89.077 seconds (30x, 87.870><93.035)
-  - pypy  : 19.084 seconds (262x, 18.240><36.082)
+  - codon : 13.835 seconds (1x, 13.835><13.835)
+  - py3   : 89.071 seconds (31x, 87.870><93.035)
+  - pypy  : 19.088 seconds (263x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 6.763 seconds (6x, 6.749><6.789)
+  - rust  : 6.758 seconds (7x, 6.749><6.789)
 
 ```
 
@@ -40,18 +40,18 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.641 seconds (6x, 0.638><0.649)
+  - rust  : 0.643 seconds (7x, 0.638><0.651)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.8.0-1020-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+PLATFORM : x86_64/Linux-6.8.0-1021-azure-x86_64-with-glibc2.39 with 4 cpus
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16373796 kB
 
-codon : 0.18.0
+codon : 0.18.1
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 go    : go version go1.22.2 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
