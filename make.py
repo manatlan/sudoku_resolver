@@ -35,6 +35,11 @@ LANGS=dict(
     	c="$0 $1",
         ext="js",
     ),
+    php=dict(	
+        e="php",
+    	c="$0 $1",
+        ext="php",
+    ),
     py3=dict(	
         e="python3",
     	c="$0 -uOO $1",
