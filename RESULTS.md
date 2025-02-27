@@ -9,27 +9,27 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.669 seconds (44x, 16.604><16.955)
+  - go    : 16.672 seconds (45x, 16.604><16.955)
 
 sudoku.java : algo with strings
-  - java  : 27.091 seconds (26x, 26.595><28.961)
+  - java  : 27.113 seconds (27x, 26.595><28.961)
 
 sudoku.js : algo with strings
-  - node  : 30.358 seconds (26x, 30.001><31.406)
+  - node  : 30.338 seconds (1x, 30.338><30.338)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.283 seconds (62x, 22.279><24.479)
+  - nim   : 23.282 seconds (63x, 22.279><24.479)
 
 sudoku.py : algo with strings
-  - codon : 13.525 seconds (14x, 13.420><13.835)
-  - py3   : 88.918 seconds (44x, 87.539><93.035)
-  - pypy  : 19.086 seconds (276x, 18.240><36.082)
+  - codon : 13.528 seconds (15x, 13.420><13.835)
+  - py3   : 88.863 seconds (45x, 87.539><93.035)
+  - pypy  : 19.088 seconds (277x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 6.760 seconds (20x, 6.722><6.807)
+  - rust  : 7.991 seconds (1x, 7.991><7.991)
 
 ```
 
@@ -40,7 +40,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.643 seconds (20x, 0.636><0.655)
+  - rust  : 0.659 seconds (1x, 0.659><0.659)
 
 ```
 ## Context
@@ -48,7 +48,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.8.0-1021-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16373796 kB
 
 codon : 0.18.1
@@ -61,13 +61,13 @@ mojo  : mojo 24.4.0 (2cb57382)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.14 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
-node  : v20.18.2
+node  : v20.18.3
         /usr/local/bin/node <file> < grids.txt
 py3   : Python 3.12.3
         /usr/bin/python3 -uOO <file> < grids.txt
 pypy  : Python 3.9.19 (a2113ea87262, Apr 21 2024, 05:40:24)
         /opt/hostedtoolcache/PyPy/3.9.19/x64/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.84.1 (e71f9a9a9 2025-01-27)
+rust  : rustc 1.85.0 (4d91de4e4 2025-02-17)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 
 ```
