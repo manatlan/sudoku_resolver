@@ -1,4 +1,5 @@
 <?php
+#INFO: algo with strings
 
 declare(strict_types=1);
 
