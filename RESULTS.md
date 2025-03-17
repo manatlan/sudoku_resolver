@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.669 seconds (63x, 16.588><16.955)
+  - go    : 16.670 seconds (64x, 16.588><16.955)
 
 sudoku.java : algo with strings
-  - java  : 27.137 seconds (45x, 26.595><30.771)
+  - java  : 27.159 seconds (46x, 26.595><30.771)
 
 sudoku.js : algo with strings
-  - node  : 30.407 seconds (19x, 30.051><31.316)
+  - node  : 30.417 seconds (20x, 30.051><31.316)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.303 seconds (81x, 22.279><24.479)
+  - nim   : 23.311 seconds (82x, 22.279><24.479)
 
 sudoku.php : algo with strings
-  - php   : 82.716 seconds (2x, 82.541><82.892)
+  - php   : 83.971 seconds (1x, 83.971><83.971)
 
 sudoku.py : algo with strings
-  - codon : 13.529 seconds (33x, 13.387><13.920)
-  - py3   : 88.714 seconds (63x, 86.923><93.035)
-  - pypy  : 19.068 seconds (295x, 18.240><36.082)
+  - codon : 13.529 seconds (34x, 13.387><13.920)
+  - py3   : 88.709 seconds (64x, 86.923><93.035)
+  - pypy  : 19.069 seconds (296x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.005 seconds (19x, 7.957><8.118)
+  - rust  : 8.007 seconds (20x, 7.957><8.118)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.650 seconds (19x, 0.645><0.667)
+  - rust  : 0.649 seconds (20x, 0.645><0.667)
 
 ```
 ## Context
@@ -66,7 +66,7 @@ nim   : Nim Compiler Version 2.0.14 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
 node  : v20.18.3
         /usr/local/bin/node <file> < grids.txt
-php   : PHP 8.3.17 (cli) (built: Feb 28 2025 18:16:47) (NTS)
+php   : PHP 8.3.19 (cli) (built: Mar 15 2025 02:40:35) (NTS)
         /usr/bin/php <file> < grids.txt
 py3   : Python 3.12.3
         /usr/bin/python3 -uOO <file> < grids.txt
