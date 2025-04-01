@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.673 seconds (77x, 16.564><16.955)
+  - go    : 16.675 seconds (78x, 16.564><16.955)
 
 sudoku.java : algo with strings
-  - java  : 27.110 seconds (59x, 26.595><30.771)
+  - java  : 27.111 seconds (60x, 26.595><30.771)
 
 sudoku.js : algo with strings
-  - node  : 30.193 seconds (11x, 29.929><31.464)
+  - node  : 30.275 seconds (12x, 29.929><33.166)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.313 seconds (95x, 22.279><24.479)
+  - nim   : 23.316 seconds (96x, 22.279><24.479)
 
 sudoku.php : algo with strings
-  - php   : 83.296 seconds (14x, 81.992><84.494)
+  - php   : 83.327 seconds (15x, 81.992><84.494)
 
 sudoku.py : algo with strings
-  - codon : 13.222 seconds (12x, 13.066><13.423)
-  - py3   : 88.704 seconds (77x, 86.923><93.035)
-  - pypy  : 19.064 seconds (309x, 18.240><36.082)
+  - codon : 13.237 seconds (13x, 13.066><13.423)
+  - py3   : 88.709 seconds (78x, 86.923><93.035)
+  - pypy  : 19.066 seconds (310x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.048 seconds (1x, 8.048><8.048)
+  - rust  : 7.983 seconds (1x, 7.983><7.983)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.652 seconds (1x, 0.652><0.652)
+  - rust  : 0.646 seconds (1x, 0.646><0.646)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.8.0-1021-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16373796 kB
 
 codon : 0.18.2
@@ -72,7 +72,7 @@ py3   : Python 3.12.3
         /usr/bin/python3 -uOO <file> < grids.txt
 pypy  : Python 3.9.19 (a2113ea87262, Apr 21 2024, 05:40:24)
         /opt/hostedtoolcache/PyPy/3.9.19/x64/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.85.0 (4d91de4e4 2025-02-17)
+rust  : rustc 1.85.1 (4eb161250 2025-03-15)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 
 ```
