@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (93x, 16.564><16.991)
+  - go    : 16.672 seconds (94x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.069 seconds (75x, 26.595><30.771)
+  - java  : 27.070 seconds (76x, 26.595><30.771)
 
 sudoku.js : algo with strings
-  - node  : 30.356 seconds (27x, 29.929><33.166)
+  - node  : 30.372 seconds (28x, 29.929><33.166)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.403 seconds (111x, 22.279><24.479)
+  - nim   : 23.413 seconds (112x, 22.279><24.479)
 
 sudoku.php : algo with strings
-  - php   : 82.658 seconds (3x, 82.532><84.066)
+  - php   : 83.362 seconds (4x, 82.532><84.134)
 
 sudoku.py : algo with strings
-  - codon : 13.222 seconds (28x, 13.066><13.423)
-  - py3   : 88.704 seconds (93x, 86.923><93.035)
-  - pypy  : 19.057 seconds (325x, 18.240><36.082)
+  - codon : 13.225 seconds (29x, 13.066><13.839)
+  - py3   : 88.690 seconds (94x, 86.923><93.035)
+  - pypy  : 19.059 seconds (326x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.183 seconds (9x, 8.145><8.281)
+  - rust  : 8.186 seconds (10x, 8.145><8.346)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.644 seconds (9x, 0.637><0.651)
+  - rust  : 0.644 seconds (10x, 0.637><0.651)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.8.0-1021-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.83 bogomips)
 MEMINFO  : 16373796 kB
 
 codon : 0.18.2
