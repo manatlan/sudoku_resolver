@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.670 seconds (98x, 16.564><17.145)
+  - go    : 16.672 seconds (99x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.086 seconds (80x, 26.595><30.771)
+  - java  : 27.100 seconds (81x, 26.595><30.771)
 
 sudoku.js : algo with strings
-  - node  : 30.354 seconds (32x, 29.849><33.166)
+  - node  : 30.351 seconds (33x, 29.849><33.166)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.424 seconds (116x, 22.279><24.479)
+  - nim   : 23.426 seconds (117x, 22.279><24.479)
 
 sudoku.php : algo with strings
-  - php   : 83.997 seconds (8x, 82.532><85.165)
+  - php   : 83.928 seconds (9x, 82.532><85.165)
 
 sudoku.py : algo with strings
-  - codon : 13.219 seconds (33x, 13.066><13.839)
-  - py3   : 88.667 seconds (98x, 86.923><93.035)
-  - pypy  : 19.063 seconds (330x, 18.240><36.082)
+  - codon : 13.216 seconds (34x, 13.066><13.839)
+  - py3   : 88.675 seconds (99x, 86.923><93.035)
+  - pypy  : 19.061 seconds (331x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.182 seconds (14x, 8.145><8.346)
+  - rust  : 8.183 seconds (15x, 8.145><8.346)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.642 seconds (14x, 0.637><0.651)
+  - rust  : 0.641 seconds (15x, 0.636><0.651)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.8.0-1021-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16373792 kB
 
 codon : 0.18.2
