@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (100x, 16.564><17.145)
+  - go    : 16.672 seconds (101x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.086 seconds (82x, 26.595><30.771)
+  - java  : 27.750 seconds (1x, 27.750><27.750)
 
 sudoku.js : algo with strings
-  - node  : 30.327 seconds (34x, 29.849><33.166)
+  - node  : 30.348 seconds (35x, 29.849><33.166)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.356 seconds (1x, 23.356><23.356)
+  - nim   : 23.423 seconds (2x, 23.356><23.491)
 
 sudoku.php : algo with strings
-  - php   : 83.997 seconds (10x, 82.532><85.165)
+  - php   : 84.066 seconds (11x, 82.532><85.165)
 
 sudoku.py : algo with strings
-  - codon : 13.219 seconds (35x, 13.066><13.839)
-  - py3   : 88.667 seconds (100x, 86.923><93.035)
-  - pypy  : 19.059 seconds (332x, 18.240><36.082)
+  - codon : 13.221 seconds (36x, 13.066><13.839)
+  - py3   : 88.659 seconds (101x, 86.923><93.035)
+  - pypy  : 19.057 seconds (333x, 18.240><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.186 seconds (16x, 8.145><8.346)
+  - rust  : 8.183 seconds (17x, 8.145><8.346)
 
 ```
 
@@ -43,22 +43,22 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.642 seconds (16x, 0.636><0.651)
+  - rust  : 0.643 seconds (17x, 0.636><0.651)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.8.0-1021-azure-x86_64-with-glibc2.39 with 4 cpus
+PLATFORM : x86_64/Linux-6.11.0-1012-azure-x86_64-with-glibc2.39 with 4 cpus
 CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
-MEMINFO  : 16373796 kB
+MEMINFO  : 16373452 kB
 
 codon : 0.18.2
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 go    : go version go1.22.2 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
-java  : openjdk 17.0.14 2025-01-21
+java  : openjdk 17.0.15 2025-04-15
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
 mojo  : mojo 24.4.0 (2cb57382)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
