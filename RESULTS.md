@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (107x, 16.564><17.145)
+  - go    : 16.672 seconds (108x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.102 seconds (7x, 26.862><27.750)
+  - java  : 27.109 seconds (8x, 26.862><27.750)
 
 sudoku.js : algo with strings
-  - node  : 30.348 seconds (41x, 29.849><33.166)
+  - node  : 30.360 seconds (1x, 30.360><30.360)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.423 seconds (8x, 22.930><23.738)
+  - nim   : 23.356 seconds (9x, 22.930><23.738)
 
 sudoku.php : algo with strings
-  - php   : 83.928 seconds (17x, 82.348><85.165)
+  - php   : 83.850 seconds (18x, 82.348><85.165)
 
 sudoku.py : algo with strings
-  - codon : 13.222 seconds (42x, 12.891><13.839)
-  - py3   : 88.645 seconds (107x, 86.923><93.035)
-  - pypy  : 19.061 seconds (339x, 17.905><36.082)
+  - codon : 13.221 seconds (43x, 12.891><13.839)
+  - py3   : 88.624 seconds (108x, 86.923><93.035)
+  - pypy  : 19.063 seconds (340x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.184 seconds (23x, 7.971><8.346)
+  - rust  : 8.184 seconds (24x, 7.971><8.346)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.642 seconds (23x, 0.615><0.651)
+  - rust  : 0.642 seconds (24x, 0.615><0.651)
 
 ```
 ## Context
@@ -51,8 +51,8 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.11.0-1012-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.87 bogomips)
-MEMINFO  : 16373452 kB
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+MEMINFO  : 16373456 kB
 
 codon : 0.18.2
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
@@ -64,7 +64,7 @@ mojo  : mojo 24.4.0 (2cb57382)
         /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.16 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
-node  : v20.19.0
+node  : v20.19.1
         /usr/local/bin/node <file> < grids.txt
 php   : PHP 8.3.20 (cli) (built: Apr 13 2025 03:29:45) (NTS)
         /usr/bin/php <file> < grids.txt
