@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (109x, 16.564><17.145)
+  - go    : 16.672 seconds (110x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.115 seconds (9x, 26.862><27.750)
+  - java  : 27.225 seconds (10x, 26.862><27.750)
 
 sudoku.js : algo with strings
-  - node  : 30.340 seconds (2x, 30.319><30.360)
+  - node  : 30.360 seconds (3x, 30.319><30.438)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.326 seconds (10x, 22.930><23.738)
+  - nim   : 23.296 seconds (11x, 22.930><23.738)
 
 sudoku.php : algo with strings
-  - php   : 83.902 seconds (19x, 82.348><85.165)
+  - php   : 83.837 seconds (20x, 82.348><85.165)
 
 sudoku.py : algo with strings
-  - codon : 13.220 seconds (44x, 12.891><13.839)
-  - py3   : 88.645 seconds (109x, 86.923><93.035)
-  - pypy  : 19.061 seconds (341x, 17.905><36.082)
+  - codon : 13.221 seconds (45x, 12.891><13.839)
+  - py3   : 88.624 seconds (110x, 86.923><93.035)
+  - pypy  : 19.059 seconds (342x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.184 seconds (25x, 7.971><8.346)
+  - rust  : 8.185 seconds (26x, 7.971><8.346)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.642 seconds (25x, 0.615><0.651)
+  - rust  : 0.642 seconds (26x, 0.615><0.651)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.11.0-1012-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
 MEMINFO  : 16373456 kB
 
 codon : 0.18.2
