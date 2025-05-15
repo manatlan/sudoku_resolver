@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (121x, 16.564><17.145)
+  - go    : 16.670 seconds (122x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.115 seconds (21x, 26.768><30.654)
+  - java  : 27.153 seconds (22x, 26.768><30.654)
 
 sudoku.js : algo with strings
-  - node  : 30.350 seconds (14x, 29.542><32.783)
+  - node  : 30.360 seconds (15x, 29.542><32.783)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.387 seconds (22x, 22.930><23.891)
+  - nim   : 23.361 seconds (23x, 22.930><23.891)
 
 sudoku.php : algo with strings
-  - php   : 83.036 seconds (4x, 82.483><83.410)
+  - php   : 83.032 seconds (5x, 82.483><83.410)
 
 sudoku.py : algo with strings
-  - codon : 13.235 seconds (56x, 12.891><13.839)
-  - py3   : 88.604 seconds (121x, 86.923><93.035)
-  - pypy  : 19.057 seconds (353x, 17.905><36.082)
+  - codon : 13.233 seconds (57x, 12.891><13.839)
+  - py3   : 88.624 seconds (122x, 86.923><93.035)
+  - pypy  : 19.056 seconds (354x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.187 seconds (37x, 7.971><8.346)
+  - rust  : 8.188 seconds (38x, 7.971><8.346)
 
 ```
 
@@ -43,16 +43,16 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.643 seconds (37x, 0.615><0.651)
+  - rust  : 0.643 seconds (38x, 0.615><0.651)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.11.0-1013-azure-x86_64-with-glibc2.39 with 4 cpus
+PLATFORM : x86_64/Linux-6.11.0-1012-azure-x86_64-with-glibc2.39 with 4 cpus
 CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
-MEMINFO  : 16373452 kB
+MEMINFO  : 16373456 kB
 
 codon : 0.18.2
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
