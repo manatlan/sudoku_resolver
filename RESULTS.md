@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (125x, 16.564><17.145)
+  - go    : 16.672 seconds (126x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.115 seconds (25x, 26.768><30.654)
+  - java  : 27.153 seconds (26x, 26.768><30.654)
 
 sudoku.js : algo with strings
-  - node  : 30.450 seconds (18x, 29.542><32.783)
+  - node  : 30.461 seconds (19x, 29.542><32.783)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.387 seconds (26x, 22.930><24.156)
+  - nim   : 23.413 seconds (27x, 22.930><24.156)
 
 sudoku.php : algo with strings
-  - php   : 82.828 seconds (8x, 82.156><83.410)
+  - php   : 82.624 seconds (9x, 82.156><83.410)
 
 sudoku.py : algo with strings
-  - codon : 13.229 seconds (60x, 12.891><13.839)
-  - py3   : 88.604 seconds (125x, 86.923><93.035)
-  - pypy  : 19.057 seconds (357x, 17.905><36.082)
+  - codon : 13.233 seconds (61x, 12.891><13.839)
+  - py3   : 88.624 seconds (126x, 86.923><93.035)
+  - pypy  : 19.057 seconds (358x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.189 seconds (41x, 7.971><8.346)
+  - rust  : 8.188 seconds (42x, 7.971><8.346)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.643 seconds (41x, 0.615><0.651)
+  - rust  : 0.642 seconds (42x, 0.615><0.651)
 
 ```
 ## Context
@@ -51,8 +51,8 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.11.0-1014-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
-MEMINFO  : 16379576 kB
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+MEMINFO  : 16379572 kB
 
 codon : 0.18.2
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
