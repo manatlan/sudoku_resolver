@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (128x, 16.564><17.145)
+  - go    : 16.672 seconds (129x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.204 seconds (28x, 26.768><30.654)
+  - java  : 27.190 seconds (29x, 26.768><30.654)
 
 sudoku.js : algo with strings
-  - node  : 30.461 seconds (21x, 29.542><32.783)
+  - node  : 30.465 seconds (22x, 29.542><32.783)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 80.739 seconds (210x, 78.375><86.289)
 
 sudoku.nim : algo with strings
-  - nim   : 23.363 seconds (29x, 22.930><24.156)
+  - nim   : 23.388 seconds (30x, 22.930><24.156)
 
 sudoku.php : algo with strings
-  - php   : 82.624 seconds (11x, 82.156><83.410)
+  - php   : 82.765 seconds (12x, 82.156><84.148)
 
 sudoku.py : algo with strings
-  - codon : 13.225 seconds (63x, 12.891><13.839)
-  - py3   : 88.603 seconds (128x, 86.923><93.035)
-  - pypy  : 19.056 seconds (360x, 17.905><36.082)
+  - codon : 13.229 seconds (64x, 12.891><13.839)
+  - py3   : 88.603 seconds (129x, 86.923><93.035)
+  - pypy  : 19.055 seconds (361x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.187 seconds (44x, 7.971><8.346)
+  - rust  : 8.187 seconds (45x, 7.971><8.346)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.642 seconds (44x, 0.615><0.651)
+  - rust  : 0.642 seconds (45x, 0.615><0.651)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.11.0-1014-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
 MEMINFO  : 16379576 kB
 
 codon : 0.18.2
