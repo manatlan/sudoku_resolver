@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (143x, 16.564><17.145)
+  - go    : 16.672 seconds (144x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.102 seconds (43x, 26.736><30.654)
+  - java  : 29.934 seconds (1x, 29.934><29.934)
 
 sudoku.js : algo with strings
-  - node  : 30.637 seconds (36x, 29.542><32.783)
+  - node  : 30.111 seconds (1x, 30.111><30.111)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 80.739 seconds (210x, 78.375><86.289)
+  - mojo  : 22.574 seconds (1x, 22.574><22.574)
 
 sudoku.nim : algo with strings
-  - nim   : 23.486 seconds (44x, 22.930><24.156)
+  - nim   : 23.481 seconds (45x, 22.930><24.156)
 
 sudoku.php : algo with strings
-  - php   : 83.036 seconds (26x, 82.076><85.299)
+  - php   : 82.668 seconds (1x, 82.668><82.668)
 
 sudoku.py : algo with strings
-  - codon : 13.237 seconds (78x, 12.891><13.839)
-  - py3   : 88.588 seconds (143x, 86.923><93.035)
-  - pypy  : 19.044 seconds (375x, 17.905><36.082)
+  - codon : 13.706 seconds (1x, 13.706><13.706)
+  - py3   : 88.581 seconds (144x, 86.923><93.035)
+  - pypy  : 19.042 seconds (376x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 8.185 seconds (59x, 7.971><8.352)
+  - rust  : 12.293 seconds (1x, 12.293><12.293)
 
 ```
 
@@ -43,36 +43,36 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.642 seconds (59x, 0.615><0.664)
+  - rust  : 0.692 seconds (1x, 0.692><0.692)
 
 ```
 ## Context
 
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
-PLATFORM : x86_64/Linux-6.11.0-1014-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
-MEMINFO  : 16379576 kB
+PLATFORM : x86_64/Linux-6.11.0-1018-azure-x86_64-with-glibc2.39 with 4 cpus
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
+MEMINFO  : 16379472 kB
 
-codon : 0.18.2
+codon : 0.19.4
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 go    : go version go1.22.2 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
-java  : openjdk 17.0.15 2025-04-15
+java  : openjdk 17.0.17 2025-10-21
         /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 24.4.0 (2cb57382)
-        /home/runner/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
+mojo  : Mojo 0.25.7.0 (e5af2b2f)
+        /home/runner/work/sudoku_resolver/sudoku_resolver/.venv/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.16 [Linux: amd64]
         /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
-node  : v20.19.1
+node  : v20.19.6
         /usr/local/bin/node <file> < grids.txt
-php   : PHP 8.3.21 (cli) (built: May  9 2025 00:32:49) (NTS)
+php   : PHP 8.3.28 (cli) (built: Dec  9 2025 12:37:08) (NTS)
         /usr/bin/php <file> < grids.txt
 py3   : Python 3.12.3
-        /usr/bin/python3 -uOO <file> < grids.txt
+        /home/runner/work/sudoku_resolver/sudoku_resolver/.venv/bin/python3 -uOO <file> < grids.txt
 pypy  : Python 3.9.19 (a2113ea87262, Apr 21 2024, 05:40:24)
         /opt/hostedtoolcache/PyPy/3.9.19/x64/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.86.0 (05f9846f8 2025-03-31)
+rust  : rustc 1.91.1 (ed61e7d7e 2025-11-07)
         /home/runner/.cargo/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
 
 ```
