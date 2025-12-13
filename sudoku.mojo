@@ -1,7 +1,7 @@
 #!./make.py 
 #INFO: algo with strings (use python to read stdin)
 
-alias ALL = StringRef("123456789")
+alias ALL = "123456789"
 
 fn sqr(g:String,x:Int,y:Int) -> String:
     return g[y*9+x:y*9+x+3] + g[y*9+x+9:y*9+x+12] + g[y*9+x+18:y*9+x+21]
@@ -44,14 +44,13 @@ fn resolv(g: String) -> String:
         return g
 
 # fn main() raises:
-#     let buf = open("grids.txt", "r").read()
+#     var buf = open("grids.txt", "r").read()
 #     for i in range(50):
 #         print( resolv(buf[i*82:i*82+81]) )
 
 from python import Python
 def main():
     var sys = Python.import_module("sys")
-    var py = Python()
     for g in sys.stdin:
-        print(resolv(py.__str__(g)))
+        print(resolv(String(g)))
 

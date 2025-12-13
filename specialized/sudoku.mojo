@@ -13,7 +13,7 @@ struct Grid(Stringable):
         var dtp = DTypePointer[DType.uint8].alloc(81)
         self.data = Buffer[ DType.uint8, 81](dtp)
         
-        @unroll
+
         for idx in range(81):
             self.data[idx] = ord(g[idx])-48 if g[idx]!="." else 0
 
@@ -21,7 +21,7 @@ struct Grid(Stringable):
         'Returns a group of 9 values, of the square at x,y.'
         var off=y*9+x
         var group=GROUP().splat(0)
-        @unroll
+
         for i in range(3):
             group[i]=self.data[off+i]
             group[i+3]=self.data[off+i+9]
@@ -31,7 +31,7 @@ struct Grid(Stringable):
     fn col(self:Grid,x:Int) -> GROUP:
         'Returns a group of 9 values, of the column x.'
         var group=GROUP().splat(0)
-        @unroll
+
         for i in range(9):
             group[i]=self.data[i*9+x]
         return group
@@ -40,7 +40,7 @@ struct Grid(Stringable):
         'Returns a group of 9 values, of the row y.'
         var off=y*9
         var group=GROUP().splat(0)
-        @unroll
+
         for i in range(9):
             group[i]=self.data[off+i]
         return group
@@ -54,7 +54,6 @@ struct Grid(Stringable):
 
         var avails = InlinedFixedVector[UInt8](9)
 
-        @unroll
         for c in range(1, 10):
             if (
                 (not (_s == c).reduce_or())
@@ -70,7 +69,7 @@ struct Grid(Stringable):
         "It's the optimized algo : so it will try the hole which have a minimal choice (ideally 1)."
         var ibest:Int=-1
         var cbest=InlinedFixedVector[UInt8](9)
-        @unroll
+
         for i in range(1,10):
             cbest.append(i)
         
@@ -99,7 +98,7 @@ struct Grid(Stringable):
     fn __str__(self:Grid) -> String:
         "Returns a string of 81chars of the grid."
         var str=String("")
-        @unroll
+
         for i in range(81):
             var c = self.data[i].__int__()
             str+= chr(48+c)[0] if c else "."
@@ -114,7 +113,6 @@ struct Grid(Stringable):
 from python import Python
 def main():
     var sys = Python.import_module("sys")
-    var py = Python()
     for line in sys.stdin:
         var g=Grid(py.__str__(line))
         if g.solve():
