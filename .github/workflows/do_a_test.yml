@@ -54,28 +54,28 @@ jobs:
 
       - name: "install mojo"
         run: |
-          uv add mojo
+          uv sync
 
       - name: test make help
         run: |
           chmod +x make.py
-          ./make.py 
+          uv run make.py 
 
       - name: tests all
         run: |
-          MOJO_PYTHON_LIBRARY="/usr/lib/x86_64-linux-gnu/libpython3.12.so" ./make.py . specialized
+          MOJO_PYTHON_LIBRARY="/usr/lib/x86_64-linux-gnu/libpython3.12.so" uv run make.py . specialized
 
       - name: show stats
         run: |
-          ./make.py stats . specialized
+          uv run make.py stats . specialized
 
       - name: Append stats to RESULTS.TXT (backuped in repo! (persistent))
         run: |
-          ./make.py snapshot >> RESULTS.TXT
+          uv run make.py snapshot >> RESULTS.TXT
 
       - name: Create page RESULTS.md
         run: |
-          python3 generate_page.py RESULTS > RESULTS.md
+          uv run generate_page.py RESULTS > RESULTS.md
 
       - name: Commit results
         uses: EndBug/add-and-commit@v9
