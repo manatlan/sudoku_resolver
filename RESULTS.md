@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.672 seconds (144x, 16.564><17.145)
+  - go    : 16.672 seconds (145x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 29.934 seconds (1x, 29.934><29.934)
+  - java  : 28.425 seconds (2x, 26.916><29.934)
 
 sudoku.js : algo with strings
-  - node  : 30.111 seconds (1x, 30.111><30.111)
+  - node  : 30.444 seconds (2x, 30.111><30.776)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 22.574 seconds (1x, 22.574><22.574)
+  - mojo  : 22.422 seconds (2x, 22.269><22.574)
 
 sudoku.nim : algo with strings
-  - nim   : 23.481 seconds (45x, 22.930><24.156)
+  - nim   : 23.475 seconds (46x, 22.917><24.156)
 
 sudoku.php : algo with strings
-  - php   : 82.668 seconds (1x, 82.668><82.668)
+  - php   : 82.757 seconds (2x, 82.668><82.845)
 
 sudoku.py : algo with strings
-  - codon : 13.706 seconds (1x, 13.706><13.706)
-  - py3   : 88.581 seconds (144x, 86.923><93.035)
-  - pypy  : 19.042 seconds (376x, 17.905><36.082)
+  - codon : 13.728 seconds (2x, 13.706><13.749)
+  - py3   : 88.575 seconds (145x, 86.923><93.035)
+  - pypy  : 19.040 seconds (377x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 12.293 seconds (1x, 12.293><12.293)
+  - rust  : 12.292 seconds (2x, 12.290><12.293)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.692 seconds (1x, 0.692><0.692)
+  - rust  : 0.690 seconds (2x, 0.688><0.692)
 
 ```
 ## Context
@@ -52,7 +52,7 @@ Here are informations about the host/computer, and languages/versions/cmdline us
 ```
 PLATFORM : x86_64/Linux-6.11.0-1018-azure-x86_64-with-glibc2.39 with 4 cpus
 CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
-MEMINFO  : 16379472 kB
+MEMINFO  : 16379468 kB
 
 codon : 0.19.4
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
