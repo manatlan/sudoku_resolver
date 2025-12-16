@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.671 seconds (146x, 16.564><17.145)
+  - go    : 16.672 seconds (147x, 16.564><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.154 seconds (3x, 26.916><29.934)
+  - java  : 27.062 seconds (4x, 26.916><29.934)
 
 sudoku.js : algo with strings
-  - node  : 30.111 seconds (3x, 30.051><30.776)
+  - node  : 30.282 seconds (4x, 30.051><30.776)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 22.269 seconds (3x, 22.134><22.574)
+  - mojo  : 22.422 seconds (4x, 22.134><22.786)
 
 sudoku.nim : algo with strings
-  - nim   : 23.481 seconds (47x, 22.917><24.156)
+  - nim   : 23.475 seconds (48x, 22.917><24.156)
 
 sudoku.php : algo with strings
-  - php   : 82.668 seconds (3x, 81.623><82.845)
+  - php   : 82.736 seconds (4x, 81.623><82.845)
 
 sudoku.py : algo with strings
-  - codon : 13.749 seconds (3x, 13.706><13.834)
-  - py3   : 88.569 seconds (146x, 86.366><93.035)
-  - pypy  : 19.038 seconds (378x, 17.905><36.082)
+  - codon : 13.791 seconds (4x, 13.706><13.902)
+  - py3   : 88.564 seconds (147x, 86.366><93.035)
+  - pypy  : 19.037 seconds (379x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 12.290 seconds (3x, 12.225><12.293)
+  - rust  : 12.275 seconds (4x, 12.225><12.293)
 
 ```
 
@@ -43,7 +43,7 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.692 seconds (3x, 0.688><0.697)
+  - rust  : 0.695 seconds (4x, 0.688><0.701)
 
 ```
 ## Context
@@ -51,7 +51,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.11.0-1018-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
 MEMINFO  : 16379472 kB
 
 codon : 0.19.4
