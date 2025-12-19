@@ -27,7 +27,7 @@ LANGS=dict(
     ),
     java=dict(
         e="java",
-    	c=("$0c $1","$0 Sudoku"),
+    	c=("$0c -d . $1","$0 Sudoku"),
         ext="java",
     ),
     node=dict(	
