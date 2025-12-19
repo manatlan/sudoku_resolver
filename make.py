@@ -67,11 +67,6 @@ LANGS=dict(
     	c=("$0 build -release $1 -o ./sudoku","./sudoku"),
         ext="py",
     ),
-    py37=dict(
-        e="python3.7",
-    	c="$0 -uOO $1",
-        ext="py",
-    ),
 
 )
 
