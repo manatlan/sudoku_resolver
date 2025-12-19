@@ -9,30 +9,30 @@ All implementations use same bases types (string)
 ```
 
 sudoku.go : algo with strings
-  - go    : 16.669 seconds (152x, 15.152><17.145)
+  - go    : 16.669 seconds (153x, 15.152><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.154 seconds (9x, 22.511><29.934)
+  - java  : 27.154 seconds (10x, 22.511><29.934)
 
 sudoku.js : algo with strings
-  - node  : 30.453 seconds (9x, 27.908><31.199)
+  - node  : 30.373 seconds (10x, 27.908><31.199)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 22.483 seconds (9x, 22.046><23.077)
+  - mojo  : 22.529 seconds (10x, 22.046><23.077)
 
 sudoku.nim : algo with strings
-  - nim   : 23.439 seconds (53x, 22.603><24.156)
+  - nim   : 23.088 seconds (1x, 23.088><23.088)
 
 sudoku.php : algo with strings
-  - php   : 82.460 seconds (9x, 69.392><82.845)
+  - php   : 82.379 seconds (10x, 69.392><82.845)
 
 sudoku.py : algo with strings
-  - codon : 13.823 seconds (9x, 12.655><14.065)
-  - py3   : 88.510 seconds (152x, 86.241><93.035)
-  - pypy  : 19.030 seconds (384x, 17.905><36.082)
+  - codon : 13.828 seconds (10x, 12.655><14.065)
+  - py3   : 88.508 seconds (153x, 86.241><93.035)
+  - pypy  : 19.026 seconds (385x, 17.905><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 6.222 seconds (4x, 6.059><6.252)
+  - rust  : 6.235 seconds (5x, 6.059><6.287)
 
 ```
 
@@ -43,10 +43,18 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.go : algo with arrays (optimized by copilot)
-  - go    : 2.230 seconds (2x, 2.227><2.233)
+  - go    : 2.233 seconds (3x, 2.227><2.233)
+
+specialized/sudoku.nim : algo with specialized types using bitsets (optimized by copilot)
+  - nim   : 1.093 seconds (1x, 1.093><1.093)
+
+specialized/sudoku.py : algo with specialized types/logics (optimized by copilot)
+  - codon : 0.817 seconds (1x, 0.817><0.817)
+  - py3   : 16.154 seconds (1x, 16.154><16.154)
+  - pypy  : 1.092 seconds (1x, 1.092><1.092)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.684 seconds (4x, 0.677><0.712)
+  - rust  : 0.682 seconds (5x, 0.677><0.712)
 
 ```
 ## Context
@@ -54,7 +62,7 @@ specialized/sudoku.rs : algo with specialized types
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.11.0-1018-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.86 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.85 bogomips)
 MEMINFO  : 16379472 kB
 
 codon : 0.19.4
@@ -66,7 +74,7 @@ java  : openjdk 17.0.17 2025-10-21
 mojo  : Mojo 0.25.7.0 (e5af2b2f)
         /home/runner/work/sudoku_resolver/sudoku_resolver/.venv/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.16 [Linux: amd64]
-        /home/runner/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
+        /home/runner/.nimble/bin/nim compile -d:danger -o:sudoku <file> && ./sudoku < grids.txt
 node  : v20.19.6
         /usr/local/bin/node <file> < grids.txt
 php   : PHP 8.3.28 (cli) (built: Dec  9 2025 12:37:08) (NTS)
