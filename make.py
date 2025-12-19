@@ -22,7 +22,7 @@ LANGS=dict(
     ),
     nim=dict(	
         e="nim",
-    	c=("$0 compile -d:danger $1", "./sudoku"),
+    	c=("$0 compile -d:danger -o:sudoku $1", "./sudoku"),
         ext="nim",
     ),
     java=dict(
