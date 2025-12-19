@@ -1,6 +1,6 @@
 Here is the **simplest|minimal|readable** python3 resolver (naive backtracking recursive):
 
-The idea of the repo, is to compare the runtime speed of differents languages. Currently, there a py/mojo/nim/go/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the 1956 grids of [grids.txt](grids.txt) (only good/solvable ones, no empty grid) !!!
+The idea of the repo, is to compare the runtime speed of differents languages. Currently, there a c/py/mojo/nim/go/java/js/rust versions. So every version implements the same algorithm, without using specialized types provided by the language itself ... and try to resolve the 1956 grids of [grids.txt](grids.txt) (only good/solvable ones, no empty grid) !!!
 
 Here is the algo:
 
