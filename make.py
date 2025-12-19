@@ -122,10 +122,11 @@ class Tests:
 
     def __iter__(self):
         for mode,info in self._modes.items():
-            tests=info["tests"]
-            _sign=info.get("sign",None)
-            if _sign and _sign != sign(self.filename,mode,str(NB_GRIDS)): continue
-            yield mode,statistics.median(tests),len(tests),min(tests),max(tests)
+            if mode in LANGS:
+                tests=info["tests"]
+                _sign=info.get("sign",None)
+                if _sign and _sign != sign(self.filename,mode,str(NB_GRIDS)): continue
+                yield mode,statistics.median(tests),len(tests),min(tests),max(tests)
 
     def filter(self,modes:list) -> list:
         ll=[]
@@ -223,7 +224,7 @@ def test_DB():
     assert len(tt)==2
     # ... first file
     assert tt[0].filename == "kiki.py"
-    assert list(tt[0]) == [('py3', 15.0, 3, 12.0, 20.0), ('py2', 10.0, 1, 10.0, 10.0)]
+    assert list(tt[0]) == [('py3', 15.0, 3, 12.0, 20.0) ]
     # ... second file
     assert tt[1].filename == "kiki2.py"
     assert list(tt[1]) == [('node', 18.0, 2, 16.0, 20.0)]

@@ -55,23 +55,23 @@ $ ./make.py .
 
 Will run every sources
 
-if you want to run the "optimized" versions :
+if you want to run the "specialized" versions :
 
 ```
-$ ./make.py optimized
+$ ./make.py specialized
 ```
 
-if you want to run the "optimized" versions, only mojo ones:
+if you want to run the "specialized" versions, only mojo ones:
 
 ```
-$ ./make.py optimized --mojo
+$ ./make.py specialized --mojo
 ```
 
 ## run all tests
 
 Just type :
 ```
-$ ./make.py . optimized experiments
+$ ./make.py . specialized
 ```
 
 ## to get stats
@@ -86,9 +86,9 @@ To output specifics stats of all mojo files:
 $ ./make.py stats *.mojo
 ```
 
-To output specifics stats of optimized versions:
+To output specifics stats of specialized versions:
 ```
-$ ./make.py stats optimized/
+$ ./make.py stats specialized/
 ```
 
 ## to get platform info
