@@ -68,19 +68,23 @@ sudoku.rs : algo with Strings (as byte[])
 It's the same algorithm, but use specialized weapons (types/apis) from the languages, to be as faster as possible.
 
 ```
+specialized/sudoku.c : algo OPTIMIZED (by copilot)
+  - c     : 0.197 seconds (5x, 0.190><0.209)
+
 specialized/sudoku.go : algo with arrays (optimized by copilot)
-  - go    : 3.178 seconds (4x, 3.149><3.223)
+  - go    : 3.205 seconds (5x, 3.149><3.467)
 
 specialized/sudoku.nim : algo with specialized types using bitsets (optimized by copilot)
-  - nim   : 1.149 seconds (4x, 1.138><1.233)
+  - nim   : 1.149 seconds (5x, 1.138><1.268)
 
 specialized/sudoku.py : algo with specialized types/logics (optimized by copilot)
-  - py3   : 15.508 seconds (2x, 15.111><15.904)
-  - codon : 0.959 seconds (2x, 0.922><0.997)
-  - pypy  : 1.679 seconds (2x, 1.640><1.717)
+  - py3   : 15.904 seconds (3x, 15.111><16.172)
+  - codon : 0.928 seconds (3x, 0.922><0.997)
+  - pypy  : 1.707 seconds (3x, 1.640><1.717)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.868 seconds (5x, 0.810><0.878)
+  - rust  : 0.865 seconds (6x, 0.810><0.878)
+
 ```
 
 
