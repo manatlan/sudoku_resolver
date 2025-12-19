@@ -32,44 +32,55 @@ def resolv(g):
 ## Regular Results
 
 ``` 
+sudoku.c : algo with strings (made by gemini3 from py version)
+  - c     : 2.946 seconds (6x, 2.923><3.018)
+
 sudoku.go : algo with strings
-  - go    : 17.166 seconds (4x, 16.710><17.240)
-  
+  - go    : 17.127 seconds (1x, 17.127><17.127)
+
 sudoku.java : algo with strings
-  - java  : 39.656 seconds (2x, 39.409><39.902)
+  - java  : 35.992 seconds (1x, 35.992><35.992)
 
 sudoku.js : algo with strings
-  - node  : 41.311 seconds (2x, 39.991><42.631)
+  - node  : 33.953 seconds (1x, 33.953><33.953)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 89.145 seconds (6x, 83.489><95.430)
+  - mojo  : 26.120 seconds (6x, 24.287><30.971)
 
 sudoku.nim : algo with strings
-  - nim   : 27.555 seconds (2x, 27.019><28.090)
+  - nim   : 27.392 seconds (1x, 27.392><27.392)
+
+sudoku.php : algo with strings
+  - php   : 80.259 seconds (2x, 79.189><81.328)
 
 sudoku.py : algo with strings
-  - py3   : 88.972 seconds (3x, 88.880><90.797)
-  - pypy  : 29.358 seconds (3x, 28.443><31.244)
-  - codon : 17.128 seconds (3x, 16.191><17.806)
-  - py37  : 138.129 seconds (2x, 137.556><138.701)
+  - py3   : 84.969 seconds (1x, 84.969><84.969)
+  - pypy  : 26.574 seconds (1x, 26.574><26.574)
+  - codon : 16.845 seconds (6x, 16.191><17.806)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 10.357 seconds (4x, 10.197><10.710)
+  - rust  : 14.756 seconds (3x, 14.576><14.812)
 ```
 
-(Since v0.5.0, mojo is a lot slower : [issue](https://github.com/modularml/mojo/issues/1216) ... it was a lot faster with 0.4.0)
-(mojo v0.6.1 was 73.747 seconds ... so v0.7.0 is a little bit speedier ... but the v24.x are slower ;-( )
 
 ## Specialized Results
 
 It's the same algorithm, but use specialized weapons (types/apis) from the languages, to be as faster as possible.
 
 ```
-specialized/sudoku.mojo : algo with specialized types (use python to read stdin)
-  - mojo  : 2.681 seconds (7x, 2.664><2.701)
+specialized/sudoku.go : algo with arrays (optimized by copilot)
+  - go    : 3.178 seconds (4x, 3.149><3.223)
+
+specialized/sudoku.nim : algo with specialized types using bitsets (optimized by copilot)
+  - nim   : 1.149 seconds (4x, 1.138><1.233)
+
+specialized/sudoku.py : algo with specialized types/logics (optimized by copilot)
+  - py3   : 15.508 seconds (2x, 15.111><15.904)
+  - codon : 0.959 seconds (2x, 0.922><0.997)
+  - pypy  : 1.679 seconds (2x, 1.640><1.717)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 1.188 seconds (2x, 1.146><1.231)
+  - rust  : 0.868 seconds (5x, 0.810><0.878)
 ```
 
 
@@ -77,31 +88,32 @@ specialized/sudoku.rs : algo with specialized types
 
 On my computer (Intel® N100 × 4 / ubuntu 23.10), with versions and command line used:
 ```
-PLATFORM : x86_64/Linux-6.5.0-13-generic-x86_64-with-glibc2.38 with 4 cpus
+PLATFORM : x86_64/Linux-6.14.0-37-generic-x86_64-with-glibc2.39 with 4 cpus
 CPUINFO  : GenuineIntel "Intel(R) N100" (1612.80 bogomips)
-MEMINFO  : 16142748 kB
+MEMINFO  : 16152444 kB
 
+c     : gcc (Ubuntu 13.3.0-6ubuntu2~24.04) 13.3.0
+        /usr/bin/gcc -O3 <file> -o ./sudoku && ./sudoku < grids.txt
 codon : 0.16.3
         /home/manatlan/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
-go    : go version go1.21.1 linux/amd64
+go    : go version go1.22.2 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
-java  : openjdk 22-ea 2024-03-19
-        /usr/bin/javac <file> && /usr/bin/java Sudoku < grids.txt
-mojo  : mojo 24.2.0 (c2427bc5)
-        /home/manatlan/.modular/pkg/packages.modular.com_mojo/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
+java  : openjdk 17.0.17 2025-10-21
+        /usr/bin/javac -d . <file> && /usr/bin/java Sudoku < grids.txt
+mojo  : Mojo 0.25.7.0 (e5af2b2f)
+        /home/manatlan/Documents/python/sudoku_resolver/.venv/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
 nim   : Nim Compiler Version 2.0.0 [Linux: amd64]
-        /home/manatlan/.nimble/bin/nim compile -d:danger <file> && ./sudoku < grids.txt
-node  : v18.13.0
-        /usr/bin/node <file> < grids.txt
-py3   : Python 3.11.6
-        /usr/bin/python3 -uOO <file> < grids.txt
-py37  : Python 3.7.16
-        /usr/local/bin/python3.7 -uOO <file> < grids.txt
-pypy  : Python 3.9.17 (7.3.12+dfsg-1, Jun 16 2023, 23:19:37)
+        /home/manatlan/.nimble/bin/nim compile -d:danger -o:sudoku <file> && ./sudoku < grids.txt
+node  : v22.19.0
+        /home/manatlan/.nvm/versions/node/v22.19.0/bin/node <file> < grids.txt
+php   : PHP 8.3.6 (cli) (built: Jul 14 2025 18:30:55) (NTS)
+        /usr/bin/php <file> < grids.txt
+py3   : Python 3.12.3
+        /home/manatlan/Documents/python/sudoku_resolver/.venv/bin/python3 -uOO <file> < grids.txt
+pypy  : Python 3.9.18 (7.3.15+dfsg-1build3, Apr 01 2024, 03:12:48)
         /usr/bin/pypy3 -uOO <file> < grids.txt
-rust  : rustc 1.75.0 (82e1608df 2023-12-21) (built from a source tarball)
+rust  : rustc 1.90.0 (1159e78c4 2025-09-14)
         /usr/bin/rustc -C opt-level=3 -C target-cpu=native <file> -o ./sudoku && ./sudoku < grids.txt
-
 ```
 
 
@@ -111,12 +123,12 @@ You will need, at least, python3 ;-) (it will autodetect compilers/interpreters 
 ```bash
 $ git clone https://github.com/manatlan/sudoku_resolver.git
 $ cd sudoku_resolver
-$ chmod +x make.py
-$ ./make.py .
+$ uv sync
+$ uv run ./make.py .
 ...(processing)...
-$ ./make.py stats
+$ uv run ./make.py stats
 ```
-(repeat the `./make.py .` to get accurate results)
+(repeat the `uv run ./make.py .` to get accurate results)
 
 see command line [make.py](make.md)
 

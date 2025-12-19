@@ -10,6 +10,12 @@ https://github.com/manatlan/sudoku_resolver/blob/master/make.md
 """
 
 LANGS=dict(
+    c=dict(	
+        e="gcc",
+    	c=("$0 -O3 $1 -o ./sudoku","./sudoku"),
+        ext="c",
+    ),
+
     go=dict(	
         e="go",
     	c=("$0 build -o ./sudoku $1 ","./sudoku"),
