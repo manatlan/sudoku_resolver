@@ -9,33 +9,33 @@ All implementations use same bases types (string)
 ```
 
 sudoku.c : algo with strings (made by gemini3 from py version)
-  - c     : 1.958 seconds (74x, 1.616><2.174)
+  - c     : 1.958 seconds (75x, 1.616><2.174)
 
 sudoku.go : algo with strings
-  - go    : 16.663 seconds (299x, 11.005><17.145)
+  - go    : 16.664 seconds (300x, 11.005><17.145)
 
 sudoku.java : algo with strings
-  - java  : 27.130 seconds (100x, 19.228><30.332)
+  - java  : 27.139 seconds (101x, 19.228><30.332)
 
 sudoku.js : algo with strings
-  - node  : 30.049 seconds (38x, 22.381><33.246)
+  - node  : 30.048 seconds (39x, 22.381><33.246)
 
 sudoku.mojo : algo with strings (use python to read stdin)
-  - mojo  : 22.644 seconds (143x, 16.279><24.433)
+  - mojo  : 22.644 seconds (144x, 16.279><24.433)
 
 sudoku.nim : algo with strings
-  - nim   : 23.259 seconds (147x, 18.842><24.795)
+  - nim   : 23.271 seconds (148x, 18.842><24.795)
 
 sudoku.php : algo with strings
-  - php   : 80.582 seconds (3x, 61.382><81.478)
+  - php   : 81.030 seconds (4x, 61.382><83.216)
 
 sudoku.py : algo with strings
-  - codon : 13.575 seconds (68x, 10.733><14.098)
-  - py3   : 88.107 seconds (299x, 69.709><93.138)
-  - pypy  : 18.890 seconds (531x, 13.837><36.082)
+  - codon : 13.576 seconds (69x, 10.733><14.098)
+  - py3   : 88.106 seconds (300x, 69.709><93.138)
+  - pypy  : 18.883 seconds (532x, 13.837><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 4.333 seconds (18x, 3.442><4.502)
+  - rust  : 4.332 seconds (19x, 3.442><4.502)
 
 ```
 
@@ -46,32 +46,32 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.c : algo OPTIMIZED (by copilot)
-  - c     : 0.130 seconds (74x, 0.114><0.147)
+  - c     : 0.130 seconds (75x, 0.114><0.147)
 
 specialized/sudoku.go : algo with arrays (optimized by copilot)
-  - go    : 2.234 seconds (149x, 1.871><2.427)
+  - go    : 2.234 seconds (150x, 1.871><2.427)
 
 specialized/sudoku.nim : algo with specialized types using bitsets (optimized by copilot)
-  - nim   : 1.093 seconds (147x, 0.885><1.287)
+  - nim   : 1.093 seconds (148x, 0.885><1.287)
 
 specialized/sudoku.py : algo with specialized types/logics (optimized by copilot)
-  - codon : 0.821 seconds (68x, 0.634><0.881)
-  - py3   : 16.581 seconds (147x, 12.993><17.648)
-  - pypy  : 1.093 seconds (147x, 0.838><1.167)
+  - codon : 0.821 seconds (69x, 0.634><0.881)
+  - py3   : 16.575 seconds (148x, 12.993><17.648)
+  - pypy  : 1.093 seconds (148x, 0.838><1.167)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.704 seconds (18x, 0.584><0.745)
+  - rust  : 0.704 seconds (19x, 0.584><0.745)
 
 specialized/sudoku2.go : from c to go (by gemini3)
-  - go    : 0.377 seconds (142x, 0.294><0.435)
+  - go    : 0.377 seconds (143x, 0.294><0.435)
 
 specialized/sudoku2.nim : from c to nim (by gemini3)
-  - nim   : 0.226 seconds (142x, 0.193><0.260)
+  - nim   : 0.226 seconds (143x, 0.193><0.260)
 
 specialized/sudoku2.py : conversion from C to py3 (by gemini3)
-  - codon : 1.042 seconds (68x, 0.832><1.085)
-  - py3   : 11.983 seconds (143x, 9.003><13.681)
-  - pypy  : 2.798 seconds (143x, 2.290><3.517)
+  - codon : 1.042 seconds (69x, 0.832><1.085)
+  - py3   : 11.984 seconds (144x, 9.003><13.681)
+  - pypy  : 2.798 seconds (144x, 2.290><3.517)
 
 ```
 ## Context
@@ -79,7 +79,7 @@ specialized/sudoku2.py : conversion from C to py3 (by gemini3)
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : x86_64/Linux-6.17.0-1010-azure-x86_64-with-glibc2.39 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 9V74 80-Core Processor" (5192.26 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 7763 64-Core Processor" (4890.84 bogomips)
 MEMINFO  : 16373464 kB
 
 c     : gcc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0
