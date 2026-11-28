@@ -9,32 +9,32 @@ All implementations use same bases types (string)
 ```
 
 sudoku.c : algo with strings (made by gemini3 from py version)
-  - c     : 1.603 seconds (14x, 1.107><2.045)
+  - c     : 1.601 seconds (15x, 1.107><2.045)
 
 sudoku.go : algo with strings
-  - go    : 10.472 seconds (14x, 8.901><15.616)
+  - go    : 10.343 seconds (15x, 8.901><15.616)
 
 sudoku.java : algo with strings
-  - java  : 20.418 seconds (14x, 14.646><28.169)
+  - java  : 20.788 seconds (1x, 20.788><20.788)
 
 sudoku.js : algo with strings
-  - node  : 26.510 seconds (7x, 15.466><28.930)
+  - node  : 25.208 seconds (8x, 15.466><28.930)
 
 sudoku.mojo : algo with strings (use python to read stdin)
   - mojo  : 22.424 seconds (284x, 12.199><24.433)
 
 sudoku.nim : algo with strings
-  - nim   : 23.232 seconds (337x, 12.302><26.146)
+  - nim   : 23.232 seconds (338x, 12.302><26.146)
 
 sudoku.php : algo with strings
-  - php   : 67.943 seconds (6x, 62.790><83.110)
+  - php   : 67.659 seconds (7x, 62.790><83.110)
 
 sudoku.py : algo with strings
-  - py3   : 62.105 seconds (14x, 46.314><88.211)
-  - pypy  : 18.774 seconds (721x, 9.966><36.082)
+  - py3   : 61.417 seconds (15x, 46.314><88.211)
+  - pypy  : 18.773 seconds (722x, 9.966><36.082)
 
 sudoku.rs : algo with Strings (as byte[])
-  - rust  : 4.467 seconds (7x, 3.002><4.698)
+  - rust  : 4.108 seconds (8x, 3.002><4.698)
 
 ```
 
@@ -45,32 +45,32 @@ It's the same algorithm, but use specialized weapons (types/apis) from the langu
 ```
 
 specialized/sudoku.c : algo OPTIMIZED (by copilot)
-  - c     : 0.104 seconds (14x, 0.098><0.139)
+  - c     : 0.104 seconds (15x, 0.098><0.139)
 
 specialized/sudoku.go : algo with arrays (optimized by copilot)
-  - go    : 1.901 seconds (14x, 1.483><2.542)
+  - go    : 1.861 seconds (15x, 1.483><2.542)
 
 specialized/sudoku.nim : algo with specialized types using bitsets (optimized by copilot)
-  - nim   : 1.093 seconds (337x, 0.661><1.287)
+  - nim   : 1.093 seconds (338x, 0.661><1.287)
 
 specialized/sudoku.py : algo with specialized types/logics (optimized by copilot)
-  - codon : 0.751 seconds (4x, 0.654><0.881)
-  - py3   : 12.103 seconds (14x, 8.365><15.719)
-  - pypy  : 1.111 seconds (337x, 0.572><1.384)
+  - codon : 0.656 seconds (5x, 0.654><0.881)
+  - py3   : 12.060 seconds (15x, 8.365><15.719)
+  - pypy  : 1.111 seconds (338x, 0.572><1.384)
 
 specialized/sudoku.rs : algo with specialized types
-  - rust  : 0.718 seconds (7x, 0.476><0.827)
+  - rust  : 0.672 seconds (8x, 0.476><0.827)
 
 specialized/sudoku2.go : from c to go (by gemini3)
-  - go    : 0.289 seconds (14x, 0.248><0.368)
+  - go    : 0.282 seconds (15x, 0.248><0.368)
 
 specialized/sudoku2.nim : from c to nim (by gemini3)
-  - nim   : 0.226 seconds (332x, 0.173><0.280)
+  - nim   : 0.226 seconds (333x, 0.173><0.280)
 
 specialized/sudoku2.py : conversion from C to py3 (by gemini3)
-  - codon : 0.791 seconds (4x, 0.692><0.912)
-  - py3   : 8.710 seconds (14x, 6.448><11.957)
-  - pypy  : 2.805 seconds (333x, 1.596><3.582)
+  - codon : 0.697 seconds (5x, 0.692><0.912)
+  - py3   : 8.685 seconds (15x, 6.448><11.957)
+  - pypy  : 2.805 seconds (334x, 1.596><3.582)
 
 ```
 ## Context
@@ -78,7 +78,7 @@ specialized/sudoku2.py : conversion from C to py3 (by gemini3)
 Here are informations about the host/computer, and languages/versions/cmdline used for tests:
 ```
 PLATFORM : /Linux-7.0.0-1020-azure-x86_64-with-glibc2.43 with 4 cpus
-CPUINFO  : AuthenticAMD "AMD EPYC 9V74 80-Core Processor" (5192.26 bogomips)
+CPUINFO  : AuthenticAMD "AMD EPYC 9V74 80-Core Processor" (5192.27 bogomips)
 MEMINFO  : 16366632 kB
 
 c     : gcc (Ubuntu 15.2.0-16ubuntu1) 15.2.0
@@ -87,7 +87,7 @@ codon : 0.20.8
         /home/runner/.codon/bin/codon build -release <file> -o ./sudoku && ./sudoku < grids.txt
 go    : go version go1.26.8 linux/amd64
         /usr/bin/go build -o ./sudoku <file>  && ./sudoku < grids.txt
-java  : openjdk 25.0.5 2026-10-20 LTS
+java  : openjdk 25.0.5.1 2026-11-17 LTS
         /usr/bin/javac -d . <file> && /usr/bin/java Sudoku < grids.txt
 mojo  : Mojo 0.25.7.0 (e5af2b2f)
         /home/runner/work/sudoku_resolver/sudoku_resolver/.venv/bin/mojo build <file> -o ./sudoku && ./sudoku < grids.txt
